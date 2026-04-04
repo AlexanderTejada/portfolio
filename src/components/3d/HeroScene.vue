@@ -61,8 +61,8 @@ onMounted(() => {
 
   const material = new THREE.ShaderMaterial({
     uniforms: {
-      uColorFront: { value: new THREE.Color(0x404050) },
-      uColorBack: { value: new THREE.Color(0x808090) },
+      uColorFront: { value: new THREE.Color(0x808090) },
+      uColorBack: { value: new THREE.Color(0xc0c0c8) },
       uGlowColor: { value: new THREE.Color(0x1a1a22) },
       uSize: { value: 0.35 },
     },
