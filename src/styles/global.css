@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Share+Tech+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+:root {
+  /* Colors - Void palette */
+  --bg-primary: #050508;
+  --bg-secondary: #080810;
+  --bg-tertiary: #0a0a12;
+
+  --neon-blue: #00d4ff;
+  --neon-purple: #a020f0;
+  --neon-magenta: #ff0080;
+  --neon-cyan: #00fff5;
+  --neon-green: #00ff88;
+
+  --text-primary: #e0e0e8;
+  --text-secondary: #707080;
+  --text-muted: #404050;
+
+  --glow-blue: 0 0 20px rgba(0, 212, 255, 0.4);
+  --glow-purple: 0 0 20px rgba(160, 32, 240, 0.4);
+  --glow-magenta: 0 0 20px rgba(255, 0, 128, 0.4);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: 'Share Tech Mono', 'Orbitron', monospace;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--neon-blue);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--neon-cyan);
+}
+
+/* Selection */
+::selection {
+  background-color: var(--neon-blue);
+  color: var(--bg-primary);
+}
+
+/* Utilities */
+.neon-text {
+  text-shadow: var(--glow-blue);
+  color: var(--neon-blue);
+}
+
+.neon-text-purple {
+  text-shadow: var(--glow-purple);
+  color: var(--neon-purple);
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Canvas defaults */
+canvas {
+  outline: none;
+  touch-action: none;
+}
