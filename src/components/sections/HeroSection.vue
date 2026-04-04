@@ -121,9 +121,9 @@ onMounted(() => {
   justify-content: center;
   gap: 3rem;
   padding: 1rem 2rem;
-  background: rgba(19, 19, 26, 0.8);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: linear-gradient(135deg, #2a1f3d 0%, #1a1625 100%);
+  border: 3px solid;
+  border-image: linear-gradient(135deg, #00f0ff, #bf00ff, #ff0080) 1;
 }
 
 .navbar::before,
@@ -148,19 +148,22 @@ onMounted(() => {
 }
 
 .nav-links a {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.875rem;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  color: #a1a1aa;
+  font-family: 'Bebas Neue', 'Orbitron', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.15em;
+  color: #c4b0d8;
   text-decoration: none;
   padding: 0.5rem 1rem;
   position: relative;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
 }
 
 .nav-links a:hover {
-  color: #f4f4f5;
+  color: #00f0ff;
+  border-color: #00f0ff;
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
 }
 
 @keyframes glitch-nav {
@@ -234,9 +237,9 @@ onMounted(() => {
   text-align: center;
   width: 100%;
   padding: 3rem 2rem;
-  background: rgba(19, 19, 26, 0.7);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(135deg, rgba(42, 31, 61, 0.9) 0%, rgba(26, 22, 37, 0.9) 100%);
+  border: 3px solid;
+  border-image: linear-gradient(135deg, #00f0ff, #bf00ff, #ff0080) 1;
   position: relative;
 }
 
@@ -1010,19 +1013,21 @@ onMounted(() => {
 
 .tag {
   padding: 0.4rem 0.9rem;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.15) 0%, rgba(191, 0, 255, 0.15) 100%);
+  border: 2px solid rgba(0, 240, 255, 0.5);
   font-size: 0.75rem;
-  color: #a1a1aa;
-  font-family: 'Inter', sans-serif;
-  transition: all 0.3s ease;
+  font-family: 'Share Tech Mono', monospace;
+  color: #00f0ff;
+  transition: all 0.2s ease;
+  letter-spacing: 0.02em;
+  position: relative;
 }
 
 .tag:hover {
-  background: rgba(79, 70, 229, 0.15);
-  border-color: rgba(79, 70, 229, 0.3);
-  color: #c7d2fe;
+  background: linear-gradient(135deg, #00f0ff 0%, #bf00ff 100%);
+  color: #1a1625;
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
 }
 
 .cta-buttons {
@@ -1036,34 +1041,44 @@ onMounted(() => {
 .btn-secondary {
   padding: 0.875rem 2rem;
   font-size: 0.875rem;
-  font-weight: 500;
-  font-family: 'Inter', sans-serif;
-  letter-spacing: 0.02em;
-  border: none;
-  border-radius: 8px;
+  font-weight: 700;
+  font-family: 'Bebas Neue', 'Orbitron', sans-serif;
+  letter-spacing: 0.15em;
+  border: 3px solid #00f0ff;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  background: transparent;
 }
 
 .btn-primary {
-  background: var(--gradient-primary);
-  color: #ffffff;
+  color: #00f0ff;
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.2) 0%, rgba(191, 0, 255, 0.2) 100%);
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(79, 70, 229, 0.3);
+  background: linear-gradient(135deg, #00f0ff 0%, #bf00ff 100%);
+  color: #1a1625;
+  transform: scale(1.05);
+  box-shadow:
+    0 0 30px rgba(0, 240, 255, 0.5),
+    0 0 60px rgba(191, 0, 255, 0.3);
 }
 
 .btn-secondary {
-  background: rgba(255, 255, 255, 0.08);
-  color: #a1a1aa;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #bf00ff;
+  border-color: #bf00ff;
+  background: linear-gradient(135deg, rgba(191, 0, 255, 0.2) 0%, rgba(255, 0, 128, 0.2) 100%);
 }
 
 .btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.12);
-  color: #f4f4f5;
+  background: linear-gradient(135deg, #bf00ff 0%, #ff0080 100%);
+  color: #1a1625;
+  transform: scale(1.05);
+  box-shadow:
+    0 0 30px rgba(191, 0, 255, 0.5),
+    0 0 60px rgba(255, 0, 128, 0.3);
 }
 
 .btn-primary {
@@ -1130,9 +1145,9 @@ onMounted(() => {
     left: 0;
     right: 0;
     flex-direction: column;
-    background: rgba(19, 19, 26, 0.95);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: linear-gradient(135deg, #2a1f3d 0%, #1a1625 100%);
+    border: 2px solid;
+    border-image: linear-gradient(135deg, #00f0ff, #bf00ff) 1;
     padding: 1rem;
     gap: 1rem;
     transform: translateY(-100%);

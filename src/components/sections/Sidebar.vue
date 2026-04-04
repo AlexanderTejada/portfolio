@@ -10,6 +10,7 @@ defineProps<{
     <div class="sidebar-content">
       <span v-for="text in texts" :key="text" class="sidebar-text">{{ text }}</span>
     </div>
+    <div class="spray-dot"></div>
   </div>
 </template>
 
@@ -23,11 +24,22 @@ defineProps<{
   align-items: center;
   gap: 1.5rem;
   padding: 4.5rem 3rem;
-  background: rgba(19, 19, 26, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(20px);
+  background: linear-gradient(135deg, #2a1f3d 0%, #1a1625 100%);
+  border: 3px solid;
+  border-image: linear-gradient(135deg, #00f0ff, #bf00ff, #ff0080) 1;
   transition: all 0.3s ease;
   cursor: pointer;
+}
+
+.sidebar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(0, 240, 255, 0.1) 0%, transparent 60%);
+  pointer-events: none;
 }
 
 .sidebar.left {
@@ -41,12 +53,40 @@ defineProps<{
 }
 
 .sidebar:hover {
-  background: rgba(79, 70, 229, 0.15);
-  border-color: rgba(79, 70, 229, 0.4);
+  transform: translateY(-50%) scale(1.05);
+  box-shadow:
+    0 0 30px rgba(0, 240, 255, 0.3),
+    0 0 60px rgba(191, 0, 255, 0.2);
 }
 
 .sidebar:hover .sidebar-text {
-  color: #818cf8;
+  animation: glitch-text 0.3s infinite;
+}
+
+@keyframes glitch-text {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(-2px) skewX(-5deg);
+  }
+  50% {
+    transform: translateY(2px) skewX(5deg);
+  }
+  75% {
+    transform: translateY(-1px) skewX(-3deg);
+  }
+}
+
+.spray-dot {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle, rgba(0, 240, 255, 0.6) 0%, transparent 70%);
+  border-radius: 50%;
+  top: 20px;
+  right: 20px;
 }
 
 .sidebar-content {
@@ -56,13 +96,13 @@ defineProps<{
 }
 
 .sidebar-text {
-  font-family: 'Inter', sans-serif;
-  font-size: 1rem;
-  font-weight: 500;
-  letter-spacing: 0.2em;
-  color: #71717a;
+  font-family: 'Bebas Neue', 'Orbitron', sans-serif;
+  font-size: 1.4rem;
+  letter-spacing: 0.15em;
+  color: #f0e6ff;
   writing-mode: vertical-rl;
   text-orientation: mixed;
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
 }
 
 .sidebar.left .sidebar-text {
