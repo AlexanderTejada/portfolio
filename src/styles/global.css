@@ -2,24 +2,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 
 :root {
-  /* Colors - Void palette */
-  --bg-primary: #050508;
-  --bg-secondary: #080810;
-  --bg-tertiary: #0a0a12;
+  /* Colors - Inverted palette (white mode) */
+  --bg-primary: #f0f0f5;
+  --bg-secondary: #e8e8f0;
+  --bg-tertiary: #d8d8e2;
 
-  --neon-blue: #00d4ff;
-  --neon-purple: #a020f0;
-  --neon-magenta: #ff0080;
-  --neon-cyan: #00fff5;
-  --neon-green: #00ff88;
+  --neon-blue: #0066aa;
+  --neon-purple: #6a10a0;
+  --neon-magenta: #cc0066;
+  --neon-cyan: #00a0a0;
+  --neon-green: #00aa66;
 
-  --text-primary: #e0e0e8;
-  --text-secondary: #707080;
-  --text-muted: #404050;
+  --text-primary: #1a1a22;
+  --text-secondary: #505060;
+  --text-muted: #808090;
 
-  --glow-blue: 0 0 20px rgba(0, 212, 255, 0.4);
-  --glow-purple: 0 0 20px rgba(160, 32, 240, 0.4);
-  --glow-magenta: 0 0 20px rgba(255, 0, 128, 0.4);
+  --glow-blue: 0 0 15px rgba(0, 102, 170, 0.3);
+  --glow-purple: 0 0 15px rgba(106, 16, 160, 0.3);
+  --glow-magenta: 0 0 15px rgba(204, 0, 102, 0.3);
 }
 
 * {

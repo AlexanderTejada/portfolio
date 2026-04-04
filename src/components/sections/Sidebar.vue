@@ -23,8 +23,8 @@ defineProps<{
   align-items: center;
   gap: 1.5rem;
   padding: 4.5rem 3rem;
-  background: #0a0a0f;
-  border: 1px solid rgba(224, 224, 232, 0.3);
+  background: #e8e8f0;
+  border: 1px solid rgba(26, 26, 34, 0.3);
   transition: all 0.3s ease;
   cursor: pointer;
 }
@@ -40,12 +40,12 @@ defineProps<{
 }
 
 .sidebar:hover {
-  background: #1a1405;
-  border-color: rgba(255, 149, 0, 0.8);
+  background: #fff8e0;
+  border-color: rgba(204, 119, 0, 0.8);
 }
 
 .sidebar:hover .sidebar-text {
-  color: #ff9500;
+  color: #cc7700;
   text-shadow: none;
 }
 
@@ -59,7 +59,7 @@ defineProps<{
   font-family: 'Orbitron', monospace;
   font-size: 1.2rem;
   letter-spacing: 0.35em;
-  color: #e0e0e8;
+  color: #1a1a22;
   writing-mode: vertical-rl;
   text-orientation: mixed;
 }

@@ -30,7 +30,7 @@ onMounted(() => {
 
     <!-- Navbar -->
     <nav class="navbar">
-      <div class="nav-logo">SEBASTIAN</div>
+      <div class="nav-logo">ALEX</div>
       <ul class="nav-links" :class="{ open: isMenuOpen }">
         <li v-for="item in navItems" :key="item">
           <a href="#">{{ item }}</a>
@@ -121,8 +121,8 @@ onMounted(() => {
   justify-content: center;
   gap: 3rem;
   padding: 1rem 2rem;
-  background: rgba(20, 20, 30, 0.9);
-  border: 1px solid rgba(112, 112, 128, 0.3);
+  background: rgba(240, 240, 245, 0.95);
+  border: 1px solid rgba(26, 26, 34, 0.2);
   backdrop-filter: blur(10px);
 }
 
@@ -268,10 +268,10 @@ onMounted(() => {
   text-align: center;
   width: 100%;
   padding: 3rem 2rem;
-  background: rgba(5, 5, 8, 0.5);
+  background: rgba(240, 240, 245, 0.7);
   backdrop-filter: blur(20px);
   border-radius: 4px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   position: relative;
 }
 
@@ -1045,9 +1045,9 @@ onMounted(() => {
 
 .tag {
   padding: 0.4rem 0.9rem;
-  background: rgba(8, 8, 16, 0.6);
+  background: rgba(232, 232, 240, 0.6);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(112, 112, 128, 0.3);
+  border: 1px solid rgba(80, 80, 96, 0.3);
   border-radius: 2px;
   font-size: 0.75rem;
   color: var(--text-secondary);
@@ -1057,8 +1057,8 @@ onMounted(() => {
 }
 
 .tag:hover {
-  background: rgba(8, 8, 16, 0.8);
-  border-color: rgba(112, 112, 128, 0.6);
+  background: rgba(232, 232, 240, 0.8);
+  border-color: rgba(80, 80, 96, 0.6);
   color: var(--text-primary);
   transform: translateY(-1px);
 }
@@ -1088,17 +1088,17 @@ onMounted(() => {
 
 .btn-primary {
   color: var(--text-primary);
-  border: 1px solid rgba(224, 224, 232, 0.3);
+  border: 1px solid rgba(26, 26, 34, 0.3);
 }
 
 .btn-primary:hover {
-  border-color: rgba(224, 224, 232, 0.6);
-  background: rgba(224, 224, 232, 0.05);
+  border-color: rgba(26, 26, 34, 0.6);
+  background: rgba(26, 26, 34, 0.05);
 }
 
 .btn-secondary {
   color: var(--text-muted);
-  border: 1px solid rgba(112, 112, 128, 0.2);
+  border: 1px solid rgba(80, 80, 96, 0.2);
 }
 
 .btn-secondary:hover {
@@ -1150,7 +1150,7 @@ onMounted(() => {
     left: 0;
     right: 0;
     flex-direction: column;
-    background: rgba(5, 5, 8, 0.95);
+    background: rgba(240, 240, 245, 0.95);
     border: 1px solid rgba(112, 112, 128, 0.2);
     padding: 1rem;
     gap: 1rem;
