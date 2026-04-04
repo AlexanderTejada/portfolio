@@ -2,27 +2,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 
 :root {
-  /* Colors - Noir palette */
-  --bg-primary: #0a0a0a;
-  --bg-secondary: #111111;
-  --bg-tertiary: #1a1a1a;
+  /* Colors - Terminal palette (green phosphor) */
+  --bg-primary: #001100;
+  --bg-secondary: #001a00;
+  --bg-tertiary: #002200;
 
-  --neon-blue: #ffffff;
-  --neon-purple: #888888;
-  --neon-magenta: #cccccc;
-  --neon-cyan: #eeeeee;
-  --neon-green: #aaaaaa;
+  --neon-blue: #00ff00;
+  --neon-purple: #00cc00;
+  --neon-magenta: #00ff66;
+  --neon-cyan: #00ff00;
+  --neon-green: #00ff00;
 
-  --text-primary: #e0e0e0;
-  --text-secondary: #808080;
-  --text-muted: #505050;
+  --text-primary: #00ff00;
+  --text-secondary: #00cc00;
+  --text-muted: #008800;
 
-  --glow-blue: 0 0 20px rgba(255, 255, 255, 0.4);
-  --glow-purple: 0 0 20px rgba(136, 136, 136, 0.4);
-  --glow-magenta: 0 0 20px rgba(204, 204, 204, 0.4);
+  --glow-blue: 0 0 10px rgba(0, 255, 0, 0.6);
+  --glow-purple: 0 0 10px rgba(0, 204, 0, 0.5);
+  --glow-magenta: 0 0 10px rgba(0, 255, 102, 0.5);
 
-  /* Noir style */
-  --grain-opacity: 0.08;
+  --terminal-font: 'Courier New', 'Share Tech Mono', monospace;
 }
 
 * {
@@ -37,7 +36,7 @@ html {
 }
 
 body {
-  font-family: 'Share Tech Mono', 'Orbitron', monospace;
+  font-family: var(--terminal-font);
   background-color: var(--bg-primary);
   color: var(--text-primary);
   line-height: 1.6;
@@ -46,8 +45,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Film grain overlay */
-.grain::before {
+/* CRT scanlines */
+.crt::before {
   content: '';
   position: fixed;
   top: 0;
@@ -56,12 +55,19 @@ body {
   height: 100%;
   pointer-events: none;
   z-index: 9999;
-  opacity: var(--grain-opacity);
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.15),
+    rgba(0, 0, 0, 0.15) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  background-size: 100% 4px;
+  opacity: 0.4;
 }
 
-/* Vignette effect */
-.vignette::after {
+/* CRT flicker */
+.crt::after {
   content: '';
   position: fixed;
   top: 0;
@@ -70,7 +76,34 @@ body {
   height: 100%;
   pointer-events: none;
   z-index: 9998;
-  background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.7) 100%);
+  animation: flicker 0.15s infinite;
+  background: rgba(0, 255, 0, 0.02);
+}
+
+@keyframes flicker {
+  0%,
+  100% {
+    opacity: 0.02;
+  }
+  50% {
+    opacity: 0.05;
+  }
+}
+
+/* Blinking cursor */
+.blink::after {
+  content: '_';
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
 
 /* Scrollbar styling */

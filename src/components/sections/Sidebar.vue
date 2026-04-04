@@ -23,8 +23,8 @@ defineProps<{
   align-items: center;
   gap: 1.5rem;
   padding: 4.5rem 3rem;
-  background: #0a0a0a;
-  border: 1px solid #333333;
+  background: #001100;
+  border: 1px solid #004400;
   transition: all 0.3s ease;
   cursor: pointer;
 }
@@ -40,13 +40,14 @@ defineProps<{
 }
 
 .sidebar:hover {
-  background: #1a1a1a;
-  border-color: #666666;
+  background: #002200;
+  border-color: #00ff00;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
 }
 
 .sidebar:hover .sidebar-text {
-  color: #ffffff;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  color: #00ff00;
+  text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
 }
 
 .sidebar-content {
@@ -56,10 +57,10 @@ defineProps<{
 }
 
 .sidebar-text {
-  font-family: 'Orbitron', monospace;
+  font-family: 'Courier New', monospace;
   font-size: 1.2rem;
   letter-spacing: 0.35em;
-  color: #808080;
+  color: #008800;
   writing-mode: vertical-rl;
   text-orientation: mixed;
 }

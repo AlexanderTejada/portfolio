@@ -3,7 +3,7 @@ import HeroSection from './components/sections/HeroSection.vue'
 </script>
 
 <template>
-  <div id="app" class="grain vignette">
+  <div id="app" class="crt">
     <HeroSection />
 
     <!-- Placeholder for future sections -->

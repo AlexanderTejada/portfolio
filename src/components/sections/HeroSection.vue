@@ -121,8 +121,8 @@ onMounted(() => {
   justify-content: center;
   gap: 3rem;
   padding: 1rem 2rem;
-  background: #0a0a0a;
-  border: 1px solid #333333;
+  background: #001100;
+  border: 1px solid #004400;
 }
 
 .navbar::before,
@@ -147,10 +147,10 @@ onMounted(() => {
 }
 
 .nav-links a {
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'Courier New', monospace;
   font-size: 0.75rem;
   letter-spacing: 0.15em;
-  color: var(--text-muted);
+  color: #008800;
   text-decoration: none;
   padding: 0.5rem 1rem;
   position: relative;
@@ -158,8 +158,8 @@ onMounted(() => {
 }
 
 .nav-links a:hover {
-  color: var(--text-primary);
-  text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+  color: #00ff00;
+  text-shadow: 0 0 8px rgba(0, 255, 0, 0.5);
 }
 
 @keyframes glitch-nav {
@@ -233,8 +233,8 @@ onMounted(() => {
   text-align: center;
   width: 100%;
   padding: 3rem 2rem;
-  background: rgba(10, 10, 10, 0.8);
-  border: 1px solid #333333;
+  background: rgba(0, 17, 0, 0.9);
+  border: 1px solid #004400;
   position: relative;
 }
 
@@ -1009,17 +1009,18 @@ onMounted(() => {
 .tag {
   padding: 0.4rem 0.9rem;
   background: transparent;
-  border: 1px solid #333333;
+  border: 1px solid #004400;
   font-size: 0.75rem;
-  color: var(--text-muted);
-  font-family: 'Share Tech Mono', monospace;
+  color: #008800;
+  font-family: 'Courier New', monospace;
   transition: all 0.3s ease;
   letter-spacing: 0.02em;
 }
 
 .tag:hover {
-  border-color: #666666;
-  color: var(--text-secondary);
+  background: #003300;
+  border-color: #00ff00;
+  color: #00ff00;
 }
 
 .cta-buttons {
@@ -1034,24 +1035,27 @@ onMounted(() => {
   padding: 0.875rem 2rem;
   font-size: 0.875rem;
   font-weight: 500;
-  font-family: 'Orbitron', monospace;
+  font-family: 'Courier New', monospace;
   letter-spacing: 0.1em;
-  border: 1px solid #333333;
+  border: 1px solid #004400;
   cursor: pointer;
   transition: all 0.3s ease;
   background: transparent;
-  color: var(--text-muted);
+  color: #008800;
 }
 
 .btn-primary:hover {
-  border-color: #666666;
-  color: var(--text-primary);
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  background: #003300;
+  border-color: #00ff00;
+  color: #00ff00;
+  text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
 }
 
 .btn-secondary:hover {
-  border-color: #666666;
-  color: var(--text-secondary);
+  background: #003300;
+  border-color: #00ff00;
+  color: #00ff00;
 }
 
 .btn-primary {
@@ -1118,8 +1122,8 @@ onMounted(() => {
     left: 0;
     right: 0;
     flex-direction: column;
-    background: #0a0a0a;
-    border: 1px solid #333333;
+    background: #001100;
+    border: 1px solid #004400;
     padding: 1rem;
     gap: 1rem;
     transform: translateY(-100%);
