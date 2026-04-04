@@ -23,9 +23,10 @@ defineProps<{
   align-items: center;
   gap: 1.5rem;
   padding: 4.5rem 3rem;
-  background: #e8e8f0;
+  background: #ffffff;
   border: 3px solid #1a1a22;
-  transition: all 0.3s ease;
+  box-shadow: 4px 4px 0 #1a1a22;
+  transition: all 0.15s ease;
   cursor: pointer;
 }
 
@@ -40,13 +41,14 @@ defineProps<{
 }
 
 .sidebar:hover {
-  background: #fff8e0;
-  border-color: #cc7700;
+  background: #ffdd00;
+  border-color: #1a1a22;
+  transform: translateY(-50%) translate(-2px, -2px);
+  box-shadow: 6px 6px 0 #1a1a22;
 }
 
 .sidebar:hover .sidebar-text {
-  color: #cc7700;
-  text-shadow: none;
+  color: #1a1a22;
 }
 
 .sidebar-content {

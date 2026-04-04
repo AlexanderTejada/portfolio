@@ -121,31 +121,14 @@ onMounted(() => {
   justify-content: center;
   gap: 3rem;
   padding: 1rem 2rem;
-  background: rgba(240, 240, 245, 0.95);
-  border: 1px solid rgba(26, 26, 34, 0.2);
-  backdrop-filter: blur(10px);
+  background: #f0f0f5;
+  border: 3px solid #1a1a22;
+  box-shadow: var(--comic-shadow);
 }
 
-.navbar::before {
-  content: '';
-  position: absolute;
-  top: -1px;
-  left: -1px;
-  width: 12px;
-  height: 12px;
-  border-top: 2px solid var(--neon-cyan);
-  border-left: 2px solid var(--neon-cyan);
-}
-
+.navbar::before,
 .navbar::after {
-  content: '';
-  position: absolute;
-  bottom: -1px;
-  right: -1px;
-  width: 12px;
-  height: 12px;
-  border-bottom: 2px solid var(--neon-cyan);
-  border-right: 2px solid var(--neon-cyan);
+  display: none;
 }
 
 .nav-logo {
@@ -166,35 +149,23 @@ onMounted(() => {
 
 .nav-links a {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 0.75rem;
-  letter-spacing: 0.15em;
-  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #1a1a22;
   text-decoration: none;
   padding: 0.5rem 1rem;
   position: relative;
-  transition: color 0.3s ease;
-}
-
-.nav-links a::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: var(--neon-cyan);
-  opacity: 0;
-  z-index: -1;
-  transition: opacity 0.15s ease;
+  transition: all 0.15s ease;
+  background: #ffffff;
+  border: 2px solid #1a1a22;
+  box-shadow: 2px 2px 0 #1a1a22;
 }
 
 .nav-links a:hover {
-  color: var(--bg-primary);
-  animation: glitch-nav 0.3s ease forwards;
-}
-
-.nav-links a:hover::before {
-  opacity: 0.8;
+  background: #ffdd00;
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0 #1a1a22;
 }
 
 @keyframes glitch-nav {
@@ -268,10 +239,10 @@ onMounted(() => {
   text-align: center;
   width: 100%;
   padding: 3rem 2rem;
-  background: rgba(240, 240, 245, 0.7);
-  backdrop-filter: blur(20px);
-  border-radius: 4px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  border: 3px solid #1a1a22;
+  border-radius: 0;
+  box-shadow: var(--comic-shadow);
   position: relative;
 }
 
@@ -1045,22 +1016,21 @@ onMounted(() => {
 
 .tag {
   padding: 0.4rem 0.9rem;
-  background: rgba(232, 232, 240, 0.6);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(80, 80, 96, 0.3);
-  border-radius: 2px;
+  background: #ffffff;
+  border: 2px solid #1a1a22;
+  border-radius: 0;
   font-size: 0.75rem;
-  color: var(--text-secondary);
+  color: #1a1a22;
   font-family: 'Share Tech Mono', monospace;
-  transition: all 0.3s ease;
+  transition: all 0.15s ease;
   letter-spacing: 0.02em;
+  box-shadow: 2px 2px 0 #1a1a22;
 }
 
 .tag:hover {
-  background: rgba(232, 232, 240, 0.8);
-  border-color: rgba(80, 80, 96, 0.6);
-  color: var(--text-primary);
-  transform: translateY(-1px);
+  background: #ffdd00;
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 #1a1a22;
 }
 
 .cta-buttons {
@@ -1074,16 +1044,39 @@ onMounted(() => {
 .btn-secondary {
   padding: 0.875rem 2rem;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 700;
   font-family: 'Orbitron', monospace;
   letter-spacing: 0.1em;
-  border: none;
-  border-radius: 2px;
+  border: 3px solid #1a1a22;
+  border-radius: 0;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.15s ease;
   position: relative;
   overflow: hidden;
-  background: transparent;
+  background: #ffffff;
+  box-shadow: 3px 3px 0 #1a1a22;
+}
+
+.btn-primary {
+  color: #1a1a22;
+}
+
+.btn-primary:hover {
+  background: #ffdd00;
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 #1a1a22;
+}
+
+.btn-secondary {
+  color: #505060;
+  background: #e8e8f0;
+}
+
+.btn-secondary:hover {
+  background: #00a0a0;
+  color: #ffffff;
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 #1a1a22;
 }
 
 .btn-primary {

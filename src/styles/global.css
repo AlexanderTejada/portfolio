@@ -20,6 +20,10 @@
   --glow-blue: 0 0 15px rgba(0, 102, 170, 0.3);
   --glow-purple: 0 0 15px rgba(106, 16, 160, 0.3);
   --glow-magenta: 0 0 15px rgba(204, 0, 102, 0.3);
+
+  /* Comic/Manga style */
+  --comic-border: 3px solid #1a1a22;
+  --comic-shadow: 4px 4px 0 #1a1a22;
 }
 
 * {
@@ -41,6 +45,20 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Halftone dot pattern */
+.halftone::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(circle, #1a1a22 1px, transparent 1px);
+  background-size: 8px 8px;
+  opacity: 0.08;
+  pointer-events: none;
 }
 
 /* Scrollbar styling */
