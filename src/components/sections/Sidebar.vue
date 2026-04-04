@@ -23,10 +23,9 @@ defineProps<{
   align-items: center;
   gap: 1.5rem;
   padding: 4.5rem 3rem;
-  background: #ffffff;
-  border: 3px solid #1a1a22;
-  box-shadow: 4px 4px 0 #1a1a22;
-  transition: all 0.15s ease;
+  background: #0a0a0a;
+  border: 1px solid #333333;
+  transition: all 0.3s ease;
   cursor: pointer;
 }
 
@@ -41,14 +40,13 @@ defineProps<{
 }
 
 .sidebar:hover {
-  background: #ffdd00;
-  border-color: #1a1a22;
-  transform: translateY(-50%) translate(-2px, -2px);
-  box-shadow: 6px 6px 0 #1a1a22;
+  background: #1a1a1a;
+  border-color: #666666;
 }
 
 .sidebar:hover .sidebar-text {
-  color: #1a1a22;
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 .sidebar-content {
@@ -61,7 +59,7 @@ defineProps<{
   font-family: 'Orbitron', monospace;
   font-size: 1.2rem;
   letter-spacing: 0.35em;
-  color: #1a1a22;
+  color: #808080;
   writing-mode: vertical-rl;
   text-orientation: mixed;
 }

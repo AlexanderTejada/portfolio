@@ -121,9 +121,8 @@ onMounted(() => {
   justify-content: center;
   gap: 3rem;
   padding: 1rem 2rem;
-  background: #f0f0f5;
-  border: 3px solid #1a1a22;
-  box-shadow: var(--comic-shadow);
+  background: #0a0a0a;
+  border: 1px solid #333333;
 }
 
 .navbar::before,
@@ -149,23 +148,18 @@ onMounted(() => {
 
 .nav-links a {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  color: #1a1a22;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
   text-decoration: none;
   padding: 0.5rem 1rem;
   position: relative;
-  transition: all 0.15s ease;
-  background: #ffffff;
-  border: 2px solid #1a1a22;
-  box-shadow: 2px 2px 0 #1a1a22;
+  transition: all 0.3s ease;
 }
 
 .nav-links a:hover {
-  background: #ffdd00;
-  transform: translate(-2px, -2px);
-  box-shadow: 4px 4px 0 #1a1a22;
+  color: var(--text-primary);
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
 }
 
 @keyframes glitch-nav {
@@ -239,10 +233,8 @@ onMounted(() => {
   text-align: center;
   width: 100%;
   padding: 3rem 2rem;
-  background: #ffffff;
-  border: 3px solid #1a1a22;
-  border-radius: 0;
-  box-shadow: var(--comic-shadow);
+  background: rgba(10, 10, 10, 0.8);
+  border: 1px solid #333333;
   position: relative;
 }
 
@@ -1016,21 +1008,18 @@ onMounted(() => {
 
 .tag {
   padding: 0.4rem 0.9rem;
-  background: #ffffff;
-  border: 2px solid #1a1a22;
-  border-radius: 0;
+  background: transparent;
+  border: 1px solid #333333;
   font-size: 0.75rem;
-  color: #1a1a22;
+  color: var(--text-muted);
   font-family: 'Share Tech Mono', monospace;
-  transition: all 0.15s ease;
+  transition: all 0.3s ease;
   letter-spacing: 0.02em;
-  box-shadow: 2px 2px 0 #1a1a22;
 }
 
 .tag:hover {
-  background: #ffdd00;
-  transform: translate(-1px, -1px);
-  box-shadow: 3px 3px 0 #1a1a22;
+  border-color: #666666;
+  color: var(--text-secondary);
 }
 
 .cta-buttons {
@@ -1044,39 +1033,25 @@ onMounted(() => {
 .btn-secondary {
   padding: 0.875rem 2rem;
   font-size: 0.875rem;
-  font-weight: 700;
+  font-weight: 500;
   font-family: 'Orbitron', monospace;
   letter-spacing: 0.1em;
-  border: 3px solid #1a1a22;
-  border-radius: 0;
+  border: 1px solid #333333;
   cursor: pointer;
-  transition: all 0.15s ease;
-  position: relative;
-  overflow: hidden;
-  background: #ffffff;
-  box-shadow: 3px 3px 0 #1a1a22;
-}
-
-.btn-primary {
-  color: #1a1a22;
+  transition: all 0.3s ease;
+  background: transparent;
+  color: var(--text-muted);
 }
 
 .btn-primary:hover {
-  background: #ffdd00;
-  transform: translate(-2px, -2px);
-  box-shadow: 5px 5px 0 #1a1a22;
-}
-
-.btn-secondary {
-  color: #505060;
-  background: #e8e8f0;
+  border-color: #666666;
+  color: var(--text-primary);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
 .btn-secondary:hover {
-  background: #00a0a0;
-  color: #ffffff;
-  transform: translate(-2px, -2px);
-  box-shadow: 5px 5px 0 #1a1a22;
+  border-color: #666666;
+  color: var(--text-secondary);
 }
 
 .btn-primary {
@@ -1143,8 +1118,8 @@ onMounted(() => {
     left: 0;
     right: 0;
     flex-direction: column;
-    background: rgba(240, 240, 245, 0.95);
-    border: 1px solid rgba(112, 112, 128, 0.2);
+    background: #0a0a0a;
+    border: 1px solid #333333;
     padding: 1rem;
     gap: 1rem;
     transform: translateY(-100%);

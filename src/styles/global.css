@@ -2,28 +2,27 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 
 :root {
-  /* Colors - Inverted palette (white mode) */
-  --bg-primary: #f0f0f5;
-  --bg-secondary: #e8e8f0;
-  --bg-tertiary: #d8d8e2;
+  /* Colors - Noir palette */
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #111111;
+  --bg-tertiary: #1a1a1a;
 
-  --neon-blue: #0066aa;
-  --neon-purple: #6a10a0;
-  --neon-magenta: #cc0066;
-  --neon-cyan: #00a0a0;
-  --neon-green: #00aa66;
+  --neon-blue: #ffffff;
+  --neon-purple: #888888;
+  --neon-magenta: #cccccc;
+  --neon-cyan: #eeeeee;
+  --neon-green: #aaaaaa;
 
-  --text-primary: #1a1a22;
-  --text-secondary: #505060;
-  --text-muted: #808090;
+  --text-primary: #e0e0e0;
+  --text-secondary: #808080;
+  --text-muted: #505050;
 
-  --glow-blue: 0 0 15px rgba(0, 102, 170, 0.3);
-  --glow-purple: 0 0 15px rgba(106, 16, 160, 0.3);
-  --glow-magenta: 0 0 15px rgba(204, 0, 102, 0.3);
+  --glow-blue: 0 0 20px rgba(255, 255, 255, 0.4);
+  --glow-purple: 0 0 20px rgba(136, 136, 136, 0.4);
+  --glow-magenta: 0 0 20px rgba(204, 204, 204, 0.4);
 
-  /* Comic/Manga style */
-  --comic-border: 3px solid #1a1a22;
-  --comic-shadow: 4px 4px 0 #1a1a22;
+  /* Noir style */
+  --grain-opacity: 0.08;
 }
 
 * {
@@ -47,18 +46,31 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Halftone dot pattern */
-.halftone::before {
+/* Film grain overlay */
+.grain::before {
   content: '';
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: radial-gradient(circle, #1a1a22 1px, transparent 1px);
-  background-size: 8px 8px;
-  opacity: 0.08;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
+  z-index: 9999;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* Vignette effect */
+.vignette::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9998;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.7) 100%);
 }
 
 /* Scrollbar styling */
