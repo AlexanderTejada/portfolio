@@ -24,7 +24,7 @@ defineProps<{
   gap: 1.5rem;
   padding: 4.5rem 3rem;
   background: #e8e8f0;
-  border: 1px solid rgba(26, 26, 34, 0.3);
+  border: 3px solid #1a1a22;
   transition: all 0.3s ease;
   cursor: pointer;
 }
@@ -41,7 +41,7 @@ defineProps<{
 
 .sidebar:hover {
   background: #fff8e0;
-  border-color: rgba(204, 119, 0, 0.8);
+  border-color: #cc7700;
 }
 
 .sidebar:hover .sidebar-text {
