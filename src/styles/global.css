@@ -2,29 +2,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 
 :root {
-  /* Colors - Spider-Verse / Street Art inspired */
-  --bg-primary: #1a1625;
-  --bg-secondary: #2a1f3d;
-  --bg-tertiary: #3d2d5c;
+  /* Colors - Graffiti / Street Art */
+  --bg-primary: #0f0a1a;
+  --bg-secondary: #1a1030;
+  --bg-tertiary: #2a1550;
 
   --neon-blue: #00f0ff;
   --neon-purple: #bf00ff;
   --neon-magenta: #ff0080;
   --neon-cyan: #00ffaa;
-  --neon-green: #ccff00;
+  --neon-green: #00ff00;
   --neon-yellow: #ffdd00;
   --neon-orange: #ff6600;
 
-  --text-primary: #f0e6ff;
-  --text-secondary: #c4b0d8;
-  --text-muted: #8a78a8;
+  --text-primary: #ffffff;
+  --text-secondary: #e0d0ff;
+  --text-muted: #a080c0;
 
-  --glow-blue: 0 0 20px rgba(0, 240, 255, 0.5);
-  --glow-purple: 0 0 20px rgba(191, 0, 255, 0.5);
-  --glow-magenta: 0 0 20px rgba(255, 0, 128, 0.5);
-  --glow-yellow: 0 0 20px rgba(255, 221, 0, 0.5);
+  --glow-blue: 0 0 25px rgba(0, 240, 255, 0.6);
+  --glow-purple: 0 0 25px rgba(191, 0, 255, 0.6);
+  --glow-magenta: 0 0 25px rgba(255, 0, 128, 0.6);
+  --glow-yellow: 0 0 25px rgba(255, 221, 0, 0.6);
 
-  --spray-color: rgba(0, 240, 255, 0.15);
+  --spray-color: rgba(255, 221, 0, 0.12);
 }
 
 * {
@@ -59,10 +59,11 @@ body {
   pointer-events: none;
   z-index: 9997;
   background-image:
-    radial-gradient(circle at 20% 30%, var(--spray-color) 0%, transparent 25%),
-    radial-gradient(circle at 80% 70%, rgba(191, 0, 255, 0.1) 0%, transparent 20%),
-    radial-gradient(circle at 60% 20%, rgba(255, 0, 128, 0.08) 0%, transparent 15%),
-    radial-gradient(circle at 30% 80%, rgba(255, 221, 0, 0.08) 0%, transparent 18%);
+    radial-gradient(circle at 20% 30%, rgba(255, 221, 0, 0.15) 0%, transparent 25%),
+    radial-gradient(circle at 80% 70%, rgba(255, 102, 0, 0.12) 0%, transparent 22%),
+    radial-gradient(circle at 50% 50%, rgba(0, 240, 255, 0.1) 0%, transparent 30%),
+    radial-gradient(circle at 70% 20%, rgba(255, 0, 128, 0.08) 0%, transparent 18%),
+    radial-gradient(circle at 15% 85%, rgba(191, 0, 255, 0.1) 0%, transparent 20%);
 }
 
 /* Halftone color dots */
@@ -190,6 +191,57 @@ body {
   100% {
     transform: skew(0deg);
   }
+}
+
+/* Sticker / label effect */
+.sticker {
+  position: relative;
+  background: #ffdd00;
+  padding: 0.5rem 1rem;
+  transform: rotate(-2deg);
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.3);
+}
+
+.sticker::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle, #ffdd00 40%, transparent 40%);
+  border-radius: 50%;
+}
+
+/* Tape / masking tape effect */
+.tape {
+  position: relative;
+}
+
+.tape::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 10%;
+  width: 80%;
+  height: 15px;
+  background: rgba(255, 255, 255, 0.15);
+  transform: rotate(-1deg);
+  z-index: 10;
+}
+
+/* Drip effect */
+.drip::after {
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  width: 8px;
+  height: 20px;
+  background: currentColor;
+  border-radius: 0 0 4px 4px;
+  opacity: 0.6;
 }
 
 * {

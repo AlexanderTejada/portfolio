@@ -244,14 +244,15 @@ onMounted(() => {
 }
 
 .hero-title {
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Permanent Marker', 'Bebas Neue', sans-serif;
   font-size: clamp(2.5rem, 8vw, 5rem);
-  font-weight: 700;
+  font-weight: 400;
   line-height: 1.1;
   margin-bottom: 1.5rem;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.05em;
   position: relative;
   display: inline-block;
+  text-transform: uppercase;
 }
 
 .line-1 {

@@ -96,13 +96,15 @@ defineProps<{
 }
 
 .sidebar-text {
-  font-family: 'Bebas Neue', 'Orbitron', sans-serif;
+  font-family: 'Permanent Marker', 'Bebas Neue', sans-serif;
   font-size: 1.4rem;
   letter-spacing: 0.15em;
-  color: #f0e6ff;
+  color: #ffdd00;
   writing-mode: vertical-rl;
   text-orientation: mixed;
-  text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+  text-shadow:
+    2px 2px 0 #ff0080,
+    4px 4px 0 #00f0ff;
 }
 
 .sidebar.left .sidebar-text {
