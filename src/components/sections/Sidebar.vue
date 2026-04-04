@@ -23,8 +23,9 @@ defineProps<{
   align-items: center;
   gap: 1.5rem;
   padding: 4.5rem 3rem;
-  background: #001100;
-  border: 1px solid #004400;
+  background: rgba(19, 19, 26, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(20px);
   transition: all 0.3s ease;
   cursor: pointer;
 }
@@ -40,14 +41,12 @@ defineProps<{
 }
 
 .sidebar:hover {
-  background: #002200;
-  border-color: #00ff00;
-  box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+  background: rgba(79, 70, 229, 0.15);
+  border-color: rgba(79, 70, 229, 0.4);
 }
 
 .sidebar:hover .sidebar-text {
-  color: #00ff00;
-  text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+  color: #818cf8;
 }
 
 .sidebar-content {
@@ -57,10 +56,11 @@ defineProps<{
 }
 
 .sidebar-text {
-  font-family: 'Courier New', monospace;
-  font-size: 1.2rem;
-  letter-spacing: 0.35em;
-  color: #008800;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: #71717a;
   writing-mode: vertical-rl;
   text-orientation: mixed;
 }

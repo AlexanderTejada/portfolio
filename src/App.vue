@@ -3,7 +3,7 @@ import HeroSection from './components/sections/HeroSection.vue'
 </script>
 
 <template>
-  <div id="app" class="crt">
+  <div id="app" class="gradient-bg">
     <HeroSection />
 
     <!-- Placeholder for future sections -->

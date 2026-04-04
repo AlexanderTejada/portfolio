@@ -121,8 +121,9 @@ onMounted(() => {
   justify-content: center;
   gap: 3rem;
   padding: 1rem 2rem;
-  background: #001100;
-  border: 1px solid #004400;
+  background: rgba(19, 19, 26, 0.8);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .navbar::before,
@@ -147,10 +148,11 @@ onMounted(() => {
 }
 
 .nav-links a {
-  font-family: 'Courier New', monospace;
-  font-size: 0.75rem;
-  letter-spacing: 0.15em;
-  color: #008800;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: #a1a1aa;
   text-decoration: none;
   padding: 0.5rem 1rem;
   position: relative;
@@ -158,8 +160,7 @@ onMounted(() => {
 }
 
 .nav-links a:hover {
-  color: #00ff00;
-  text-shadow: 0 0 8px rgba(0, 255, 0, 0.5);
+  color: #f4f4f5;
 }
 
 @keyframes glitch-nav {
@@ -233,8 +234,9 @@ onMounted(() => {
   text-align: center;
   width: 100%;
   padding: 3rem 2rem;
-  background: rgba(0, 17, 0, 0.9);
-  border: 1px solid #004400;
+  background: rgba(19, 19, 26, 0.7);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   position: relative;
 }
 
@@ -1008,19 +1010,19 @@ onMounted(() => {
 
 .tag {
   padding: 0.4rem 0.9rem;
-  background: transparent;
-  border: 1px solid #004400;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
   font-size: 0.75rem;
-  color: #008800;
-  font-family: 'Courier New', monospace;
+  color: #a1a1aa;
+  font-family: 'Inter', sans-serif;
   transition: all 0.3s ease;
-  letter-spacing: 0.02em;
 }
 
 .tag:hover {
-  background: #003300;
-  border-color: #00ff00;
-  color: #00ff00;
+  background: rgba(79, 70, 229, 0.15);
+  border-color: rgba(79, 70, 229, 0.3);
+  color: #c7d2fe;
 }
 
 .cta-buttons {
@@ -1035,27 +1037,33 @@ onMounted(() => {
   padding: 0.875rem 2rem;
   font-size: 0.875rem;
   font-weight: 500;
-  font-family: 'Courier New', monospace;
-  letter-spacing: 0.1em;
-  border: 1px solid #004400;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.02em;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
-  background: transparent;
-  color: #008800;
+}
+
+.btn-primary {
+  background: var(--gradient-primary);
+  color: #ffffff;
 }
 
 .btn-primary:hover {
-  background: #003300;
-  border-color: #00ff00;
-  color: #00ff00;
-  text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-  box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(79, 70, 229, 0.3);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: #a1a1aa;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .btn-secondary:hover {
-  background: #003300;
-  border-color: #00ff00;
-  color: #00ff00;
+  background: rgba(255, 255, 255, 0.12);
+  color: #f4f4f5;
 }
 
 .btn-primary {
@@ -1122,8 +1130,9 @@ onMounted(() => {
     left: 0;
     right: 0;
     flex-direction: column;
-    background: #001100;
-    border: 1px solid #004400;
+    background: rgba(19, 19, 26, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     padding: 1rem;
     gap: 1rem;
     transform: translateY(-100%);
