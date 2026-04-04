@@ -61,8 +61,8 @@ onMounted(() => {
 
   const material = new THREE.ShaderMaterial({
     uniforms: {
-      uColorFront: { value: new THREE.Color(0x808090) },
-      uColorBack: { value: new THREE.Color(0xc0c0c8) },
+      uColorFront: { value: new THREE.Color(0x303030) },
+      uColorBack: { value: new THREE.Color(0x606060) },
       uGlowColor: { value: new THREE.Color(0x1a1a22) },
       uSize: { value: 0.35 },
     },
@@ -98,21 +98,19 @@ onMounted(() => {
 
         vec3 baseColor = mix(uColorBack, uColorFront, vColorMix);
         
-        // Mix in glow color based on cursor proximity
         vec3 finalColor = mix(baseColor, uGlowColor, vGlow * 0.5);
         
         float strength = 1.0 - dist * 2.0;
         strength = pow(strength, 1.5);
         
-        // Increase brightness where glowing
-        float brightness = 1.0 + vGlow * 0.8;
+        float brightness = 1.0 - vGlow * 0.3;
         
-        gl_FragColor = vec4(finalColor * brightness, strength * vAlpha * 0.6);
+        gl_FragColor = vec4(finalColor * brightness, strength * vAlpha);
       }
     `,
     transparent: true,
     depthWrite: false,
-    blending: THREE.AdditiveBlending,
+    blending: THREE.NormalBlending,
   })
 
   waveMesh = new THREE.Points(planeGeometry, material)
