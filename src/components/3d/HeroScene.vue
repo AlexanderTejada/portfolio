@@ -160,6 +160,8 @@ onMounted(() => {
           const influence = 1 - distanceToMouse / mouseInfluenceRadius
           mouseInfluence = -Math.pow(influence, 2) * 4
           glowIntensity = Math.pow(influence, 1.5)
+        } else {
+          glowIntensity = 0
         }
       }
 
