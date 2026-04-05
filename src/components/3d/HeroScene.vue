@@ -14,7 +14,7 @@ let planeGeometry: THREE.PlaneGeometry
 const mouse = new THREE.Vector2()
 const raycaster = new THREE.Raycaster()
 const intersectionPoint = new THREE.Vector3()
-let mouseInfluenceRadius = 8
+let mouseInfluenceRadius = 15
 
 const onMouseMove = (event: MouseEvent) => {
   mouse.x = (event.clientX / window.innerWidth) * 2 - 1
@@ -98,14 +98,12 @@ onMounted(() => {
 
         vec3 baseColor = mix(uColorBack, uColorFront, vColorMix);
         
-        vec3 finalColor = mix(baseColor, uGlowColor, vGlow * 0.5);
+        vec3 finalColor = mix(baseColor, uGlowColor, vGlow);
         
         float strength = 1.0 - dist * 2.0;
         strength = pow(strength, 1.5);
         
-        float brightness = 1.0 - vGlow * 0.3;
-        
-        gl_FragColor = vec4(finalColor * brightness, strength * vAlpha);
+        gl_FragColor = vec4(finalColor, strength * vAlpha);
       }
     `,
     transparent: true,
@@ -159,9 +157,7 @@ onMounted(() => {
         if (distanceToMouse < mouseInfluenceRadius) {
           const influence = 1 - distanceToMouse / mouseInfluenceRadius
           mouseInfluence = -Math.pow(influence, 2) * 4
-          glowIntensity = Math.pow(influence, 1.5)
-        } else {
-          glowIntensity = 0
+          glowIntensity = influence
         }
       }
 
@@ -169,7 +165,6 @@ onMounted(() => {
 
       positions[i + 1] = wave + cursorPush
 
-      // Update glow based on distance to cursor
       const vertexIndex = i / 3
       glow[vertexIndex] = glowIntensity
 
