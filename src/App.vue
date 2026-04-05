@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import HeroSection from './components/sections/HeroSection.vue'
+import Lenis from 'lenis'
+import HeroSection from './components/sections/hero/index.vue'
+import ThreeDSection from './components/sections/ThreeDSection.vue'
 import ProjectsSection from './components/sections/ProjectsSection.vue'
 import ExperienceSection from './components/sections/ExperienceSection.vue'
 
-const currentSection = ref('hero')
 const isTransitioning = ref(false)
 
-const sections = ['hero', 'projects', 'experience']
-
-// Generar partículas tipo desintegración
+// Partículas de transición entre secciones
 const particleCount = 800
 const particles = Array.from({ length: particleCount }, (_, i) => {
   const x = Math.random() * 100
@@ -28,14 +27,7 @@ const particles = Array.from({ length: particleCount }, (_, i) => {
   const endY = y + Math.sin(angle) * distance + (Math.random() - 0.5) * 50
 
   // Paleta de colores grises con variación
-  const colors = [
-    '#1f2937',
-    '#374151',
-    '#4b5563',
-    '#6b7280',
-    '#9ca3af',
-    '#d1d5db'
-  ]
+  const colors = ['#1f2937', '#374151', '#4b5563', '#6b7280', '#9ca3af', '#d1d5db']
   const color = colors[Math.floor(Math.random() * colors.length)]
 
   // Tamaño aleatorio de partícula
@@ -56,54 +48,38 @@ const particles = Array.from({ length: particleCount }, (_, i) => {
     endY,
     color,
     size,
-    delay
+    delay,
   }
 })
 
-const handleScroll = () => {
-  // Transición desactivada temporalmente
-  // const viewportHeight = window.innerHeight
-
-  // for (const sectionId of sections) {
-  //   const el = document.getElementById(sectionId)
-  //   if (el) {
-  //     const rect = el.getBoundingClientRect()
-  //     if (rect.top >= -100 && rect.top <= 100) {
-  //       const prevSection = currentSection.value
-  //       const newSection = sectionId
-
-  //       const currentIdx = sections.indexOf(newSection)
-  //       const prevIdx = sections.indexOf(prevSection)
-
-  //       if (currentIdx !== prevIdx && !isTransitioning.value) {
-  //         isTransitioning.value = true
-
-  //         setTimeout(() => {
-  //           currentSection.value = newSection
-  //         }, 800)
-
-  //         setTimeout(() => {
-  //           isTransitioning.value = false
-  //         }, 2000)
-  //       }
-  //       break
-  //     }
-  //   }
-  // }
-}
+let lenis: Lenis | null = null
+let rafId: number
 
 onMounted(() => {
-  window.addEventListener('scroll', handleScroll, { passive: true })
+  // Smooth scroll global
+  lenis = new Lenis({
+    lerp: 0.1,
+    smoothWheel: true,
+  })
+
+  function raf(time: number) {
+    lenis?.raf(time)
+    rafId = requestAnimationFrame(raf)
+  }
+
+  rafId = requestAnimationFrame(raf)
 })
 
 onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll)
+  if (rafId) cancelAnimationFrame(rafId)
+  if (lenis) lenis.destroy()
 })
 </script>
 
 <template>
-  <div id="app">
+  <div id="app" class="grain">
     <HeroSection />
+    <ThreeDSection id="threed" />
     <ProjectsSection id="projects" />
     <ExperienceSection id="experience" />
 
@@ -199,10 +175,7 @@ onUnmounted(() => {
     filter: blur(0.5px) brightness(1);
   }
   60% {
-    transform: translate(
-        calc(var(--c2-x) - var(--start-x)),
-        calc(var(--c2-y) - var(--start-y))
-      )
+    transform: translate(calc(var(--c2-x) - var(--start-x)), calc(var(--c2-y) - var(--start-y)))
       scale(0.8) rotate(270deg);
     opacity: 0.7;
     filter: blur(1px) brightness(0.8);
@@ -217,10 +190,7 @@ onUnmounted(() => {
     filter: blur(2px) brightness(0.6);
   }
   100% {
-    transform: translate(
-        calc(var(--end-x) - var(--start-x)),
-        calc(var(--end-y) - var(--start-y))
-      )
+    transform: translate(calc(var(--end-x) - var(--start-x)), calc(var(--end-y) - var(--start-y)))
       scale(0) rotate(360deg);
     opacity: 0;
     filter: blur(4px) brightness(0.4);

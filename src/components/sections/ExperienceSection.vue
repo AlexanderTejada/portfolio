@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref } from 'vue'
+import { useCanvasDotGrid } from '@/composables/useCanvasDotGrid'
 
-defineOptions({
-  inheritAttrs: true,
-})
+const { canvasRef } = useCanvasDotGrid()
 
 const experience = [
   {
@@ -95,64 +94,14 @@ const skills = {
 }
 
 const expandedJob = ref<number | null>(null)
-const canvasRef = ref<HTMLCanvasElement | null>(null)
-let mouseX = 0
-let mouseY = 0
 
 const toggleJob = (index: number) => {
   expandedJob.value = expandedJob.value === index ? null : index
 }
-
-const onMouseMove = (e: MouseEvent) => {
-  mouseX = (e.clientX / window.innerWidth) * 2 - 1
-  mouseY = (e.clientY / window.innerHeight) * 2 - 1
-}
-
-onMounted(() => {
-  if (!canvasRef.value) return
-
-  const canvas = canvasRef.value
-  const ctx = canvas.getContext('2d')
-  if (!ctx) return
-
-  let animationId: number
-
-  const resize = () => {
-    canvas.width = window.innerWidth
-    canvas.height = window.innerHeight
-  }
-  resize()
-  window.addEventListener('resize', resize)
-  window.addEventListener('mousemove', onMouseMove)
-
-  const gridSize = 35
-
-  const draw = () => {
-    ctx.fillStyle = '#fafafa'
-    ctx.fillRect(0, 0, canvas.width, canvas.height)
-
-    for (let x = gridSize; x < canvas.width; x += gridSize) {
-      for (let y = gridSize; y < canvas.height; y += gridSize) {
-        ctx.fillStyle = 'rgba(31, 41, 55, 0.15)'
-        ctx.fillRect(x - 1, y - 1, 2, 2)
-      }
-    }
-
-    animationId = requestAnimationFrame(draw)
-  }
-
-  draw()
-
-  onUnmounted(() => {
-    cancelAnimationFrame(animationId)
-    window.removeEventListener('resize', resize)
-    window.removeEventListener('mousemove', onMouseMove)
-  })
-})
 </script>
 
 <template>
-  <section class="experience-section" :id="$attrs.id as string">
+  <section class="experience-section" v-bind="$attrs">
     <canvas ref="canvasRef" class="bg-canvas"></canvas>
 
     <div class="container">

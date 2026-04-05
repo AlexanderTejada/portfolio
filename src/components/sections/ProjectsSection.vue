@@ -2,12 +2,16 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Autoplay, Pagination } from 'swiper/modules'
+// @ts-expect-error — Swiper CSS imports lack type declarations
 import 'swiper/css'
+// @ts-expect-error — Swiper CSS imports lack type declarations
 import 'swiper/css/pagination'
+import { useCanvasDotGrid } from '@/composables/useCanvasDotGrid'
 
-defineOptions({
-  inheritAttrs: true,
-})
+const { canvasRef } = useCanvasDotGrid()
+const sectionRef = ref<HTMLElement | null>(null)
+const visible = ref(false)
+const modulesOpen = ref(false)
 
 const images = [
   { src: '/DECSA/1.png', title: 'Dashboard' },
@@ -18,13 +22,6 @@ const images = [
   { src: '/DECSA/6.png', title: 'Chat Operadores' },
   { src: '/DECSA/7.png', title: 'Gestión de Guardias' },
 ]
-
-const canvasRef = ref<HTMLCanvasElement | null>(null)
-const visible = ref(false)
-const activeSlideIndex = ref(0)
-const isHovering = ref(false)
-const mouseX = ref(50)
-const mouseY = ref(50)
 
 const modules = [
   { label: 'WHATSAPPI', desc: 'Reclamos, consultas y facturación vía WhatsApp' },
@@ -44,80 +41,22 @@ const techStack = [
   { key: 'AI', val: 'RAG + LLM' },
 ]
 
-function onSwiperSlideChange(swiper: any) {
-  activeSlideIndex.value = swiper.realIndex
-}
-
-function onDistortionMove(e: MouseEvent) {
-  const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
-  const x = e.clientX - rect.left
-  const y = e.clientY - rect.top
-  mouseX.value = (x / rect.width) * 100
-  mouseY.value = (y / rect.height) * 100
-}
-
-function onDistortionEnter() {
-  isHovering.value = true
-}
-
-function onDistortionLeave() {
-  isHovering.value = false
-}
+let observer: IntersectionObserver | null = null
 
 onMounted(() => {
-  if (!canvasRef.value) return
-
-  const canvas = canvasRef.value
-  const ctx = canvas.getContext('2d')
-  if (!ctx) return
-
-  let animationId: number
-
-  const resize = () => {
-    canvas.width = window.innerWidth
-    canvas.height = window.innerHeight
-  }
-  resize()
-  window.addEventListener('resize', resize)
-
-  const gridSize = 35
-
-  const draw = () => {
-    ctx.fillStyle = '#fafafa'
-    ctx.fillRect(0, 0, canvas.width, canvas.height)
-
-    for (let x = gridSize; x < canvas.width; x += gridSize) {
-      for (let y = gridSize; y < canvas.height; y += gridSize) {
-        ctx.fillStyle = 'rgba(31, 41, 55, 0.15)'
-        ctx.fillRect(x - 1, y - 1, 2, 2)
-      }
-    }
-
-    animationId = requestAnimationFrame(draw)
-  }
-
-  draw()
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      if (entries[0].isIntersecting) {
-        visible.value = true
-      }
-    },
+  if (!sectionRef.value) return
+  observer = new IntersectionObserver(
+    ([entry]) => { if (entry?.isIntersecting) visible.value = true },
     { threshold: 0.15 },
   )
-  observer.observe(canvas.parentElement!)
-
-  onUnmounted(() => {
-    cancelAnimationFrame(animationId)
-    window.removeEventListener('resize', resize)
-    observer.disconnect()
-  })
+  observer.observe(sectionRef.value)
 })
+
+onUnmounted(() => observer?.disconnect())
 </script>
 
 <template>
-  <section class="projects-section" :id="$attrs.id as string">
+  <section ref="sectionRef" class="projects-section" v-bind="$attrs">
     <canvas ref="canvasRef" class="bg-canvas"></canvas>
 
     <div class="container">
@@ -156,17 +95,20 @@ onMounted(() => {
             </div>
           </div>
 
-          <div class="module-header">
+          <button class="module-header" @click="modulesOpen = !modulesOpen">
             <span class="module-tag">MODULES</span>
             <div class="module-line"></div>
-          </div>
+            <span class="module-chevron" :class="{ open: modulesOpen }">›</span>
+          </button>
 
-          <div class="feature-list">
-            <div v-for="(f, i) in modules" :key="i" class="feature-item" :style="{ '--i': i }">
-              <span class="feature-dot"></span>
-              <div class="feature-body">
-                <span class="feature-label">{{ f.label }}</span>
-                <span class="feature-desc">{{ f.desc }}</span>
+          <div class="feature-list" :class="{ open: modulesOpen }">
+            <div class="feature-list-inner">
+              <div v-for="(f, i) in modules" :key="i" class="feature-item">
+                <span class="feature-dot"></span>
+                <div class="feature-body">
+                  <span class="feature-label">{{ f.label }}</span>
+                  <span class="feature-desc">{{ f.desc }}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -180,7 +122,6 @@ onMounted(() => {
             :loop="true"
             :speed="600"
             class="swiper"
-            @slide-change="onSwiperSlideChange"
           >
             <SwiperSlide v-for="(img, i) in images" :key="i">
               <img :src="img.src" :alt="img.title" />
@@ -314,8 +255,6 @@ h2 {
 }
 
 .info-panel {
-  position: sticky;
-  top: 6rem;
   background: #ffffff;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
@@ -384,7 +323,16 @@ h2 {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0.5rem 0;
+  cursor: pointer;
+}
+
+.module-header:hover .module-tag {
+  color: #1f2937;
 }
 
 .module-tag {
@@ -393,6 +341,7 @@ h2 {
   font-weight: 700;
   color: #6b7280;
   letter-spacing: 0.2em;
+  transition: color 0.2s;
 }
 
 .module-line {
@@ -401,10 +350,39 @@ h2 {
   background: #e5e7eb;
 }
 
+.module-chevron {
+  font-size: 1rem;
+  color: #9ca3af;
+  line-height: 1;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), color 0.2s;
+  transform: rotate(0deg);
+}
+
+.module-chevron.open {
+  transform: rotate(90deg);
+  color: #1f2937;
+}
+
 .feature-list {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  overflow: hidden;
+}
+
+.feature-list.open {
+  grid-template-rows: 1fr;
+}
+
+.feature-list > * {
+  overflow: hidden;
+}
+
+.feature-list-inner {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  padding-top: 0.75rem;
 }
 
 .feature-item {
@@ -415,15 +393,6 @@ h2 {
   border-radius: 4px;
   background: #f9fafb;
   border: 1px solid #e5e7eb;
-  opacity: 0;
-  transform: translateX(-20px);
-  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-  transition-delay: calc(0.4s + var(--i) * 0.08s);
-}
-
-.content-grid.visible .feature-item {
-  opacity: 1;
-  transform: translateX(0);
 }
 
 .feature-dot {
@@ -523,6 +492,8 @@ h2 {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  mask-image: radial-gradient(ellipse 85% 80% at 50% 50%, black 55%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 85% 80% at 50% 50%, black 55%, transparent 100%);
 }
 
 .swiper :deep(.swiper-pagination) {
@@ -547,7 +518,7 @@ h2 {
   }
 
   .info-panel {
-    position: static;
+    max-height: 400px;
   }
 
   .swiper {
