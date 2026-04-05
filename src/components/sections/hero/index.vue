@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useScrollProgress } from '@/composables/useScrollProgress'
+import { useAudioState } from '@/composables/useAudioState'
 import HeroScene from '@/components/3d/HeroScene.vue'
 import NavigationSidebar from '@/components/sections/NavigationSidebar.vue'
 import HeroNavbar from './HeroNavbar.vue'
@@ -9,10 +10,31 @@ import ThreeDModal from './ThreeDModal.vue'
 
 defineOptions({ name: 'HeroSection' })
 
+const glitchAudioRef = ref<HTMLAudioElement | null>(null)
+const aylexAudioRef = ref<HTMLAudioElement | null>(null)
 const { scrollProgress } = useScrollProgress()
+const { isModalAudioActive } = useAudioState()
 const showContent = ref(false)
 const showSoftwareModal = ref(false)
 const showThreeDModal = ref(false)
+
+const playGlitchSound = () => {
+  if (glitchAudioRef.value) {
+    glitchAudioRef.value.currentTime = 0
+    glitchAudioRef.value.play().catch(() => {})
+  }
+}
+
+const toggleModalAudio = (isPlaying: boolean) => {
+  if (!aylexAudioRef.value) return
+  isModalAudioActive.value = isPlaying
+  if (isPlaying) {
+    aylexAudioRef.value.currentTime = 0
+    aylexAudioRef.value.play().catch(() => {})
+  } else {
+    aylexAudioRef.value.pause()
+  }
+}
 
 const navItems = [
   { label: '3D', to: 'threed' },
@@ -36,6 +58,9 @@ onMounted(() =>
   <section id="hero" class="hero" data-theme="light">
     <HeroScene />
 
+    <audio ref="glitchAudioRef" src="/audio/kakaist-digital-glitch-sfx-438248.mp3" preload="auto" />
+    <audio ref="aylexAudioRef" src="/audio/Aylex - Too Hot (freetouse.com).mp3" preload="auto" />
+
     <HeroNavbar :nav-items="navItems" @navigate="scrollTo" />
 
     <NavigationSidebar
@@ -56,14 +81,30 @@ onMounted(() =>
       </div>
     </div>
 
-    <SoftwareModal :open="showSoftwareModal" @close="showSoftwareModal = false" />
-    <ThreeDModal :open="showThreeDModal" @close="showThreeDModal = false" />
+    <SoftwareModal
+      :open="showSoftwareModal"
+      @close="
+        showSoftwareModal = false;
+        toggleModalAudio(false);
+      "
+    />
+    <ThreeDModal
+      :open="showThreeDModal"
+      @close="
+        showThreeDModal = false;
+        toggleModalAudio(false);
+      "
+    />
 
     <!-- HUD: Software Engineering -->
     <div
       class="hud-panel hud-left"
       :class="{ visible: showContent }"
-      @click="showSoftwareModal = true"
+      @click="
+        showSoftwareModal = true;
+        toggleModalAudio(true);
+      "
+      @mouseenter="playGlitchSound"
     >
       <div class="hud-corner tl" />
       <div class="hud-corner tr" />
@@ -80,7 +121,11 @@ onMounted(() =>
     <div
       class="hud-panel hud-right"
       :class="{ visible: showContent }"
-      @click="showThreeDModal = true"
+      @click="
+        showThreeDModal = true;
+        toggleModalAudio(true);
+      "
+      @mouseenter="playGlitchSound"
     >
       <div class="hud-corner tl" />
       <div class="hud-corner tr" />

@@ -1,8 +1,86 @@
+<template>
+  <section class="experience-section" v-bind="$attrs" data-theme="light">
+    <canvas ref="canvasRef" class="bg-canvas"></canvas>
+
+    <div class="container">
+      <h2 class="section-title glitch-text" data-text="EXPERIENCIA">EXPERIENCIA</h2>
+
+      <div class="timeline">
+        <div
+          v-for="(job, index) in experience"
+          :key="index"
+          class="timeline-item"
+          :class="{ expanded: expandedJob === index }"
+        >
+          <div class="timeline-marker"></div>
+          <div class="timeline-content" @click="toggleJob(index)">
+            <div class="job-header">
+              <div>
+                <h3 class="job-role">{{ job.role }}</h3>
+                <p class="job-company">{{ job.company }}</p>
+              </div>
+              <span class="job-period">{{ job.period }}</span>
+            </div>
+            <p class="job-description">{{ job.description }}</p>
+            <div class="job-highlights" v-if="expandedJob === index">
+              <ul>
+                <li v-for="(highlight, hIndex) in job.highlights" :key="hIndex">
+                  <span class="highlight-title">{{ highlight.title }}</span>
+                  <span class="highlight-desc">{{ highlight.desc }}</span>
+                </li>
+              </ul>
+            </div>
+            <span class="expand-hint">{{ expandedJob === index ? '[-]' : '[+]' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="section-title glitch-text" data-text="SKILLS">SKILLS</h2>
+
+      <div class="skills-grid">
+        <div class="skill-category">
+          <h3>AI & Machine Learning</h3>
+          <div class="skill-tags">
+            <span v-for="skill in skills.ai" :key="skill" class="skill-tag">{{ skill }}</span>
+          </div>
+        </div>
+        <div class="skill-category">
+          <h3>Backend</h3>
+          <div class="skill-tags">
+            <span v-for="skill in skills.backend" :key="skill" class="skill-tag">{{ skill }}</span>
+          </div>
+        </div>
+        <div class="skill-category">
+          <h3>Frontend</h3>
+          <div class="skill-tags">
+            <span v-for="skill in skills.frontend" :key="skill" class="skill-tag">{{ skill }}</span>
+          </div>
+        </div>
+        <div class="skill-category">
+          <h3>DevOps & Architecture</h3>
+          <div class="skill-tags">
+            <span v-for="skill in skills.devops" :key="skill" class="skill-tag">{{ skill }}</span>
+          </div>
+        </div>
+        <div class="skill-category">
+          <h3>3D Digital</h3>
+          <div class="skill-tags">
+            <span v-for="skill in skills['3d']" :key="skill" class="skill-tag">{{ skill }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>
+
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useCanvasDotGrid } from '@/composables/useCanvasDotGrid'
 
-interface Highlight { title: string; desc: string }
+interface Highlight {
+  title: string
+  desc: string
+}
 interface Job {
   company: string
   role: string
@@ -177,80 +255,7 @@ const toggleJob = (index: number) => {
 }
 </script>
 
-<template>
-  <section class="experience-section" v-bind="$attrs" data-theme="light">
-    <canvas ref="canvasRef" class="bg-canvas"></canvas>
 
-    <div class="container">
-      <h2 class="section-title glitch-text" data-text="EXPERIENCIA">EXPERIENCIA</h2>
-
-      <div class="timeline">
-        <div
-          v-for="(job, index) in experience"
-          :key="index"
-          class="timeline-item"
-          :class="{ expanded: expandedJob === index }"
-        >
-          <div class="timeline-marker"></div>
-          <div class="timeline-content" @click="toggleJob(index)">
-            <div class="job-header">
-              <div>
-                <h3 class="job-role">{{ job.role }}</h3>
-                <p class="job-company">{{ job.company }}</p>
-              </div>
-              <span class="job-period">{{ job.period }}</span>
-            </div>
-            <p class="job-description">{{ job.description }}</p>
-            <div class="job-highlights" v-if="expandedJob === index">
-              <ul>
-                <li v-for="(highlight, hIndex) in job.highlights" :key="hIndex">
-                  <span class="highlight-title">{{ highlight.title }}</span>
-                  <span class="highlight-desc">{{ highlight.desc }}</span>
-                </li>
-              </ul>
-            </div>
-            <span class="expand-hint">{{ expandedJob === index ? '[-]' : '[+]' }}</span>
-          </div>
-        </div>
-      </div>
-
-      <h2 class="section-title glitch-text" data-text="SKILLS">SKILLS</h2>
-
-      <div class="skills-grid">
-        <div class="skill-category">
-          <h3>AI & Machine Learning</h3>
-          <div class="skill-tags">
-            <span v-for="skill in skills.ai" :key="skill" class="skill-tag">{{ skill }}</span>
-          </div>
-        </div>
-        <div class="skill-category">
-          <h3>Backend</h3>
-          <div class="skill-tags">
-            <span v-for="skill in skills.backend" :key="skill" class="skill-tag">{{ skill }}</span>
-          </div>
-        </div>
-        <div class="skill-category">
-          <h3>Frontend</h3>
-          <div class="skill-tags">
-            <span v-for="skill in skills.frontend" :key="skill" class="skill-tag">{{ skill }}</span>
-          </div>
-        </div>
-        <div class="skill-category">
-          <h3>DevOps & Architecture</h3>
-          <div class="skill-tags">
-            <span v-for="skill in skills.devops" :key="skill" class="skill-tag">{{ skill }}</span>
-          </div>
-        </div>
-        <div class="skill-category">
-          <h3>3D Digital</h3>
-          <div class="skill-tags">
-            <span v-for="skill in skills['3d']" :key="skill" class="skill-tag">{{ skill }}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-</template>
 
 <style scoped>
 .experience-section {
