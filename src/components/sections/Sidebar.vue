@@ -10,7 +10,7 @@ defineProps<{
     <div class="sidebar-content">
       <span v-for="text in texts" :key="text" class="sidebar-text">{{ text }}</span>
     </div>
-    <div class="spray-dot"></div>
+    <div class="sidebar-glow"></div>
   </div>
 </template>
 
@@ -24,10 +24,10 @@ defineProps<{
   align-items: center;
   gap: 1.5rem;
   padding: 4.5rem 3rem;
-  background: linear-gradient(135deg, #2a1f3d 0%, #1a1625 100%);
-  border: 3px solid;
-  border-image: linear-gradient(135deg, #00f0ff, #bf00ff, #ff0080) 1;
-  transition: all 0.3s ease;
+  background: rgba(20, 20, 31, 0.8);
+  border: 1px solid rgba(34, 211, 238, 0.15);
+  backdrop-filter: blur(20px);
+  transition: all 0.4s ease;
   cursor: pointer;
 }
 
@@ -38,8 +38,10 @@ defineProps<{
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(circle at 50% 50%, rgba(0, 240, 255, 0.1) 0%, transparent 60%);
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.05) 0%, rgba(236, 72, 153, 0.05) 100%);
   pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
 }
 
 .sidebar.left {
@@ -53,40 +55,28 @@ defineProps<{
 }
 
 .sidebar:hover {
-  transform: translateY(-50%) scale(1.05);
-  box-shadow:
-    0 0 30px rgba(0, 240, 255, 0.3),
-    0 0 60px rgba(191, 0, 255, 0.2);
+  border-color: rgba(34, 211, 238, 0.4);
+  transform: translateY(-50%) scale(1.02);
+}
+
+.sidebar:hover::before {
+  opacity: 1;
 }
 
 .sidebar:hover .sidebar-text {
-  animation: glitch-text 0.3s infinite;
+  color: #22d3ee;
+  text-shadow: 0 0 20px rgba(34, 211, 238, 0.5);
 }
 
-@keyframes glitch-text {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  25% {
-    transform: translateY(-2px) skewX(-5deg);
-  }
-  50% {
-    transform: translateY(2px) skewX(5deg);
-  }
-  75% {
-    transform: translateY(-1px) skewX(-3deg);
-  }
-}
-
-.spray-dot {
+.sidebar-glow {
   position: absolute;
-  width: 20px;
-  height: 20px;
-  background: radial-gradient(circle, rgba(0, 240, 255, 0.6) 0%, transparent 70%);
+  width: 60px;
+  height: 60px;
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.15) 0%, transparent 70%);
   border-radius: 50%;
-  top: 20px;
-  right: 20px;
+  bottom: 30px;
+  right: 30px;
+  pointer-events: none;
 }
 
 .sidebar-content {
@@ -96,15 +86,14 @@ defineProps<{
 }
 
 .sidebar-text {
-  font-family: 'Permanent Marker', 'Bebas Neue', sans-serif;
-  font-size: 1.4rem;
-  letter-spacing: 0.15em;
-  color: #ffdd00;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  color: #64748b;
   writing-mode: vertical-rl;
   text-orientation: mixed;
-  text-shadow:
-    2px 2px 0 #ff0080,
-    4px 4px 0 #00f0ff;
+  transition: all 0.3s ease;
 }
 
 .sidebar.left .sidebar-text {

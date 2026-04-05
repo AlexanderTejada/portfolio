@@ -3,13 +3,13 @@ import HeroSection from './components/sections/HeroSection.vue'
 </script>
 
 <template>
-  <div id="app" class="spray">
+  <div id="app" class="ambient-glow grid-bg">
     <HeroSection />
 
     <!-- Placeholder for future sections -->
     <section class="placeholder-section">
-      <div class="container halftone-color">
-        <h2 class="glitch" data-text="[ LOADING SECTIONS ]">[ LOADING SECTIONS ]</h2>
+      <div class="container">
+        <h2>[ LOADING SECTIONS ]</h2>
         <p>PROJECTS × EXPERIENCE × SKILLS × CONTACT</p>
       </div>
     </section>

@@ -27,7 +27,7 @@ onMounted(() => {
   if (!containerRef.value) return
 
   scene = new THREE.Scene()
-  scene.fog = new THREE.Fog(0x0f0a1a, 10, 100)
+  scene.fog = new THREE.Fog(0x0c0c14, 10, 100)
 
   camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
   camera.position.set(0, 15, 25)
@@ -36,7 +36,7 @@ onMounted(() => {
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
   renderer.setSize(window.innerWidth, window.innerHeight)
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-  renderer.setClearColor(0x0f0a1a, 1)
+  renderer.setClearColor(0x0c0c14, 1)
   containerRef.value.appendChild(renderer.domElement)
 
   planeGeometry = new THREE.PlaneGeometry(180, 100, 360, 160)
@@ -61,10 +61,10 @@ onMounted(() => {
 
   const material = new THREE.ShaderMaterial({
     uniforms: {
-      uColorFront: { value: new THREE.Color(0xffdd00) },
-      uColorBack: { value: new THREE.Color(0xff0080) },
-      uGlowColor: { value: new THREE.Color(0x00f0ff) },
-      uSize: { value: 0.45 },
+      uColorFront: { value: new THREE.Color(0x22d3ee) },
+      uColorBack: { value: new THREE.Color(0x8b5cf6) },
+      uGlowColor: { value: new THREE.Color(0xec4899) },
+      uSize: { value: 0.35 },
     },
     vertexShader: `
       attribute float alpha;
@@ -234,7 +234,7 @@ onUnmounted(() => {
   width: 100%;
   height: 100%;
   z-index: 0;
-  background: #0f0a1a;
+  background: #0c0c14;
 }
 
 .scene-container :deep(canvas) {
