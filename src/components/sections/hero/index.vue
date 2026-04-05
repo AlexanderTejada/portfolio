@@ -5,12 +5,14 @@ import HeroScene from '@/components/3d/HeroScene.vue'
 import NavigationSidebar from '@/components/sections/NavigationSidebar.vue'
 import HeroNavbar from './HeroNavbar.vue'
 import SoftwareModal from './SoftwareModal.vue'
+import ThreeDModal from './ThreeDModal.vue'
 
 defineOptions({ name: 'HeroSection' })
 
 const { scrollProgress } = useScrollProgress()
 const showContent = ref(false)
 const showSoftwareModal = ref(false)
+const showThreeDModal = ref(false)
 
 const navItems = [
   { label: '3D', to: 'threed' },
@@ -31,7 +33,7 @@ onMounted(() =>
 </script>
 
 <template>
-  <section id="hero" class="hero">
+  <section id="hero" class="hero" data-theme="light">
     <HeroScene />
 
     <HeroNavbar :nav-items="navItems" @navigate="scrollTo" />
@@ -55,32 +57,38 @@ onMounted(() =>
     </div>
 
     <SoftwareModal :open="showSoftwareModal" @close="showSoftwareModal = false" />
+    <ThreeDModal :open="showThreeDModal" @close="showThreeDModal = false" />
 
     <!-- HUD: Software Engineering -->
-    <div class="hud-panel hud-left" :class="{ visible: showContent }" @click="showSoftwareModal = true">
-      <div class="hud-corner tl" /><div class="hud-corner tr" />
-      <div class="hud-corner bl" /><div class="hud-corner br" />
+    <div
+      class="hud-panel hud-left"
+      :class="{ visible: showContent }"
+      @click="showSoftwareModal = true"
+    >
+      <div class="hud-corner tl" />
+      <div class="hud-corner tr" />
+      <div class="hud-corner bl" />
+      <div class="hud-corner br" />
       <span class="hud-label">// SOFTWARE ENG</span>
       <div class="hud-divider" />
       <p class="hud-bio">
-        I specialize in architecting and deploying production grade AI solutions and high scale
-        transactional systems. My work focuses on bridging the gap between Large Language Models
-        (Claude, Gemini, GPT-4) and complex enterprise operations, ensuring scalability, security,
-        and measurable business impact.
+        Senior AI Implementer & Full-Stack Developer | LangGraph, RAG & .NET Architect
       </p>
     </div>
 
     <!-- HUD: 3D -->
-    <div class="hud-panel hud-right" :class="{ visible: showContent }">
-      <div class="hud-corner tl" /><div class="hud-corner tr" />
-      <div class="hud-corner bl" /><div class="hud-corner br" />
+    <div
+      class="hud-panel hud-right"
+      :class="{ visible: showContent }"
+      @click="showThreeDModal = true"
+    >
+      <div class="hud-corner tl" />
+      <div class="hud-corner tr" />
+      <div class="hud-corner bl" />
+      <div class="hud-corner br" />
       <span class="hud-label">// 3D ARTIST</span>
       <div class="hud-divider" />
-      <p class="hud-bio">
-        3D Character and Creature Artist dedicated to developing high-quality, game ready assets
-        for mobile platforms. Managed the end to end character pipeline, ensuring that artistic
-        vision and technical performance lived in perfect harmony within the game engine.
-      </p>
+      <p class="hud-bio">Character & Creature Artist | ZBrush, Substance & Mobile Game Assets</p>
     </div>
 
     <div v-show="scrollProgress < 0.1" class="scroll-indicator" :class="{ visible: showContent }">
@@ -202,15 +210,20 @@ onMounted(() =>
   border: 1px solid rgba(0, 0, 0, 0.1);
   cursor: pointer;
   opacity: 0;
-  transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s,
-              transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s,
-              background 0.3s ease,
-              border-color 0.3s ease,
-              box-shadow 0.3s ease;
+  transition:
+    opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s,
+    transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s,
+    background 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
-.hud-left  { left: 5rem; }
-.hud-right { right: 5rem; }
+.hud-left {
+  left: 5rem;
+}
+.hud-right {
+  right: 5rem;
+}
 
 .hud-panel.visible {
   opacity: 1;
@@ -245,13 +258,32 @@ onMounted(() =>
   height: 8px;
   border-color: #1f2937;
   border-style: solid;
-  transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
+  transition:
+    width 0.3s ease,
+    height 0.3s ease,
+    border-color 0.3s ease;
 }
 
-.hud-corner.tl { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
-.hud-corner.tr { top: -1px; right: -1px; border-width: 2px 2px 0 0; }
-.hud-corner.bl { bottom: -1px; left: -1px; border-width: 0 0 2px 2px; }
-.hud-corner.br { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+.hud-corner.tl {
+  top: -1px;
+  left: -1px;
+  border-width: 2px 0 0 2px;
+}
+.hud-corner.tr {
+  top: -1px;
+  right: -1px;
+  border-width: 2px 2px 0 0;
+}
+.hud-corner.bl {
+  bottom: -1px;
+  left: -1px;
+  border-width: 0 0 2px 2px;
+}
+.hud-corner.br {
+  bottom: -1px;
+  right: -1px;
+  border-width: 0 2px 2px 0;
+}
 
 .hud-label {
   display: block;
@@ -330,14 +362,18 @@ onMounted(() =>
     color: #ef4444;
     letter-spacing: 0.3em;
     transform: translate(-3px, 1px);
-    text-shadow: 2px 0 #ef4444, -2px 0 #b91c1c;
+    text-shadow:
+      2px 0 #ef4444,
+      -2px 0 #b91c1c;
   }
   15% {
     font-family: 'Bebas Neue', cursive;
     color: #dc2626;
     letter-spacing: 0.05em;
     transform: translate(3px, -1px);
-    text-shadow: -3px 0 #ef4444, 3px 0 #b91c1c;
+    text-shadow:
+      -3px 0 #ef4444,
+      3px 0 #b91c1c;
   }
   30% {
     font-family: 'Share Tech Mono', monospace;
@@ -353,7 +389,8 @@ onMounted(() =>
     transform: translate(2px, 1px);
     text-shadow: -1px 0 #ef4444;
   }
-  60%, 100% {
+  60%,
+  100% {
     font-family: 'JetBrains Mono', monospace;
     color: #9ca3af;
     letter-spacing: 0.2em;
@@ -381,7 +418,8 @@ onMounted(() =>
     transform: translate(-1px, -1px);
     text-shadow: 2px 0 #dc2626;
   }
-  50%, 100% {
+  50%,
+  100% {
     font-family: 'Inter', sans-serif;
     color: #4b5563;
     transform: translate(0);

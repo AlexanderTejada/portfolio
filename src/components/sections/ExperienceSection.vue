@@ -178,7 +178,7 @@ const toggleJob = (index: number) => {
 </script>
 
 <template>
-  <section class="experience-section" v-bind="$attrs">
+  <section class="experience-section" v-bind="$attrs" data-theme="light">
     <canvas ref="canvasRef" class="bg-canvas"></canvas>
 
     <div class="container">

@@ -56,7 +56,7 @@ onUnmounted(() => observer?.disconnect())
 </script>
 
 <template>
-  <section ref="sectionRef" class="projects-section" v-bind="$attrs">
+  <section ref="sectionRef" class="projects-section" v-bind="$attrs" data-theme="light">
     <canvas ref="canvasRef" class="bg-canvas"></canvas>
 
     <div class="container">

@@ -61,7 +61,7 @@ const closeLightbox = () => {
 </script>
 
 <template>
-  <section class="threed-section" v-bind="$attrs">
+  <section class="threed-section" v-bind="$attrs" data-theme="dark">
     <canvas ref="canvasRef" class="bg-canvas" />
 
     <div class="container">

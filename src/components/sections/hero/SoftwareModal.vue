@@ -22,55 +22,80 @@ const onBackdropWheel = (e: WheelEvent) => {
 const experience = [
   {
     company: 'Excelencia Digital Software',
-    role: 'Senior AI Implementer & Full-Stack Engineer',
+    role: 'Senior AI Implementer & Full-Stack Developer',
     period: 'Apr 2024 – Present',
     description:
-      'I specialize in architecting and deploying production grade AI solutions and high scale transactional systems. My work focuses on bridging the gap between Large Language Models (Claude, Gemini, GPT-4) and complex enterprise operations, ensuring scalability, security, and measurable business impact.',
+      'I specialize in architecting and deploying production grade AI solutions and high scale transactional systems. My work focuses on bridging the gap between Large Language Models (Claude, Gemini, GPT-4) and complex enterprise operations.',
     highlights: [
       {
         title: 'Agentic Workflows & Orchestration',
-        desc: 'Engineered sophisticated multi agent systems using LangChain and LangGraph to automate real-time utility claim management and technical dispatching, handling high-concurrency operational data.',
+        desc: 'Engineered sophisticated multi agent systems using LangChain and LangGraph to automate real-time utility claim management and technical dispatching.',
       },
       {
         title: 'Advanced RAG Architectures',
-        desc: 'Designed and optimized Retrieval-Augmented Generation pipelines leveraging Qdrant and vector search strategies, significantly enhancing information retrieval speed and accuracy for technical documentation.',
+        desc: 'Designed and optimized Retrieval-Augmented Generation pipelines leveraging Qdrant and vector search strategies.',
       },
       {
         title: 'AI Security & Red Teaming',
-        desc: 'Established robust defense mechanisms against Prompt Injection, Sensitive Information Disclosure, and Model Poisoning, ensuring secure LLM integration within sensitive financial and transactional environments.',
+        desc: 'Established robust defense mechanisms against Prompt Injection, Sensitive Information Disclosure, and Model Poisoning.',
       },
       {
         title: 'Full-Stack & Geospatial Engineering',
-        desc: 'Built resilient backends using C# .NET and FastAPI, integrated with PostGIS for real time fleet optimization and geospatial anomaly detection.',
+        desc: 'Built resilient backends using C# .NET and FastAPI, integrated with PostGIS for real time fleet optimization.',
       },
       {
         title: 'Product-Ready Infrastructure',
-        desc: 'Managed the end to end lifecycle of AI applications, from containerization with Docker to cross platform deployment via Capacitor and Vue.js, serving a user base of ~13,000+ individuals.',
+        desc: 'Managed the end to end lifecycle of AI applications, from Docker to Capacitor and Vue.js, serving ~13,000+ users.',
       },
     ],
   },
   {
     company: 'Freelance',
-    role: 'Full-Stack Developer & 3D Digital Specialist',
+    role: 'Full Stack Developer & 3D Digital Specialist',
     period: 'Jan 2020 – Feb 2025',
     description:
-      'Consultant delivering integrated .NET, Angular, and high fidelity 3D solutions for international clients across US, LATAM, and Europe. Specialized in bridging enterprise software architecture with interactive digital assets and real-time visualization.',
+      'Consultant delivering integrated .NET, Angular, and high fidelity 3D solutions for international clients across US, LATAM, and Europe.',
     highlights: [
       {
-        title: 'Full Stack Solutions (2020–2025)',
-        desc: 'Delivered 15+ production-ready applications using .NET Core, C#, and Vue.js, specializing in technical management tools and scalable SaaS architectures with Clean Architecture principles.',
+        title: 'Full Stack Solutions',
+        desc: 'Delivered 15+ production-ready applications using .NET Core, C#, and Vue.js with Clean Architecture principles.',
+      },
+      {
+        title: '3D Character Art & Engineering',
+        desc: 'Established a professional 3D pipeline using ZBrush, Blender, and Substance Painter for high-fidelity character and creature design.',
       },
       {
         title: 'Database & Performance Optimization',
-        desc: 'Architected complex SQL Server schemas and optimized data layers using ADO.NET, achieving up to 70% reduction in query latency for high-traffic data monitoring systems.',
+        desc: 'Architected complex SQL Server schemas and optimized data layers using ADO.NET, achieving up to 70% reduction in query latency.',
       },
       {
         title: 'Infrastructure & DevOps',
-        desc: 'Managed end to end deployments in Linux and Windows Server environments, utilizing Docker for containerization and automated release cycles.',
+        desc: 'Managed end to end deployments in Linux and Windows Server environments, utilizing Docker for containerization.',
       },
       {
-        title: 'AI Integration (2023–2025)',
-        desc: 'Began integrating LLM powered features and automated data extraction into client applications, enhancing functional capabilities through intelligent API orchestration.',
+        title: 'AI Integration (2023-2025)',
+        desc: 'Integrated LLM powered features and automated data extraction into client applications.',
+      },
+    ],
+  },
+  {
+    company: 'Golemstudio',
+    role: '3D Modeler',
+    period: 'Dec 2021 – Jan 2023',
+    description:
+      'High fidelity 3D Modeler specializing in hard surface workflows for the luxury goods sector, focusing on fine jewelry and high-end fashion accessories.',
+    highlights: [
+      {
+        title: 'Precision Hard Surface Modeling',
+        desc: 'Engineered complex, clean topology meshes for intricate jewelry pieces for high-end marketing renders.',
+      },
+      {
+        title: 'Digital Craftsmanship',
+        desc: 'Leveraged ZBrush to sculpt realistic leather textures and intricate metalwork for luxury bags.',
+      },
+      {
+        title: 'Workflow Optimization',
+        desc: 'Mastered seamless pipeline between Blender and ZBrush, utilizing advanced retopology and baking techniques.',
       },
     ],
   },
@@ -79,34 +104,25 @@ const experience = [
 const skills = [
   {
     group: 'AI & LLMs',
-    items: [
-      'LangChain',
-      'LangGraph',
-      'Large Language Models',
-      'RAG',
-      'Qdrant',
-      'AI Security & Red Teaming',
-      'Prompt Engineering',
-    ],
+    items: ['LangChain', 'LangGraph', 'Claude', 'GPT-4', 'RAG', 'Qdrant', 'AI Security'],
   },
   {
     group: 'Backend',
     items: [
-      '.NET Core / C#',
+      '.NET Core',
+      'C#',
       'FastAPI',
       'Python',
       'PostgreSQL',
       'PostGIS',
       'SQL Server',
       'REST APIs',
-      'SignalR',
     ],
   },
   { group: 'Frontend', items: ['Vue.js', 'Angular', 'TypeScript', 'Capacitor'] },
-  { group: 'DevOps', items: ['Docker', 'Linux', 'Git', 'Clean Architecture', 'Agile'] },
+  { group: '3D & Art', items: ['ZBrush', 'Blender', 'Substance Painter', 'Maya', 'Topogun'] },
+  { group: 'DevOps', items: ['Docker', 'Linux', 'Git', 'Clean Architecture'] },
 ]
-
-const activeNode = ref<string | null>(null)
 </script>
 
 <template>

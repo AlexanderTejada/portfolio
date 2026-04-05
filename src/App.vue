@@ -7,6 +7,83 @@ import ThreeDSection from './components/sections/ThreeDSection.vue'
 import ProjectsSection from './components/sections/ProjectsSection.vue'
 import ExperienceSection from './components/sections/ExperienceSection.vue'
 
+const audioRef = ref<HTMLAudioElement | null>(null)
+const canvasRef = ref<HTMLCanvasElement | null>(null)
+const isPlaying = ref(false)
+let audioContext: AudioContext | null = null
+let analyser: AnalyserNode | null = null
+let animationId: number | null = null
+let dataArray: Uint8Array | null = null
+let source: MediaElementAudioSourceNode | null = null
+
+const toggleAudio = async () => {
+  if (!audioRef.value || !canvasRef.value) return
+
+  if (!isPlaying.value) {
+    if (!audioContext) {
+      audioContext = new AudioContext()
+      const source = audioContext.createMediaElementSource(audioRef.value)
+      analyser = audioContext.createAnalyser()
+      analyser.fftSize = 64
+      dataArray = new Uint8Array(analyser.frequencyBinCount) as Uint8Array<ArrayBuffer>
+      source.connect(analyser)
+    }
+
+    await audioContext.resume()
+    audioRef.value.play()
+    isPlaying.value = true
+    drawVisualizer()
+  } else {
+    audioRef.value.pause()
+    isPlaying.value = false
+    if (animationId) {
+      cancelAnimationFrame(animationId)
+      animationId = null
+    }
+  }
+}
+
+const drawVisualizer = () => {
+  if (!analyser || !dataArray || !canvasRef.value) return
+
+  const canvas = canvasRef.value
+  const ctx = canvas.getContext('2d')
+  if (!ctx) return
+
+  const draw = () => {
+    if (!isPlaying.value || !analyser || !dataArray) return
+
+    analyser.getByteFrequencyData(dataArray as unknown as Uint8Array<ArrayBuffer>)
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+    const barWidth = canvas.width / dataArray.length
+    const barGap = 2
+
+    for (let i = 0; i < dataArray.length; i++) {
+      const barHeight = (dataArray[i]! / 255) * canvas.height
+      const x = i * (barWidth + barGap)
+      const y = canvas.height - barHeight
+
+      const gradient = ctx.createLinearGradient(x, y, x, canvas.height)
+      gradient.addColorStop(0, '#6366f1')
+      gradient.addColorStop(1, '#a855f7')
+
+      ctx.fillStyle = gradient
+      ctx.fillRect(x, y, barWidth - barGap, barHeight)
+    }
+
+    animationId = requestAnimationFrame(draw)
+  }
+
+  draw()
+}
+
+onUnmounted(() => {
+  if (animationId) cancelAnimationFrame(animationId)
+  if (audioContext) audioContext.close()
+})
+
 const isTransitioning = ref(false)
 
 // Partículas de transición entre secciones
@@ -82,8 +159,14 @@ onUnmounted(() => {
 
 <template>
   <div id="app" class="grain">
+    <audio ref="audioRef" src="/audio/Alegend - Dawn (freetouse.com).mp3" loop />
+
+    <button class="audio-toggle" @click="toggleAudio" :class="{ playing: isPlaying }">
+      <canvas ref="canvasRef" width="24" height="24" />
+    </button>
+
     <HeroSection />
-<ThreeDSection id="threed" />
+    <ThreeDSection id="threed" />
     <ProjectsSection id="projects" />
     <ExperienceSection id="experience" />
 
@@ -199,5 +282,39 @@ onUnmounted(() => {
     opacity: 0;
     filter: blur(4px) brightness(0.4);
   }
+}
+
+.audio-toggle {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 9999;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #e5e7eb;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(8px);
+  padding: 0;
+  overflow: hidden;
+}
+
+.audio-toggle canvas {
+  display: block;
+}
+
+.audio-toggle:hover {
+  background: #fff;
+  transform: scale(1.1);
+}
+
+.audio-toggle.playing {
+  background: #111827;
+  border-color: #111827;
 }
 </style>
