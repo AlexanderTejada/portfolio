@@ -8,19 +8,67 @@ const currentSection = ref('hero')
 const isTransitioning = ref(false)
 
 const sections = ['hero', 'projects', 'experience']
-const cols = 20
-const rows = 8
-const tiles = Array.from({ length: cols * rows }, (_, i) => i)
+
+// Generar partículas tipo desintegración
+const particleCount = 800
+const particles = Array.from({ length: particleCount }, (_, i) => {
+  const x = Math.random() * 100
+  const y = Math.random() * 100
+
+  // Dirección aleatoria para el vuelo
+  const angle = Math.random() * Math.PI * 2
+  const distance = Math.random() * 80 + 40
+
+  // Puntos de control Bézier para trayectoria orgánica
+  const control1X = x + Math.cos(angle) * distance * 0.3 + (Math.random() - 0.5) * 30
+  const control1Y = y + Math.sin(angle) * distance * 0.3 + (Math.random() - 0.5) * 30
+  const control2X = x + Math.cos(angle) * distance * 0.7 + (Math.random() - 0.5) * 40
+  const control2Y = y + Math.sin(angle) * distance * 0.7 + (Math.random() - 0.5) * 40
+  const endX = x + Math.cos(angle) * distance + (Math.random() - 0.5) * 50
+  const endY = y + Math.sin(angle) * distance + (Math.random() - 0.5) * 50
+
+  // Paleta de colores grises con variación
+  const colors = [
+    '#1f2937',
+    '#374151',
+    '#4b5563',
+    '#6b7280',
+    '#9ca3af',
+    '#d1d5db'
+  ]
+  const color = colors[Math.floor(Math.random() * colors.length)]
+
+  // Tamaño aleatorio de partícula
+  const size = Math.random() * 4 + 1
+
+  // Delay basado en posición para efecto de barrido
+  const delay = (x / 100) * 0.6 + Math.random() * 0.3
+
+  return {
+    id: i,
+    x,
+    y,
+    control1X,
+    control1Y,
+    control2X,
+    control2Y,
+    endX,
+    endY,
+    color,
+    size,
+    delay
+  }
+})
 
 const handleScroll = () => {
-  // Transición desactivada - demasiado frecuente
+  // Transición desactivada temporalmente
   // const viewportHeight = window.innerHeight
 
   // for (const sectionId of sections) {
   //   const el = document.getElementById(sectionId)
   //   if (el) {
   //     const rect = el.getBoundingClientRect()
-  //     if (rect.top >= -viewportHeight / 2 && rect.top <= viewportHeight / 2) {
+  //     if (rect.top >= -100 && rect.top <= 100) {
   //       const prevSection = currentSection.value
   //       const newSection = sectionId
 
@@ -32,11 +80,11 @@ const handleScroll = () => {
 
   //         setTimeout(() => {
   //           currentSection.value = newSection
-  //         }, 500)
+  //         }, 800)
 
   //         setTimeout(() => {
   //           isTransitioning.value = false
-  //         }, 1200)
+  //         }, 2000)
   //       }
   //       break
   //     }
@@ -60,24 +108,30 @@ onUnmounted(() => {
     <ExperienceSection id="experience" />
 
     <div class="transition-container" :class="{ active: isTransitioning }">
-      <div class="blur-layer"></div>
-      <div class="flash-overlay"></div>
-
-      <div class="tiles-grid">
+      <div class="particles-container">
         <div
-          v-for="i in tiles"
-          :key="i"
-          class="transition-tile"
+          v-for="p in particles"
+          :key="p.id"
+          class="particle"
           :style="{
-            '--col': i % cols,
-            '--row': Math.floor(i / cols),
-            '--cols': cols,
-            '--rows': rows,
+            '--start-x': p.x + '%',
+            '--start-y': p.y + '%',
+            '--c1-x': p.control1X + '%',
+            '--c1-y': p.control1Y + '%',
+            '--c2-x': p.control2X + '%',
+            '--c2-y': p.control2Y + '%',
+            '--end-x': p.endX + '%',
+            '--end-y': p.endY + '%',
+            '--delay': p.delay + 's',
+            '--size': p.size + 'px',
+            left: p.x + '%',
+            top: p.y + '%',
+            background: p.color,
+            width: p.size + 'px',
+            height: p.size + 'px',
           }"
         ></div>
       </div>
-
-      <div class="scan-line"></div>
     </div>
   </div>
 </template>
@@ -96,142 +150,80 @@ onUnmounted(() => {
   height: 100vh;
   z-index: 9999;
   pointer-events: none;
+  overflow: hidden;
 }
 
-.blur-layer {
+.particles-container {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  backdrop-filter: blur(0px);
-  -webkit-backdrop-filter: blur(0px);
-  z-index: 1;
 }
 
-.transition-container.active .blur-layer {
-  animation: blurPulse 1s ease-out forwards;
-}
-
-@keyframes blurPulse {
-  0% {
-    backdrop-filter: blur(0px);
-    -webkit-backdrop-filter: blur(0px);
-  }
-  30% {
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-  }
-  70% {
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-  }
-  100% {
-    backdrop-filter: blur(0px);
-    -webkit-backdrop-filter: blur(0px);
-  }
-}
-
-.flash-overlay {
+.particle {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(31, 41, 55, 0.1);
+  border-radius: 50%;
   opacity: 0;
-  z-index: 2;
+  box-shadow: 0 0 4px currentColor;
+  will-change: transform, opacity;
 }
 
-.transition-container.active .flash-overlay {
-  animation: flashPulse 0.8s ease-out forwards;
+.transition-container.active .particle {
+  animation: particleDisintegrate 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation-delay: var(--delay);
 }
 
-@keyframes flashPulse {
+@keyframes particleDisintegrate {
   0% {
+    transform: translate(0, 0) scale(0) rotate(0deg);
     opacity: 0;
-  }
-  15% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
-.tiles-grid {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 3;
-  display: grid;
-  grid-template-columns: repeat(20, 1fr);
-  grid-template-rows: repeat(8, 1fr);
-  gap: 2px;
-}
-
-.transition-tile {
-  background: #1f2937;
-  transform: scale(0) rotate(45deg);
-  opacity: 0;
-}
-
-.transition-container.active .transition-tile {
-  animation: tileReveal 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  animation-delay: calc(var(--col) * 0.025s + var(--row) * 0.035s);
-}
-
-@keyframes tileReveal {
-  0% {
-    transform: scale(0) rotate(45deg);
-    opacity: 0;
-  }
-  20% {
-    transform: scale(1) rotate(0deg);
-    opacity: 1;
-  }
-  70% {
-    transform: scale(1) rotate(0deg);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(0) rotate(-45deg);
-    opacity: 0;
-  }
-}
-
-.scan-line {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background: #1f2937;
-  box-shadow:
-    0 0 15px rgba(31, 41, 55, 0.5),
-    0 0 30px rgba(31, 41, 55, 0.3),
-    0 0 60px rgba(31, 41, 55, 0.2);
-  opacity: 0;
-  z-index: 4;
-}
-
-.transition-container.active .scan-line {
-  animation: scanDown 0.5s ease-out 0.3s forwards;
-}
-
-@keyframes scanDown {
-  0% {
-    top: 0;
-    opacity: 0;
+    filter: blur(0px) brightness(1);
   }
   10% {
+    transform: translate(
+        calc((var(--c1-x) - var(--start-x)) * 0.2),
+        calc((var(--c1-y) - var(--start-y)) * 0.2)
+      )
+      scale(1.2) rotate(0deg);
+    opacity: 0.9;
+    filter: blur(0px) brightness(1.2);
+  }
+  30% {
+    transform: translate(
+        calc((var(--c1-x) - var(--start-x)) * 0.6),
+        calc((var(--c1-y) - var(--start-y)) * 0.6)
+      )
+      scale(1) rotate(180deg);
     opacity: 1;
+    filter: blur(0.5px) brightness(1);
+  }
+  60% {
+    transform: translate(
+        calc(var(--c2-x) - var(--start-x)),
+        calc(var(--c2-y) - var(--start-y))
+      )
+      scale(0.8) rotate(270deg);
+    opacity: 0.7;
+    filter: blur(1px) brightness(0.8);
+  }
+  85% {
+    transform: translate(
+        calc((var(--end-x) - var(--start-x)) * 0.9),
+        calc((var(--end-y) - var(--start-y)) * 0.9)
+      )
+      scale(0.3) rotate(340deg);
+    opacity: 0.3;
+    filter: blur(2px) brightness(0.6);
   }
   100% {
-    top: 100%;
+    transform: translate(
+        calc(var(--end-x) - var(--start-x)),
+        calc(var(--end-y) - var(--start-y))
+      )
+      scale(0) rotate(360deg);
     opacity: 0;
+    filter: blur(4px) brightness(0.4);
   }
 }
 </style>

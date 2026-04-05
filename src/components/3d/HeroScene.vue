@@ -78,7 +78,10 @@ onMounted(() => {
         console.log('No edges found, creating test box')
         const boxGeo = new THREE.BoxGeometry(8, 4, 2)
         const edgesGeom = new THREE.EdgesGeometry(boxGeo)
-        const line = new THREE.LineSegments(edgesGeom, new THREE.LineBasicMaterial({ color: 0x1f2937 }))
+        const line = new THREE.LineSegments(
+          edgesGeom,
+          new THREE.LineBasicMaterial({ color: 0x1f2937 }),
+        )
         scene.add(line)
       } else {
         originalPositions = new Float32Array(allPositions)
@@ -136,46 +139,30 @@ onMounted(() => {
 
         const vertexPos = new THREE.Vector3(originalX, originalY, originalZ)
 
-        // Animación automática de onda
-        const waveX = Math.sin(originalX * 0.3 + time) * 0.5 + 0.5
-        const waveY = Math.sin(originalY * 0.3 + time * 1.2) * 0.5 + 0.5
-        const waveIntensity = (waveX + waveY) * 0.5
-
-        // Deformación sutil de la onda
-        const waveDeform = Math.sin(originalX * 0.5 + originalY * 0.3 + time) * 0.3
-
-        // Efecto del mouse
         const distance = vertexPos.distanceTo(mousePos3D)
         const maxDistance = 8
         const mouseInfluence = Math.max(0, 1 - distance / maxDistance)
 
         if (mouseInfluence > 0) {
           const force = mouseInfluence * mouseInfluence * 4
-          const direction = new THREE.Vector3()
-            .subVectors(vertexPos, mousePos3D)
-            .normalize()
+          const direction = new THREE.Vector3().subVectors(vertexPos, mousePos3D).normalize()
 
-          positions[i] = originalX + direction.x * force + waveDeform * 0.3
-          positions[i + 1] = originalY + direction.y * force + waveDeform * 0.3
-          positions[i + 2] = originalZ + waveDeform * 0.2
+          positions[i] = originalX + direction.x * force
+          positions[i + 1] = originalY + direction.y * force
+          positions[i + 2] = originalZ
 
-          // Mezclar animación de onda con efecto de hover
-          const animatedColor = baseColor.clone().lerp(waveColor, waveIntensity * 0.3)
-          const finalColor = animatedColor.lerp(hoverColor, mouseInfluence)
+          const finalColor = baseColor.clone().lerp(hoverColor, mouseInfluence)
           colors[i] = finalColor.r
           colors[i + 1] = finalColor.g
           colors[i + 2] = finalColor.b
         } else {
-          // Aplicar deformación de onda
-          positions[i] = originalX + waveDeform * 0.3
-          positions[i + 1] = originalY + waveDeform * 0.3
-          positions[i + 2] = originalZ + waveDeform * 0.2
+          positions[i] = originalX
+          positions[i + 1] = originalY
+          positions[i + 2] = originalZ
 
-          // Aplicar solo la animación de onda
-          const animatedColor = baseColor.clone().lerp(waveColor, waveIntensity * 0.3)
-          colors[i] += (animatedColor.r - colors[i]) * 0.1
-          colors[i + 1] += (animatedColor.g - colors[i + 1]) * 0.1
-          colors[i + 2] += (animatedColor.b - colors[i + 2]) * 0.1
+          colors[i] += (baseColor.r - colors[i]) * 0.1
+          colors[i + 1] += (baseColor.g - colors[i + 1]) * 0.1
+          colors[i + 2] += (baseColor.b - colors[i + 2]) * 0.1
         }
       }
 

@@ -50,8 +50,10 @@ function onSwiperSlideChange(swiper: any) {
 
 function onDistortionMove(e: MouseEvent) {
   const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
-  mouseX.value = ((e.clientX - rect.left) / rect.width) * 100
-  mouseY.value = ((e.clientY - rect.top) / rect.height) * 100
+  const x = e.clientX - rect.left
+  const y = e.clientY - rect.top
+  mouseX.value = (x / rect.width) * 100
+  mouseY.value = (y / rect.height) * 100
 }
 
 function onDistortionEnter() {
@@ -81,12 +83,12 @@ onMounted(() => {
   const gridSize = 35
 
   const draw = () => {
-    ctx.fillStyle = '#000000'
+    ctx.fillStyle = '#fafafa'
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
     for (let x = gridSize; x < canvas.width; x += gridSize) {
       for (let y = gridSize; y < canvas.height; y += gridSize) {
-        ctx.fillStyle = 'rgba(80, 80, 90, 0.25)'
+        ctx.fillStyle = 'rgba(31, 41, 55, 0.15)'
         ctx.fillRect(x - 1, y - 1, 2, 2)
       }
     }
@@ -170,55 +172,24 @@ onMounted(() => {
           </div>
         </div>
 
-        <div
-          class="carousel-wrapper"
-          @mousemove="onDistortionMove"
-          @mouseenter="onDistortionEnter"
-          @mouseleave="onDistortionLeave"
-        >
-          <div
-            class="distort-container"
-            :class="{ active: isHovering }"
-            :style="{ '--mx': mouseX + '%', '--my': mouseY + '%' }"
+        <div class="carousel-wrapper">
+          <Swiper
+            :modules="[Autoplay, Pagination]"
+            :autoplay="{ delay: 3000, disableOnInteraction: false }"
+            :pagination="{ clickable: true }"
+            :loop="true"
+            :speed="600"
+            class="swiper"
+            @slide-change="onSwiperSlideChange"
           >
-            <Swiper
-              :modules="[Autoplay, Pagination]"
-              :autoplay="{ delay: 3000, disableOnInteraction: false }"
-              :pagination="{ clickable: true }"
-              :loop="true"
-              :speed="600"
-              class="swiper"
-              @slide-change="onSwiperSlideChange"
-            >
-              <SwiperSlide v-for="(img, i) in images" :key="i">
-                <img :src="img.src" :alt="img.title" />
-              </SwiperSlide>
-            </Swiper>
-          </div>
+            <SwiperSlide v-for="(img, i) in images" :key="i">
+              <img :src="img.src" :alt="img.title" />
+            </SwiperSlide>
+          </Swiper>
         </div>
       </div>
     </div>
 
-    <svg style="position: absolute; width: 0; height: 0; overflow: hidden" aria-hidden="true">
-      <defs>
-        <filter id="decsa-distort" x="-20%" y="-20%" width="140%" height="140%">
-          <feTurbulence
-            type="fractalNoise"
-            baseFrequency="0.02"
-            numOctaves="4"
-            result="noise"
-            seed="2"
-          />
-          <feDisplacementMap
-            in="SourceGraphic"
-            in2="noise"
-            scale="25"
-            xChannelSelector="R"
-            yChannelSelector="G"
-          />
-        </filter>
-      </defs>
-    </svg>
   </section>
 </template>
 
@@ -226,7 +197,7 @@ onMounted(() => {
 .projects-section {
   position: relative;
   padding: 6rem 2rem;
-  background: #000000;
+  background: #fafafa;
   overflow: hidden;
 }
 
@@ -263,7 +234,7 @@ onMounted(() => {
 .label {
   font-family: 'JetBrains Mono', 'Fira Code', monospace;
   font-size: 0.75rem;
-  color: #f59e0b;
+  color: #6b7280;
   letter-spacing: 0.2em;
   display: block;
   margin-bottom: 1.25rem;
@@ -273,7 +244,7 @@ h2 {
   font-family: 'Inter', sans-serif;
   font-size: clamp(2.5rem, 7vw, 5rem);
   font-weight: 200;
-  color: #ffffff;
+  color: #111827;
   letter-spacing: 0.15em;
   line-height: 1.1;
   display: flex;
@@ -297,7 +268,7 @@ h2 {
 }
 
 .word.accent {
-  color: #f59e0b;
+  color: #1f2937;
 }
 
 .divider {
@@ -317,13 +288,13 @@ h2 {
 .divider-line {
   width: 60px;
   height: 1px;
-  background: linear-gradient(90deg, transparent, #f59e0b, transparent);
+  background: linear-gradient(90deg, transparent, #d1d5db, transparent);
 }
 
 .divider-dot {
   width: 4px;
   height: 4px;
-  background: #f59e0b;
+  background: #1f2937;
   border-radius: 50%;
 }
 
@@ -345,10 +316,11 @@ h2 {
 .info-panel {
   position: sticky;
   top: 6rem;
-  background: #050505;
-  border: 1px solid #1a1a1a;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
   border-radius: 8px;
   padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .panel-header {
@@ -362,26 +334,26 @@ h2 {
   font-family: 'Orbitron', monospace;
   font-size: 0.65rem;
   font-weight: 700;
-  color: #f59e0b;
+  color: #1f2937;
   letter-spacing: 0.2em;
 }
 
 .panel-line {
   flex: 1;
   height: 1px;
-  background: linear-gradient(90deg, #f59e0b, transparent);
+  background: linear-gradient(90deg, #d1d5db, transparent);
 }
 
 .panel-text {
   font-family: 'Share Tech Mono', monospace;
   font-size: 0.75rem;
   line-height: 1.7;
-  color: #9ca3af;
+  color: #4b5563;
   margin-bottom: 1.5rem;
 }
 
 .panel-specs {
-  border-top: 1px solid #1a1a1a;
+  border-top: 1px solid #e5e7eb;
   padding-top: 0.75rem;
   margin-bottom: 1.25rem;
 }
@@ -390,20 +362,21 @@ h2 {
   display: flex;
   justify-content: space-between;
   padding: 0.35rem 0;
-  border-bottom: 1px solid #111;
+  border-bottom: 1px solid #f3f4f6;
 }
 
 .spec-key {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.6rem;
-  color: #4b5563;
+  color: #6b7280;
   letter-spacing: 0.15em;
 }
 
 .spec-val {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.65rem;
-  color: #e5e7eb;
+  color: #111827;
+  font-weight: 600;
   letter-spacing: 0.05em;
 }
 
@@ -425,7 +398,7 @@ h2 {
 .module-line {
   flex: 1;
   height: 1px;
-  background: #1a1a1a;
+  background: #e5e7eb;
 }
 
 .feature-list {
@@ -440,8 +413,8 @@ h2 {
   gap: 0.6rem;
   padding: 0.5rem 0.6rem;
   border-radius: 4px;
-  background: #0a0a0a;
-  border: 1px solid #151515;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
   opacity: 0;
   transform: translateX(-20px);
   transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
@@ -456,7 +429,7 @@ h2 {
 .feature-dot {
   width: 4px;
   height: 4px;
-  background: #f59e0b;
+  background: #1f2937;
   border-radius: 50%;
   flex-shrink: 0;
   margin-top: 6px;
@@ -472,7 +445,7 @@ h2 {
   font-family: 'Orbitron', monospace;
   font-size: 0.55rem;
   font-weight: 700;
-  color: #f59e0b;
+  color: #1f2937;
   letter-spacing: 0.15em;
 }
 
@@ -486,7 +459,7 @@ h2 {
 .carousel-wrapper {
   position: relative;
   padding: 2px;
-  background: #000000;
+  background: #f9fafb;
   border-radius: 12px;
   overflow: hidden;
   cursor: crosshair;
@@ -500,9 +473,9 @@ h2 {
   padding: 2px;
   background: linear-gradient(
     135deg,
-    rgba(245, 158, 11, 0.4),
+    rgba(31, 41, 55, 0.2),
     transparent,
-    rgba(245, 158, 11, 0.2)
+    rgba(31, 41, 55, 0.1)
   );
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box,
@@ -521,8 +494,8 @@ h2 {
   border-radius: 16px;
   background: transparent;
   box-shadow:
-    0 0 40px rgba(245, 158, 11, 0.08),
-    0 0 80px rgba(245, 158, 11, 0.03);
+    0 0 40px rgba(0, 0, 0, 0.03),
+    0 0 80px rgba(0, 0, 0, 0.01);
   filter: blur(16px);
   z-index: -1;
 }
@@ -531,14 +504,6 @@ h2 {
   position: relative;
   overflow: hidden;
   border-radius: 10px;
-}
-
-.distort-container.active {
-  animation: glitchShift 0.1s ease infinite;
-}
-
-.distort-container.active .swiper {
-  filter: url(#decsa-distort);
 }
 
 .swiper {
@@ -551,7 +516,7 @@ h2 {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #000000;
+  background: #ffffff;
 }
 
 .swiper :deep(.swiper-slide img) {
@@ -565,33 +530,15 @@ h2 {
 }
 
 .swiper :deep(.swiper-pagination-bullet) {
-  background: #374151;
+  background: #d1d5db;
   opacity: 1;
   width: 8px;
   height: 8px;
 }
 
 .swiper :deep(.swiper-pagination-bullet-active) {
-  background: #f59e0b;
-  box-shadow: 0 0 8px rgba(245, 158, 11, 0.5);
-}
-
-@keyframes glitchShift {
-  0% {
-    transform: translate(0);
-  }
-  25% {
-    transform: translate(-1px, 1px);
-  }
-  50% {
-    transform: translate(1px, -1px);
-  }
-  75% {
-    transform: translate(-1px, -1px);
-  }
-  100% {
-    transform: translate(0);
-  }
+  background: #1f2937;
+  box-shadow: 0 0 8px rgba(31, 41, 55, 0.3);
 }
 
 @media (max-width: 900px) {
