@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, watch, onMounted, onUnmounted } from 'vue'
 import Lenis from 'lenis'
+import { useScrollLock } from '@/composables/useScrollLock'
 import HeroSection from './components/sections/hero/index.vue'
 import ThreeDSection from './components/sections/ThreeDSection.vue'
 import ProjectsSection from './components/sections/ProjectsSection.vue'
@@ -52,15 +53,18 @@ const particles = Array.from({ length: particleCount }, (_, i) => {
   }
 })
 
+const { locked } = useScrollLock()
+
 let lenis: Lenis | null = null
 let rafId: number
 
+watch(locked, (val) => {
+  if (!lenis) return
+  val ? lenis.stop() : lenis.start()
+})
+
 onMounted(() => {
-  // Smooth scroll global
-  lenis = new Lenis({
-    lerp: 0.1,
-    smoothWheel: true,
-  })
+  lenis = new Lenis({ lerp: 0.1, smoothWheel: true })
 
   function raf(time: number) {
     lenis?.raf(time)
@@ -79,7 +83,7 @@ onUnmounted(() => {
 <template>
   <div id="app" class="grain">
     <HeroSection />
-    <ThreeDSection id="threed" />
+<ThreeDSection id="threed" />
     <ProjectsSection id="projects" />
     <ExperienceSection id="experience" />
 

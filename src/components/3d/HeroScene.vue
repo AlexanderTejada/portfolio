@@ -36,7 +36,7 @@ onMounted(() => {
 
   camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
   camera.position.set(0, 5, 25)
-  camera.lookAt(0, 2, 0)
+  camera.lookAt(0, 5, 0)
 
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
   renderer.setSize(window.innerWidth, window.innerHeight)
@@ -153,7 +153,7 @@ onMounted(() => {
       const maxDim = Math.max(size.x, size.y, size.z)
       const scale = 25 / maxDim
       model.scale.setScalar(scale)
-      model.position.set(0, 3, 0) // float above the wave
+      model.position.set(0, 7, 0) // float above the wave
 
       model.traverse((child) => {
         if (child instanceof THREE.Mesh) {

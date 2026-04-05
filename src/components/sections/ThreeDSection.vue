@@ -8,7 +8,7 @@ interface MediaItem {
   title: string
 }
 
-const { canvasRef } = useCanvasDotGrid()
+const { canvasRef } = useCanvasDotGrid(true)
 const activeCategory = ref<'ART' | 'INDUSTRIAL'>('ART')
 const lightboxItem = ref<MediaItem | null>(null)
 
@@ -23,25 +23,41 @@ const categories: Record<'ART' | 'INDUSTRIAL', MediaItem[]> = {
     { src: '/3D/ART/render retrato surma woman.mp4', type: 'video', title: 'Surma Woman' },
   ],
   INDUSTRIAL: [
-    { src: '/3D/INDUSTRIAL/todos los productos en un video.mp4', type: 'video', title: 'All Products Reel' },
+    {
+      src: '/3D/INDUSTRIAL/todos los productos en un video.mp4',
+      type: 'video',
+      title: 'All Products Reel',
+    },
     { src: '/3D/INDUSTRIAL/vaper video.mp4', type: 'video', title: 'Vaper' },
+    { src: '/3D/INDUSTRIAL/3.mp4', type: 'video', title: 'Industrial Reel 1' },
+    { src: '/3D/INDUSTRIAL/4.mp4', type: 'video', title: 'Industrial Reel 2' },
     { src: '/3D/INDUSTRIAL/batidora.png', type: 'image', title: 'Batidora' },
+    { src: '/3D/INDUSTRIAL/batidora blanca.png', type: 'image', title: 'Batidora Blanca' },
     { src: '/3D/INDUSTRIAL/freidora electrica.png', type: 'image', title: 'Freidora Eléctrica' },
     { src: '/3D/INDUSTRIAL/freidora vista top.png', type: 'image', title: 'Freidora Vista Top' },
+    { src: '/3D/INDUSTRIAL/freidora cerrada.png', type: 'image', title: 'Freidora Cerrada' },
     { src: '/3D/INDUSTRIAL/fumadorvapers.png', type: 'image', title: 'Vaper' },
     { src: '/3D/INDUSTRIAL/guante.png', type: 'image', title: 'Guante Táctico' },
     { src: '/3D/INDUSTRIAL/licuadora.png', type: 'image', title: 'Licuadora' },
     { src: '/3D/INDUSTRIAL/necklace2.png', type: 'image', title: 'Necklace I' },
     { src: '/3D/INDUSTRIAL/necklace3.png', type: 'image', title: 'Necklace II' },
     { src: '/3D/INDUSTRIAL/necklace5.png', type: 'image', title: 'Necklace III' },
-    { src: '/3D/INDUSTRIAL/ventilador distintas partes separadas.png', type: 'image', title: 'Ventilador' },
+    {
+      src: '/3D/INDUSTRIAL/ventilador distintas partes separadas.png',
+      type: 'image',
+      title: 'Ventilador',
+    },
   ],
 }
 
 const currentItems = computed(() => categories[activeCategory.value])
 
-const openLightbox = (item: MediaItem) => { lightboxItem.value = item }
-const closeLightbox = () => { lightboxItem.value = null }
+const openLightbox = (item: MediaItem) => {
+  lightboxItem.value = item
+}
+const closeLightbox = () => {
+  lightboxItem.value = null
+}
 </script>
 
 <template>
@@ -57,7 +73,7 @@ const closeLightbox = () => { lightboxItem.value = null }
 
       <div class="tabs">
         <button
-          v-for="cat in (['ART', 'INDUSTRIAL'] as const)"
+          v-for="cat in ['ART', 'INDUSTRIAL'] as const"
           :key="cat"
           class="tab"
           :class="{ active: activeCategory === cat }"
@@ -69,8 +85,8 @@ const closeLightbox = () => { lightboxItem.value = null }
 
       <div class="grid">
         <div
-          v-for="(item, i) in currentItems"
-          :key="i"
+          v-for="item in currentItems"
+          :key="item.src"
           class="grid-item"
           :class="{ 'is-video': item.type === 'video' }"
           @click="openLightbox(item)"
@@ -79,7 +95,7 @@ const closeLightbox = () => { lightboxItem.value = null }
             <img :src="item.src" :alt="item.title" loading="lazy" />
           </template>
           <template v-else>
-            <video :src="item.src" preload="metadata" muted />
+            <video :src="item.src" preload="auto" muted loop autoplay playsinline />
             <div class="play-icon">
               <svg viewBox="0 0 24 24" fill="currentColor">
                 <path d="M8 5v14l11-7z" />
@@ -103,12 +119,7 @@ const closeLightbox = () => { lightboxItem.value = null }
             :src="lightboxItem.src"
             :alt="lightboxItem.title"
           />
-          <video
-            v-else
-            :src="lightboxItem.src"
-            controls
-            autoplay
-          />
+          <video v-else :src="lightboxItem.src" controls autoplay />
           <p class="lightbox-title">{{ lightboxItem.title }}</p>
         </div>
       </div>
@@ -119,8 +130,8 @@ const closeLightbox = () => { lightboxItem.value = null }
 <style scoped>
 .threed-section {
   position: relative;
-  padding: 6rem 2rem;
-  background: #fafafa;
+  padding: 8rem 2rem;
+  background: #0a0a0a;
   overflow: hidden;
 }
 
@@ -159,7 +170,7 @@ h2 {
   font-family: 'Inter', sans-serif;
   font-size: clamp(2rem, 6vw, 4rem);
   font-weight: 200;
-  color: #111827;
+  color: #ffffff;
   letter-spacing: 0.15em;
   text-transform: uppercase;
 }
@@ -171,7 +182,7 @@ h2 {
 .subtitle {
   font-family: 'Share Tech Mono', monospace;
   font-size: 0.8rem;
-  color: #6b7280;
+  color: #9ca3af;
   margin-top: 0.75rem;
   letter-spacing: 0.05em;
 }
@@ -181,7 +192,7 @@ h2 {
   display: flex;
   gap: 0;
   margin-bottom: 2.5rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid #333;
 }
 
 .tab {
@@ -189,7 +200,7 @@ h2 {
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.2em;
-  color: #9ca3af;
+  color: #444;
   background: none;
   border: none;
   padding: 0.75rem 1.5rem;
@@ -205,13 +216,13 @@ h2 {
   left: 0;
   right: 0;
   height: 2px;
-  background: #111827;
+  background: #fff;
   transform: scaleX(0);
   transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .tab.active {
-  color: #111827;
+  color: #fff;
 }
 
 .tab.active::after {
@@ -230,8 +241,8 @@ h2 {
   aspect-ratio: 4 / 3;
   overflow: hidden;
   cursor: pointer;
-  background: #f3f4f6;
-  border: 1px solid #e5e7eb;
+  background: #1a1a1a;
+  border: 1px solid #333;
 }
 
 .grid-item img,
@@ -264,7 +275,15 @@ h2 {
   width: 48px;
   height: 48px;
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
-  opacity: 0.9;
+}
+
+.grid-item.is-video .play-icon {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.grid-item:hover.is-video .play-icon {
+  opacity: 1;
 }
 
 /* Hover overlay */

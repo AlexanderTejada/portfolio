@@ -2,62 +2,133 @@
 import { ref } from 'vue'
 import { useCanvasDotGrid } from '@/composables/useCanvasDotGrid'
 
+interface Highlight { title: string; desc: string }
+interface Job {
+  company: string
+  role: string
+  period: string
+  location: string
+  description: string
+  highlights: Highlight[]
+}
+
 const { canvasRef } = useCanvasDotGrid()
 
-const experience = [
+const experience: Job[] = [
   {
     company: 'Excelencia Digital Software',
-    role: 'Senior AI Implementer & Full-Stack Developer',
-    period: 'Abr 2024 - Presente',
+    role: 'Senior AI Implementer & Full-Stack Engineer',
+    period: 'Apr 2024 – Present',
     location: 'Remote',
     description:
-      'Arquitectura y despliegue de soluciones AI de grado producción y sistemas transaccionales de alta escala.',
+      'Architecting and deploying production-grade AI solutions and high-scale transactional systems. Bridging the gap between Large Language Models (Claude, Gemini, GPT-4) and complex enterprise operations, ensuring scalability, security, and measurable business impact.',
     highlights: [
-      'Agentic Workflows con LangChain y LangGraph para gestión de reclamos en tiempo real',
-      'RAG avanzado con Qdrant y búsqueda vectorial',
-      'Seguridad AI: defense contra Prompt Injection, Model Poisoning',
-      'Backend con C# .NET y FastAPI, PostGIS para optimización de flotas',
-      'Infraestructura completa: Docker, Capacitor, Vue.js (~13,000 usuarios)',
-    ],
-  },
-  {
-    company: 'Freelance',
-    role: 'Full Stack Developer & 3D Digital Specialist',
-    period: 'Ene 2020 - Feb 2025',
-    location: 'Remote',
-    description:
-      'Consultor para clientes internacionales (US, LATAM, Europa) en soluciones .NET, Angular y 3D.',
-    highlights: [
-      '15+ aplicaciones producción con .NET Core, C#, Vue.js',
-      'Pipeline completo de 3D: ZBrush, Blender, Substance Painter',
-      'Módulos 3D interactivos y simulaciones web',
-      'SQL Server: hasta 70% reducción en latencia de queries',
-      'DevOps: Linux, Windows Server, Docker, CI/CD',
+      {
+        title: 'Agentic Workflows & Orchestration',
+        desc: 'Engineered sophisticated multi-agent systems using LangChain and LangGraph to automate real-time utility claim management and technical dispatching, handling high-concurrency operational data.',
+      },
+      {
+        title: 'Advanced RAG Architectures',
+        desc: 'Designed and optimized Retrieval-Augmented Generation pipelines leveraging Qdrant and vector search strategies, significantly enhancing information retrieval speed and accuracy for technical documentation.',
+      },
+      {
+        title: 'AI Security & Red Teaming',
+        desc: 'Established robust defense mechanisms against Prompt Injection, Sensitive Information Disclosure, and Model Poisoning, ensuring secure LLM integration within sensitive financial and transactional environments.',
+      },
+      {
+        title: 'Full-Stack & Geospatial Engineering',
+        desc: 'Built resilient backends using C# .NET and FastAPI, integrated with PostGIS for real-time fleet optimization and geospatial anomaly detection.',
+      },
+      {
+        title: 'Product-Ready Infrastructure',
+        desc: 'Managed the end-to-end lifecycle of AI applications, from containerization with Docker to cross-platform deployment via Capacitor and Vue.js, serving a user base of ~13,000+ individuals.',
+      },
     ],
   },
   {
     company: 'Zelcar Games LLC',
     role: 'Character & Creature Artist (Mobile Focus)',
-    period: 'Oct 2024 - Feb 2025',
+    period: 'Oct 2024 – Feb 2025',
     location: 'Remote',
-    description: 'Artista 3D para juegos móviles, gestionando el pipeline completo de personajes.',
+    description:
+      '3D Character and Creature Artist dedicated to developing high-quality, game-ready assets for mobile platforms. Managed the end-to-end character pipeline, ensuring artistic vision and technical performance lived in harmony within the game engine.',
     highlights: [
-      'Workflow High-to-Low: sculpting - low-poly con baking',
-      'Retopología orientada a animación y deformación',
-      'PBR Texturing con Substance Painter para móvil',
-      'Optimización UV y texturas para performance móvil',
+      {
+        title: 'High-to-Low Workflow',
+        desc: 'Executed professional sculpting of stylized and realistic creatures, translating intricate high-resolution details into optimized low-poly meshes through advanced baking techniques.',
+      },
+      {
+        title: 'Performance-Driven Retopology',
+        desc: 'Mastered hand-crafted retopology focused on edge flow for animation, ensuring character joints and silhouettes deformed correctly under real-time constraints.',
+      },
+      {
+        title: 'Texturing & LookDev',
+        desc: 'Developed PBR textures using Substance Painter to achieve high-end visual fidelity, focusing on material definition and readability tailored for smaller mobile screens.',
+      },
+      {
+        title: 'Mobile Optimization',
+        desc: 'Drastically reduced engine overhead by optimizing UV layouts and texture budgets, ensuring smooth frame rates across a wide range of mobile hardware without compromising artistic integrity.',
+      },
+    ],
+  },
+  {
+    company: 'Freelance',
+    role: 'Full-Stack Developer & 3D Digital Specialist',
+    period: 'Jan 2020 – Feb 2025',
+    location: 'Remote — US, LATAM, Europe',
+    description:
+      'Consultant delivering integrated .NET, Angular, and high-fidelity 3D solutions for international clients. Specialized in bridging enterprise software architecture with interactive digital assets and real-time visualization.',
+    highlights: [
+      {
+        title: 'Full-Stack Solutions (2020–2025)',
+        desc: 'Delivered 15+ production-ready applications using .NET Core, C#, and Vue.js, specializing in technical management tools and scalable SaaS architectures with Clean Architecture principles.',
+      },
+      {
+        title: '3D Character Art & Engineering',
+        desc: 'Established a professional 3D pipeline for high-fidelity character and creature design. Expert in ZBrush, Blender, and Substance Painter — anatomical precision, retopology, and PBR texturing for real-time engines.',
+      },
+      {
+        title: 'Interactive 3D Integration',
+        desc: 'Developed web-based 3D modules and interactive simulations, combining traditional software engineering with advanced digital sculpting to create immersive user experiences.',
+      },
+      {
+        title: 'Database & Performance Optimization',
+        desc: 'Architected complex SQL Server schemas and optimized data layers using ADO.NET, achieving up to 70% reduction in query latency for high-traffic data monitoring systems.',
+      },
+      {
+        title: 'Infrastructure & DevOps',
+        desc: 'Managed end-to-end deployments in Linux and Windows Server environments, utilizing Docker for containerization and automated release cycles.',
+      },
+      {
+        title: 'AI Integration (2023–2025)',
+        desc: 'Integrated LLM-powered features and automated data extraction into client applications, enhancing functional capabilities through intelligent API orchestration.',
+      },
     ],
   },
   {
     company: 'Golemstudio',
     role: '3D Modeler',
-    period: 'Dic 2021 - Ene 2023',
+    period: 'Dec 2021 – Jan 2023',
     location: 'Remote',
-    description: 'Modelado 3D para sector luxury (joyería, accesorios).',
+    description:
+      'High-fidelity 3D Modeler specializing in hard surface workflows for the luxury goods sector — fine jewelry and high-end fashion accessories. Delivered production-ready digital twins bridging conceptual design and commercial visualization.',
     highlights: [
-      'Hard surface modeling para piezas de joyería',
-      'Pipeline Blender-ZBrush para assets de alta calidad',
-      'Shaders y lighting para metales y gemas preciosas',
+      {
+        title: 'Precision Hard Surface Modeling',
+        desc: 'Engineered complex, clean topology meshes for intricate jewelry pieces, ensuring perfect light behavior and reflection continuity for high-end marketing renders.',
+      },
+      {
+        title: 'Digital Craftsmanship',
+        desc: 'Leveraged ZBrush to sculpt realistic leather textures, stitching, and intricate metalwork for luxury bags, achieving photorealistic quality that enhanced virtual catalog presentations.',
+      },
+      {
+        title: 'Workflow Optimization',
+        desc: 'Mastered a seamless pipeline between Blender and ZBrush, utilizing advanced retopology and baking techniques to deliver high-detail assets optimized for high-resolution renders and interactive 3D viewers.',
+      },
+      {
+        title: 'Technical Artistry',
+        desc: 'Collaborated on shader and lighting environment setup to accurately represent precious metals, gemstones, and exotic materials for luxury brand campaigns.',
+      },
     ],
   },
 ]
@@ -66,8 +137,8 @@ const skills = {
   ai: [
     'LangChain',
     'LangGraph',
-    'LLMs',
-    'RAG',
+    'Large Language Models',
+    'Retrieval-Augmented Generation (RAG)',
     'Vector Databases (Qdrant)',
     'AI Security & Red Teaming',
     'Prompt Engineering',
@@ -82,14 +153,20 @@ const skills = {
     'REST APIs',
   ],
   frontend: ['Vue.js', 'Angular', 'TypeScript', 'Capacitor'],
-  devops: ['Docker', 'Linux', 'Git / Version Control', 'Clean Architecture'],
+  devops: ['Docker', 'Linux', 'Git / Version Control', 'Clean Architecture', 'Agile Methodologies'],
   '3d': [
-    'ZBrush',
     'Blender',
+    'ZBrush',
     'Substance Painter',
-    'PBR Texturing',
-    'Retopology',
+    'Maya Autodesk',
+    'Unreal Engine',
+    '3D Character Modeling',
     'Hard Surface Modeling',
+    'Organic Sculpting',
+    'Retopology',
+    'PBR Texturing',
+    'UV Maps',
+    'Rigging',
   ],
 }
 
@@ -127,7 +204,8 @@ const toggleJob = (index: number) => {
             <div class="job-highlights" v-if="expandedJob === index">
               <ul>
                 <li v-for="(highlight, hIndex) in job.highlights" :key="hIndex">
-                  {{ highlight }}
+                  <span class="highlight-title">{{ highlight.title }}</span>
+                  <span class="highlight-desc">{{ highlight.desc }}</span>
                 </li>
               </ul>
             </div>
@@ -344,18 +422,32 @@ const toggleJob = (index: number) => {
 }
 
 .job-highlights li {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.825rem;
-  color: #374151;
-  padding: 0.35rem 0;
-  padding-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.5rem 0 0.5rem 1rem;
   border-left: 2px solid #d1d5db;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.4rem;
+  transition: border-color 0.2s;
 }
 
 .job-highlights li:hover {
   border-left-color: #1f2937;
-  color: #111827;
+}
+
+.highlight-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #1f2937;
+  letter-spacing: 0.05em;
+}
+
+.highlight-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  color: #4b5563;
+  line-height: 1.55;
 }
 
 .expand-hint {

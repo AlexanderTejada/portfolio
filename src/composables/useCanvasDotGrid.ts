@@ -1,6 +1,6 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
-export function useCanvasDotGrid() {
+export function useCanvasDotGrid(darkMode = false) {
   const canvasRef = ref<HTMLCanvasElement | null>(null)
   let animationId: number
   let removeResize: (() => void) | null = null
@@ -19,11 +19,10 @@ export function useCanvasDotGrid() {
     }
 
     const draw = () => {
-      ctx.fillStyle = '#fafafa'
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
       for (let x = gridSize; x < canvas.width; x += gridSize) {
         for (let y = gridSize; y < canvas.height; y += gridSize) {
-          ctx.fillStyle = 'rgba(31, 41, 55, 0.15)'
+          ctx.fillStyle = darkMode ? 'rgba(255, 255, 255, 0.06)' : 'rgba(31, 41, 55, 0.15)'
           ctx.fillRect(x - 1, y - 1, 2, 2)
         }
       }

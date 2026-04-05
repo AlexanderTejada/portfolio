@@ -4,11 +4,13 @@ import { useScrollProgress } from '@/composables/useScrollProgress'
 import HeroScene from '@/components/3d/HeroScene.vue'
 import NavigationSidebar from '@/components/sections/NavigationSidebar.vue'
 import HeroNavbar from './HeroNavbar.vue'
+import SoftwareModal from './SoftwareModal.vue'
 
 defineOptions({ name: 'HeroSection' })
 
 const { scrollProgress } = useScrollProgress()
 const showContent = ref(false)
+const showSoftwareModal = ref(false)
 
 const navItems = [
   { label: '3D', to: 'threed' },
@@ -39,17 +41,46 @@ onMounted(() =>
       :texts="['ENGINEER', 'SOFTWARE']"
       @click="scrollTo('projects')"
     />
-    <NavigationSidebar position="right" :texts="['DESIGN', '3D']" @click="scrollTo('experience')" />
+    <NavigationSidebar position="right" :texts="['DESIGN', '3D']" @click="scrollTo('threed')" />
 
     <div class="corner-content" :class="{ visible: showContent }">
       <div class="role-badge glitch-text" data-text="PORTFOLIO 2026">PORTFOLIO 2026</div>
-      <p class="hero-subtitle glitch-text" data-text="SENIOR AI IMPLEMENTER & FULL-STACK DEVELOPER">
-        SENIOR AI IMPLEMENTER &amp; FULL-STACK DEVELOPER
+      <p class="hero-subtitle glitch-text" data-text="SENIOR AI IMPLEMENTER & FULL-STACK ENGINEER">
+        SENIOR AI IMPLEMENTER &amp; FULL-STACK ENGINEER
       </p>
       <div class="cta-buttons">
         <button class="btn-primary" @click="scrollTo('projects')">VIEW PROJECTS</button>
         <button class="btn-secondary" @click="scrollTo('experience')">CONTACT</button>
       </div>
+    </div>
+
+    <SoftwareModal :open="showSoftwareModal" @close="showSoftwareModal = false" />
+
+    <!-- HUD: Software Engineering -->
+    <div class="hud-panel hud-left" :class="{ visible: showContent }" @click="showSoftwareModal = true">
+      <div class="hud-corner tl" /><div class="hud-corner tr" />
+      <div class="hud-corner bl" /><div class="hud-corner br" />
+      <span class="hud-label">// SOFTWARE ENG</span>
+      <div class="hud-divider" />
+      <p class="hud-bio">
+        I specialize in architecting and deploying production grade AI solutions and high scale
+        transactional systems. My work focuses on bridging the gap between Large Language Models
+        (Claude, Gemini, GPT-4) and complex enterprise operations, ensuring scalability, security,
+        and measurable business impact.
+      </p>
+    </div>
+
+    <!-- HUD: 3D -->
+    <div class="hud-panel hud-right" :class="{ visible: showContent }">
+      <div class="hud-corner tl" /><div class="hud-corner tr" />
+      <div class="hud-corner bl" /><div class="hud-corner br" />
+      <span class="hud-label">// 3D ARTIST</span>
+      <div class="hud-divider" />
+      <p class="hud-bio">
+        3D Character and Creature Artist dedicated to developing high-quality, game ready assets
+        for mobile platforms. Managed the end to end character pipeline, ensuring that artistic
+        vision and technical performance lived in perfect harmony within the game engine.
+      </p>
     </div>
 
     <div v-show="scrollProgress < 0.1" class="scroll-indicator" :class="{ visible: showContent }">
@@ -158,6 +189,94 @@ onMounted(() =>
   transform: translateY(-2px);
 }
 
+/* HUD panels */
+.hud-panel {
+  position: absolute;
+  top: 30%;
+  transform: translateY(calc(-50% + 20px));
+  z-index: 10;
+  width: 180px;
+  padding: 1.1rem 1.25rem;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s,
+              transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s,
+              background 0.3s ease,
+              border-color 0.3s ease,
+              box-shadow 0.3s ease;
+}
+
+.hud-left  { left: 5rem; }
+.hud-right { right: 5rem; }
+
+.hud-panel.visible {
+  opacity: 1;
+  transform: translateY(-50%);
+}
+
+.hud-panel.visible:hover {
+  transform: translateY(calc(-50% - 4px));
+  background: rgba(255, 255, 255, 0.96);
+  border-color: rgba(0, 0, 0, 0.18);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+.hud-panel.visible:hover .hud-corner {
+  width: 10px;
+  height: 10px;
+  border-color: #111827;
+}
+
+.hud-panel.visible:hover .hud-label {
+  animation: hud-label-glitch 0.6s steps(1) 1 forwards;
+}
+
+.hud-panel.visible:hover .hud-bio {
+  animation: hud-bio-glitch 0.6s steps(1) 1 forwards;
+}
+
+/* Corner accents */
+.hud-corner {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-color: #1f2937;
+  border-style: solid;
+  transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
+}
+
+.hud-corner.tl { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+.hud-corner.tr { top: -1px; right: -1px; border-width: 2px 2px 0 0; }
+.hud-corner.bl { bottom: -1px; left: -1px; border-width: 0 0 2px 2px; }
+.hud-corner.br { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+
+.hud-label {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  color: #9ca3af;
+  letter-spacing: 0.2em;
+  margin-bottom: 0.6rem;
+  transition: none;
+}
+
+.hud-divider {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.08);
+  margin-bottom: 0.6rem;
+}
+
+.hud-bio {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  color: #4b5563;
+  line-height: 1.7;
+  margin: 0;
+}
+
 /* Glitch */
 .glitch-text {
   position: relative;
@@ -203,6 +322,71 @@ onMounted(() =>
 .scroll-indicator.visible {
   opacity: 0.4;
   animation: bounce 2s infinite;
+}
+
+@keyframes hud-label-glitch {
+  0% {
+    font-family: 'Orbitron', sans-serif;
+    color: #ef4444;
+    letter-spacing: 0.3em;
+    transform: translate(-3px, 1px);
+    text-shadow: 2px 0 #ef4444, -2px 0 #b91c1c;
+  }
+  15% {
+    font-family: 'Bebas Neue', cursive;
+    color: #dc2626;
+    letter-spacing: 0.05em;
+    transform: translate(3px, -1px);
+    text-shadow: -3px 0 #ef4444, 3px 0 #b91c1c;
+  }
+  30% {
+    font-family: 'Share Tech Mono', monospace;
+    color: #ef4444;
+    letter-spacing: 0.35em;
+    transform: translate(-1px, 0);
+    text-shadow: 1px 0 #dc2626;
+  }
+  45% {
+    font-family: 'Inter', sans-serif;
+    color: #b91c1c;
+    letter-spacing: 0.1em;
+    transform: translate(2px, 1px);
+    text-shadow: -1px 0 #ef4444;
+  }
+  60%, 100% {
+    font-family: 'JetBrains Mono', monospace;
+    color: #9ca3af;
+    letter-spacing: 0.2em;
+    transform: translate(0);
+    text-shadow: none;
+  }
+}
+
+@keyframes hud-bio-glitch {
+  0% {
+    font-family: 'Orbitron', sans-serif;
+    color: #ef4444;
+    transform: translate(-2px, 0);
+    text-shadow: 1px 0 #ef4444;
+  }
+  15% {
+    font-family: 'Share Tech Mono', monospace;
+    color: #dc2626;
+    transform: translate(2px, 1px);
+    text-shadow: -1px 0 #b91c1c;
+  }
+  30% {
+    font-family: 'Bebas Neue', cursive;
+    color: #ef4444;
+    transform: translate(-1px, -1px);
+    text-shadow: 2px 0 #dc2626;
+  }
+  50%, 100% {
+    font-family: 'Inter', sans-serif;
+    color: #4b5563;
+    transform: translate(0);
+    text-shadow: none;
+  }
 }
 
 @keyframes bounce {
