@@ -1028,37 +1028,44 @@ onMounted(() => {
 
 .btn-primary,
 .btn-secondary {
-  padding: 0.75rem 1.5rem;
+  padding: 0.5rem 0;
   font-size: 0.875rem;
   font-weight: 500;
   font-family: 'Inter', sans-serif;
-  letter-spacing: 0.02em;
-  border-radius: 6px;
+  letter-spacing: 0.05em;
   cursor: pointer;
   transition: all 0.2s ease;
-}
-
-.btn-primary {
-  background: #111827;
-  color: #ffffff;
+  background: none;
   border: none;
 }
 
-.btn-primary:hover {
-  background: #1f2937;
-  transform: translateY(-1px);
+.btn-primary {
+  color: #111827;
+  position: relative;
+}
+
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: #111827;
+  transform: scaleX(0);
+  transition: transform 0.2s ease;
+}
+
+.btn-primary:hover::after {
+  transform: scaleX(1);
 }
 
 .btn-secondary {
-  background: transparent;
-  color: #4b5563;
-  border: 1px solid #e5e7eb;
+  color: #9ca3af;
 }
 
 .btn-secondary:hover {
-  background: #f9fafb;
-  color: #111827;
-  border-color: #d1d5db;
+  color: #4b5563;
 }
 
 .btn-primary {
