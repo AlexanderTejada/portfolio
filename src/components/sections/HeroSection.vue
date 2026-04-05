@@ -2,13 +2,25 @@
 import { ref, onMounted } from 'vue'
 import { useScrollProgress } from '@/composables/useScrollProgress'
 import HeroScene from '@/components/3d/HeroScene.vue'
-import Sidebar from './Sidebar.vue'
+import NavigationSidebar from './NavigationSidebar.vue'
 
 const { scrollProgress } = useScrollProgress()
 const showContent = ref(false)
 const isMenuOpen = ref(false)
 
-const navItems = ['PROJECTS', 'EXPERIENCE', 'SKILLS', 'CONTACT']
+const navItems = [
+  { label: 'PROJECTS', to: 'projects' },
+  { label: 'EXPERIENCE', to: 'experience' },
+  { label: 'SKILLS', to: 'experience' },
+  { label: 'CONTACT', to: 'experience' },
+]
+
+const scrollTo = (id: string) => {
+  const el = document.getElementById(id)
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth' })
+  }
+}
 
 onMounted(() => {
   setTimeout(() => {
@@ -18,22 +30,16 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="hero">
+  <section id="hero" class="hero">
     <!-- 3D Background Scene -->
     <HeroScene />
-
-    <!-- Grid Pattern Overlay -->
-    <div class="grid-pattern"></div>
-
-    <!-- Noise Texture Overlay -->
-    <div class="noise-overlay"></div>
 
     <!-- Navbar -->
     <nav class="navbar">
       <div class="nav-logo">ALEX</div>
       <ul class="nav-links" :class="{ open: isMenuOpen }">
-        <li v-for="item in navItems" :key="item">
-          <a href="#">{{ item }}</a>
+        <li v-for="item in navItems" :key="item.label">
+          <a href="#" @click.prevent="scrollTo(item.to)">{{ item.label }}</a>
         </li>
       </ul>
       <button class="nav-toggle" @click="isMenuOpen = !isMenuOpen">
@@ -44,16 +50,21 @@ onMounted(() => {
     </nav>
 
     <!-- Left Sidebar - Software Engineer -->
-    <Sidebar position="left" :texts="['ENGINEER', 'SOFTWARE']" />
+    <NavigationSidebar
+      position="left"
+      :texts="['ENGINEER', 'SOFTWARE']"
+      @click="scrollTo('projects')"
+    />
 
     <!-- Right Sidebar - 3D Design -->
-    <Sidebar position="right" :texts="['DESIGN', '3D']" />
+    <NavigationSidebar position="right" :texts="['DESIGN', '3D']" @click="scrollTo('experience')" />
 
     <!-- Content Overlay -->
     <div class="hero-content" :class="{ visible: showContent }">
       <div class="hero-text">
         <h1 class="hero-title">
-          <span class="line-1">ALEXANDER TEJADA</span>
+          <span class="line-1">ALEXANDER</span>
+          <span class="line-2">TEJADA</span>
         </h1>
 
         <p class="hero-subtitle">SENIOR AI IMPLEMENTER & FULL-STACK DEVELOPER</p>
@@ -66,10 +77,10 @@ onMounted(() => {
         </div>
 
         <div class="cta-buttons">
-          <button class="btn-primary">
+          <button class="btn-primary" @click="scrollTo('projects')">
             <span>[ VIEW PROJECTS ]</span>
           </button>
-          <button class="btn-secondary">
+          <button class="btn-secondary" @click="scrollTo('experience')">
             <span>[ CONTACT ]</span>
           </button>
         </div>
@@ -162,103 +173,6 @@ onMounted(() => {
   color: #111827;
 }
 
-@keyframes glitch-nav {
-  0% {
-    text-shadow:
-      2px 0 var(--neon-magenta),
-      -2px 0 var(--neon-cyan);
-  }
-  20% {
-    text-shadow:
-      -2px 0 var(--neon-magenta),
-      2px 0 var(--neon-cyan);
-  }
-  40% {
-    text-shadow:
-      2px 2px var(--neon-magenta),
-      -2px -2px var(--neon-cyan);
-  }
-  60% {
-    text-shadow:
-      -2px 2px var(--neon-magenta),
-      2px -2px var(--neon-cyan);
-  }
-  80% {
-    text-shadow:
-      1px -1px var(--neon-magenta),
-      -1px 1px var(--neon-cyan);
-  }
-  100% {
-    text-shadow: none;
-  }
-}
-
-.nav-toggle {
-  display: none;
-  flex-direction: column;
-  gap: 4px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-}
-
-.nav-toggle span {
-  width: 20px;
-  height: 2px;
-  background: var(--text-muted);
-  transition: background 0.3s ease;
-}
-
-.hero-content {
-  position: absolute;
-  z-index: 100;
-  width: 100%;
-  max-width: 1000px;
-  padding: 2rem;
-  opacity: 0;
-  transform: translateY(30px);
-  transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.hero-content.visible {
-  opacity: 1;
-  transform: translate(-50%, -50%);
-}
-
-.hero-text {
-  text-align: center;
-  width: 100%;
-  padding: 3rem 2rem;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  position: relative;
-}
-
-.hero-title {
-  font-family: 'Inter', sans-serif;
-  font-size: clamp(2rem, 6vw, 4rem);
-  font-weight: 700;
-  line-height: 1.1;
-  margin-bottom: 1rem;
-  letter-spacing: -0.02em;
-  position: relative;
-  display: inline-block;
-  color: #000000;
-}
-
-.hero-subtitle {
-  font-family: 'Inter', sans-serif;
-  font-size: 1rem;
-  color: #374151;
-  margin-bottom: 1.5rem;
-  font-weight: 400;
-}
-
 @keyframes bounce {
   0%,
   90%,
@@ -327,6 +241,257 @@ onMounted(() => {
     opacity: 0;
     clip-path: inset(0 0 0 0);
   }
+}
+
+.hero-content {
+  position: absolute;
+  z-index: 10;
+  width: 100%;
+  max-width: 1000px;
+  padding: 2rem;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.hero-content.visible {
+  opacity: 1;
+  transform: translate(-50%, -50%);
+}
+
+.hero-text {
+  text-align: center;
+  width: 100%;
+  padding: 3rem 2rem;
+  background: transparent;
+  position: relative;
+}
+
+.hero-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(3rem, 10vw, 6rem);
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 1rem;
+  letter-spacing: 0.08em;
+  position: relative;
+  display: inline-block;
+}
+
+.hero-title .line-1 {
+  position: relative;
+  display: inline-block;
+  animation: glitch-tv 5s infinite steps(20);
+}
+
+.hero-title .line-1::before,
+.hero-title .line-1::after {
+  content: 'ALEXANDER';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-title .line-1::before {
+  color: #dc2626;
+  animation: glitch-tv-1 5s infinite steps(20);
+}
+
+.hero-title .line-1::after {
+  color: #000;
+  animation: glitch-tv-2 5s infinite steps(20);
+}
+
+.hero-title .line-2 {
+  display: inline-block;
+  margin-left: 0.3em;
+  animation: glitch-tv 5s infinite steps(20);
+  animation-delay: 0.1s;
+}
+
+.hero-title .line-2::before,
+.hero-title .line-2::after {
+  content: 'TEJADA';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-title .line-2::before {
+  color: #dc2626;
+  animation: glitch-tv-1 5s infinite steps(20);
+  animation-delay: 0.1s;
+}
+
+.hero-title .line-2::after {
+  color: #000;
+  animation: glitch-tv-2 5s infinite steps(20);
+  animation-delay: 0.1s;
+}
+
+@keyframes glitch-tv {
+  0%,
+  90%,
+  100% {
+    transform: translate(0);
+    filter: none;
+    font-family: 'Orbitron', sans-serif;
+  }
+  91% {
+    font-family: 'Bebas Neue', sans-serif;
+  }
+  92% {
+    transform: translate(-15px, 0) skewX(-8deg);
+    filter: contrast(1.5) brightness(1.2);
+    font-family: 'Bebas Neue', sans-serif;
+  }
+  93% {
+    transform: translate(15px, 0) skewX(8deg);
+    font-family: 'Inter', sans-serif;
+  }
+  94% {
+    transform: translate(-10px, 0) skewX(-4deg);
+    filter: contrast(1.3);
+    font-family: 'Orbitron', sans-serif;
+  }
+  95% {
+    transform: translate(10px, 0) skewX(5deg);
+    font-family: 'Bebas Neue', sans-serif;
+  }
+  96% {
+    transform: translate(-5px, 0);
+    font-family: 'Inter', sans-serif;
+  }
+  97% {
+    transform: translate(0);
+    font-family: 'Orbitron', sans-serif;
+  }
+  98% {
+    transform: translate(2px, 0);
+    font-family: 'Bebas Neue', sans-serif;
+  }
+  99% {
+    transform: translate(-2px, 0);
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@keyframes glitch-tv-1 {
+  0%,
+  90%,
+  100% {
+    transform: translate(0);
+    opacity: 0;
+    clip-path: inset(0 0 0 0);
+  }
+  91% {
+    transform: translate(-5px, 0);
+    opacity: 0.6;
+    clip-path: inset(15% 0 40% 0);
+  }
+  92% {
+    transform: translate(-15px, 0) scaleX(1.1);
+    opacity: 0.9;
+    clip-path: inset(20% 0 30% 0);
+  }
+  93% {
+    transform: translate(12px, 0) scaleX(0.9);
+    opacity: 0.7;
+    clip-path: inset(50% 0 10% 0);
+  }
+  94% {
+    transform: translate(-10px, 0) scaleX(1.05);
+    opacity: 0.8;
+    clip-path: inset(70% 0 5% 0);
+  }
+  95% {
+    transform: translate(8px, 0);
+    opacity: 0;
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes glitch-tv-2 {
+  0%,
+  90%,
+  100% {
+    transform: translate(0);
+    opacity: 0;
+    clip-path: inset(0 0 0 0);
+  }
+  91% {
+    transform: translate(5px, 0);
+    opacity: 0.5;
+    clip-path: inset(10% 0 60% 0);
+  }
+  92% {
+    transform: translate(12px, 0) scaleY(1.1);
+    opacity: 0.8;
+    clip-path: inset(10% 0 60% 0);
+  }
+  93% {
+    transform: translate(-10px, 0) scaleY(0.9);
+    opacity: 0.6;
+    clip-path: inset(40% 0 30% 0);
+  }
+  94% {
+    transform: translate(8px, 0);
+    opacity: 0.7;
+    clip-path: inset(30% 0 40% 0);
+  }
+  95% {
+    transform: translate(0);
+    opacity: 0;
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes glitch {
+  0%,
+  90%,
+  100% {
+    text-shadow: none;
+  }
+  91% {
+    text-shadow:
+      2px 0 #dc2626,
+      -2px 0 #000;
+  }
+  92% {
+    text-shadow:
+      -2px 0 #dc2626,
+      2px 0 #000;
+  }
+  93% {
+    text-shadow:
+      2px 2px #dc2626,
+      -2px -2px #000;
+  }
+  94% {
+    text-shadow:
+      -2px 2px #dc2626,
+      2px -2px #000;
+  }
+  95% {
+    text-shadow:
+      1px -1px #dc2626,
+      -1px 1px #000;
+  }
+}
+
+.hero-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  color: #374151;
+  margin-bottom: 1.5rem;
+  font-weight: 400;
 }
 
 .content-frame {

@@ -1,27 +1,20 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import * as THREE from 'three'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 
 const containerRef = ref<HTMLDivElement | null>(null)
 let scene: THREE.Scene
 let camera: THREE.PerspectiveCamera
 let renderer: THREE.WebGLRenderer
-let waveMesh: THREE.Points
-let raycasterPlane: THREE.Mesh
 let animationId: number
-let planeGeometry: THREE.PlaneGeometry
 
 const mouse = new THREE.Vector2()
-const raycaster = new THREE.Raycaster()
-const intersectionPoint = new THREE.Vector3()
-let mouseInfluenceRadius = 15
 
 const onMouseMove = (event: MouseEvent) => {
   mouse.x = (event.clientX / window.innerWidth) * 2 - 1
   mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
 }
-
-defineExpose({ mouse, intersectionPoint })
 
 onMounted(() => {
   if (!containerRef.value) return
@@ -30,7 +23,7 @@ onMounted(() => {
   scene.fog = new THREE.Fog(0xfafafa, 10, 100)
 
   camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
-  camera.position.set(0, 15, 25)
+  camera.position.set(0, 0, 15)
   camera.lookAt(0, 0, 0)
 
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
@@ -39,147 +32,86 @@ onMounted(() => {
   renderer.setClearColor(0xfafafa, 1)
   containerRef.value.appendChild(renderer.domElement)
 
-  planeGeometry = new THREE.PlaneGeometry(180, 100, 360, 160)
-  planeGeometry.rotateX(-Math.PI / 2)
+  const loader = new GLTFLoader()
+  loader.load(
+    '/ALEXANDER TEJADA.glb',
+    (gltf) => {
+      const model = gltf.scene
 
-  const count = planeGeometry.attributes.position!.count
-  const alphas = new Float32Array(count)
-  const colorMix = new Float32Array(count)
-  const glow = new Float32Array(count)
+      const box = new THREE.Box3().setFromObject(model)
+      const size = box.getSize(new THREE.Vector3())
+      const maxDim = Math.max(size.x, size.y, size.z)
+      const scale = 20 / maxDim
+      model.scale.setScalar(scale)
+      model.position.set(0, 0, 0)
 
-  for (let i = 0; i < count; i++) {
-    const z = planeGeometry.attributes.position!.getZ(i)
-    const alpha = THREE.MathUtils.mapLinear(z, -50, 50, 0.05, 1.0)
-    alphas[i] = THREE.MathUtils.clamp(alpha, 0.05, 1.0)
-    colorMix[i] = THREE.MathUtils.mapLinear(z, -50, 50, 0.0, 1.0)
-    glow[i] = 0
-  }
+      const geometry = new THREE.BufferGeometry()
+      const allPositions: number[] = []
 
-  planeGeometry.setAttribute('alpha', new THREE.BufferAttribute(alphas, 1))
-  planeGeometry.setAttribute('colorMix', new THREE.BufferAttribute(colorMix, 1))
-  planeGeometry.setAttribute('glow', new THREE.BufferAttribute(glow, 1))
+      model.traverse((child) => {
+        if (child instanceof THREE.Mesh && child.type !== 'LineSegments') {
+          const meshGeometry = child.geometry
 
-  const material = new THREE.ShaderMaterial({
-    uniforms: {
-      uColorFront: { value: new THREE.Color(0x374151) },
-      uColorBack: { value: new THREE.Color(0x9ca3af) },
-      uGlowColor: { value: new THREE.Color(0x06b6d4) },
-      uSize: { value: 0.5 },
+          if (!meshGeometry || !meshGeometry.getAttribute('position')) return
+
+          const posAttr = meshGeometry.getAttribute('position')
+
+          child.updateWorldMatrix(true, false)
+          const matrix = child.matrixWorld.clone()
+
+          const edgePositions: number[] = []
+          const count = posAttr.count
+
+          for (let i = 0; i < count; i += 4) {
+            if (i + 3 >= count) break
+
+            const va = new THREE.Vector3().fromBufferAttribute(posAttr, i).applyMatrix4(matrix)
+            const vb = new THREE.Vector3().fromBufferAttribute(posAttr, i + 1).applyMatrix4(matrix)
+            const vc = new THREE.Vector3().fromBufferAttribute(posAttr, i + 2).applyMatrix4(matrix)
+            const vd = new THREE.Vector3().fromBufferAttribute(posAttr, i + 3).applyMatrix4(matrix)
+
+            edgePositions.push(va.x, va.y, va.z, vb.x, vb.y, vb.z)
+            edgePositions.push(vb.x, vb.y, vb.z, vc.x, vc.y, vc.z)
+            edgePositions.push(vc.x, vc.y, vc.z, vd.x, vd.y, vd.z)
+            edgePositions.push(vd.x, vd.y, vd.z, va.x, va.y, va.z)
+          }
+
+          if (edgePositions.length > 0) {
+            allPositions.push(...edgePositions)
+          }
+        }
+      })
+
+      if (allPositions.length === 0) {
+        console.log('No edges found, creating test box')
+        const boxGeo = new THREE.BoxGeometry(8, 4, 2)
+        const edges = new THREE.EdgesGeometry(boxGeo)
+        const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x1f2937 }))
+        scene.add(line)
+      } else {
+        geometry.setAttribute('position', new THREE.Float32BufferAttribute(allPositions, 3))
+
+        const material = new THREE.LineBasicMaterial({
+          color: 0x1f2937,
+          transparent: true,
+          opacity: 0.9,
+        })
+
+        const edges = new THREE.LineSegments(geometry, material)
+        scene.add(edges)
+
+        console.log('Edges loaded, positions:', allPositions.length / 3)
+      }
     },
-    vertexShader: `
-      attribute float alpha;
-      attribute float colorMix;
-      attribute float glow;
-      varying float vAlpha;
-      varying float vColorMix;
-      varying float vGlow;
-      uniform float uSize;
-
-      void main() {
-        vAlpha = alpha;
-        vColorMix = colorMix;
-        vGlow = glow;
-        vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-        gl_Position = projectionMatrix * mvPosition;
-        gl_PointSize = uSize * (300.0 / -mvPosition.z);
-      }
-    `,
-    fragmentShader: `
-      uniform vec3 uColorFront;
-      uniform vec3 uColorBack;
-      uniform vec3 uGlowColor;
-      varying float vAlpha;
-      varying float vColorMix;
-      varying float vGlow;
-
-      void main() {
-        float dist = length(gl_PointCoord - vec2(0.5));
-        if (dist > 0.5) discard;
-
-        vec3 baseColor = mix(uColorBack, uColorFront, vColorMix);
-        
-        vec3 finalColor = mix(baseColor, uGlowColor, vGlow);
-        
-        float strength = 1.0 - dist * 2.0;
-        strength = pow(strength, 1.5);
-        
-        gl_FragColor = vec4(finalColor, strength * 0.8);
-      }
-    `,
-    transparent: true,
-    depthWrite: false,
-    blending: THREE.AdditiveBlending,
-  })
-
-  waveMesh = new THREE.Points(planeGeometry, material)
-  scene.add(waveMesh)
-
-  const positions = planeGeometry.attributes.position!.array as Float32Array
-  const originalPositions = new Float32Array(positions)
-
-  raycasterPlane = new THREE.Mesh(
-    planeGeometry.clone(),
-    new THREE.MeshBasicMaterial({ visible: false }),
+    undefined,
+    (error) => {
+      console.error('Error loading model:', error)
+    },
   )
-  scene.add(raycasterPlane)
-
-  let time = 0
 
   const animate = () => {
-    time += 0.02
-
-    raycaster.setFromCamera(mouse, camera)
-    const intersects = raycaster.intersectObject(raycasterPlane)
-
-    if (intersects.length > 0) {
-      intersectionPoint.copy(intersects[0]!.point)
-    }
-
-    const positions = planeGeometry.attributes.position!.array as Float32Array
-    const alphas = planeGeometry.attributes.alpha!.array as Float32Array
-    const colorMix = planeGeometry.attributes.colorMix!.array as Float32Array
-    const glow = planeGeometry.attributes.glow!.array as Float32Array
-
-    for (let i = 0; i < positions.length; i += 3) {
-      const x = originalPositions[i]
-      const z = originalPositions[i + 2]
-
-      const wave = Math.sin(z! * 0.15 - time) * 2.5
-
-      let mouseInfluence = 0
-      let glowIntensity = 0
-
-      if (intersects.length > 0) {
-        const distanceToMouse = Math.sqrt(
-          Math.pow(x! - intersectionPoint.x, 2) + Math.pow(z! - intersectionPoint.z, 2),
-        )
-
-        if (distanceToMouse < mouseInfluenceRadius) {
-          const influence = 1 - distanceToMouse / mouseInfluenceRadius
-          mouseInfluence = -Math.pow(influence, 2) * 4
-          glowIntensity = influence
-        }
-      }
-
-      const cursorPush = mouseInfluence
-
-      positions[i + 1] = wave + cursorPush
-
-      const vertexIndex = i / 3
-      glow[vertexIndex] = glowIntensity
-
-      const alpha = THREE.MathUtils.mapLinear(z!, -50, 50, 0.05, 1.0)
-      alphas[vertexIndex] = THREE.MathUtils.clamp(alpha, 0.05, 1.0)
-      colorMix[vertexIndex] = THREE.MathUtils.mapLinear(z!, -50, 50, 0.0, 1.0)
-    }
-
-    planeGeometry.attributes.position!.needsUpdate = true
-    planeGeometry.attributes.alpha!.needsUpdate = true
-    planeGeometry.attributes.colorMix!.needsUpdate = true
-    planeGeometry.attributes.glow!.needsUpdate = true
-
-    renderer.render(scene, camera)
     animationId = requestAnimationFrame(animate)
+    renderer.render(scene, camera)
   }
 
   animate()
@@ -200,21 +132,6 @@ onUnmounted(() => {
   if (animationId) cancelAnimationFrame(animationId)
   if (renderer) {
     renderer.dispose()
-  }
-  if (waveMesh) {
-    waveMesh.geometry.dispose()
-    if (waveMesh.material instanceof THREE.Material) {
-      waveMesh.material.dispose()
-    }
-  }
-  if (raycasterPlane) {
-    raycasterPlane.geometry.dispose()
-    if (raycasterPlane.material instanceof THREE.Material) {
-      raycasterPlane.material.dispose()
-    }
-  }
-  if (planeGeometry) {
-    planeGeometry.dispose()
   }
 })
 </script>
