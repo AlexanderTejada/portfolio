@@ -63,8 +63,8 @@ onMounted(() => {
     uniforms: {
       uColorFront: { value: new THREE.Color(0x374151) },
       uColorBack: { value: new THREE.Color(0x9ca3af) },
-      uGlowColor: { value: new THREE.Color(0x2563eb) },
-      uSize: { value: 0.3 },
+      uGlowColor: { value: new THREE.Color(0x06b6d4) },
+      uSize: { value: 0.5 },
     },
     vertexShader: `
       attribute float alpha;
@@ -103,7 +103,7 @@ onMounted(() => {
         float strength = 1.0 - dist * 2.0;
         strength = pow(strength, 1.5);
         
-        gl_FragColor = vec4(finalColor, strength * vAlpha);
+        gl_FragColor = vec4(finalColor, strength * 0.8);
       }
     `,
     transparent: true,
