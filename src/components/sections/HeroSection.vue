@@ -235,7 +235,7 @@ onMounted(() => {
   padding: 3rem 2rem;
   background: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   position: relative;
 }
 
@@ -248,13 +248,13 @@ onMounted(() => {
   letter-spacing: -0.02em;
   position: relative;
   display: inline-block;
-  color: #111827;
+  color: #000000;
 }
 
 .hero-subtitle {
   font-family: 'Inter', sans-serif;
   font-size: 1rem;
-  color: #4b5563;
+  color: #374151;
   margin-bottom: 1.5rem;
   font-weight: 400;
 }
@@ -912,7 +912,7 @@ onMounted(() => {
 }
 
 .btn-primary {
-  color: #111827;
+  color: #000000;
   position: relative;
 }
 
@@ -922,14 +922,14 @@ onMounted(() => {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 1px;
-  background: #111827;
+  height: 2px;
+  background: #000000;
   transform: scaleX(0);
   transition: transform 0.2s ease;
 }
 
 .btn-primary:hover {
-  color: #374151;
+  color: #000000;
 }
 
 .btn-primary:hover::after {
@@ -937,11 +937,11 @@ onMounted(() => {
 }
 
 .btn-secondary {
-  color: #9ca3af;
+  color: #374151;
 }
 
 .btn-secondary:hover {
-  color: #4b5563;
+  color: #000000;
 }
 
 .scroll-indicator {
