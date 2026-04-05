@@ -1,92 +1,65 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import { Swiper, SwiperSlide } from 'swiper/vue'
+import { Autoplay, Pagination } from 'swiper/modules'
+import 'swiper/css'
+import 'swiper/css/pagination'
 
 defineOptions({
   inheritAttrs: true,
 })
 
-const systemInfo = {
-  title: 'Sistema Integral de Gestión Eléctrica',
-  company: 'DECSA - Distribuidora Eléctrica',
-  description:
-    'Plataforma integral para la gestión de reclamos, geolocalización en tiempo real, chatbot con IA y comunicación entre operadores.',
-  images: [
-    {
-      src: '/DECSA/1.png',
-      title: 'Dashboard',
-      desc: 'Panel principal con métricas y gráficos en tiempo real',
-    },
-    {
-      src: '/DECSA/2.png',
-      title: 'Búsqueda',
-      desc: 'Sistema de búsqueda avanzada de clientes con filtros dinámicos',
-    },
-    {
-      src: '/DECSA/3.png',
-      title: 'Geolocalización',
-      desc: 'Mapa interactivo con SignalR, aislamiento de áreas y filtros',
-    },
-    {
-      src: '/DECSA/4.png',
-      title: 'Voz',
-      desc: 'Creación de reclamos por transcripción de audio en tiempo real',
-    },
-    {
-      src: '/DECSA/5.png',
-      title: 'Chatbot RAG',
-      desc: 'Asistente IA con RAG para regulaciones eléctricas',
-    },
-    {
-      src: '/DECSA/6.png',
-      title: 'Chat Operadores',
-      desc: 'Comunicación en tiempo real entre operadores',
-    },
-    {
-      src: '/DECSA/7.png',
-      title: 'Gestión de Guardias',
-      desc: 'Asignación de reclamos con tracking en mapa y app móvil',
-    },
-  ],
-}
+const images = [
+  { src: '/DECSA/1.png', title: 'Dashboard' },
+  { src: '/DECSA/2.png', title: 'Búsqueda' },
+  { src: '/DECSA/3.png', title: 'Geolocalización' },
+  { src: '/DECSA/4.png', title: 'Voz' },
+  { src: '/DECSA/5.png', title: 'Chatbot RAG' },
+  { src: '/DECSA/6.png', title: 'Chat Operadores' },
+  { src: '/DECSA/7.png', title: 'Gestión de Guardias' },
+]
 
-const isModalOpen = ref(false)
-const activeIndex = ref(0)
 const canvasRef = ref<HTMLCanvasElement | null>(null)
+const visible = ref(false)
+const activeSlideIndex = ref(0)
+const isHovering = ref(false)
+const mouseX = ref(50)
+const mouseY = ref(50)
 
-const activeImage = ref(systemInfo.images[0])
-let mouseX = 0
-let mouseY = 0
+const modules = [
+  { label: 'WHATSAPPI', desc: 'Reclamos, consultas y facturación vía WhatsApp' },
+  { label: 'FIELD APP', desc: 'App móvil para guardias: cierre de reclamos en terreno' },
+  { label: 'AI DETECT', desc: 'Detección de anomalías de consumo por categoría de usuario' },
+  { label: 'GEO-MAP', desc: 'PostGIS → coordenadas: SETAs, REDMT, seccionadores' },
+  { label: 'MSG AUDIT', desc: 'Auditoría completa de mensajes y chat en tiempo real' },
+  { label: 'KPIs', desc: 'Consumo, notas de crédito, facturas, dinero pendiente' },
+]
 
-const openModal = () => {
-  isModalOpen.value = true
-  activeIndex.value = 0
-  activeImage.value = systemInfo.images[0]
-  document.body.style.overflow = 'hidden'
+const techStack = [
+  { key: 'CLIENTS', val: '~13,000' },
+  { key: 'BACKEND', val: 'C# .NET' },
+  { key: 'FRONTEND', val: 'Vue.js' },
+  { key: 'DB', val: 'PostGIS' },
+  { key: 'REAL-TIME', val: 'SignalR' },
+  { key: 'AI', val: 'RAG + LLM' },
+]
+
+function onSwiperSlideChange(swiper: any) {
+  activeSlideIndex.value = swiper.realIndex
 }
 
-const closeModal = () => {
-  isModalOpen.value = false
-  document.body.style.overflow = ''
+function onDistortionMove(e: MouseEvent) {
+  const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
+  mouseX.value = ((e.clientX - rect.left) / rect.width) * 100
+  mouseY.value = ((e.clientY - rect.top) / rect.height) * 100
 }
 
-const nextImage = () => {
-  activeIndex.value = (activeIndex.value + 1) % systemInfo.images.length
-  activeImage.value = systemInfo.images[activeIndex.value]
+function onDistortionEnter() {
+  isHovering.value = true
 }
 
-const prevImage = () => {
-  activeIndex.value = (activeIndex.value - 1 + systemInfo.images.length) % systemInfo.images.length
-  activeImage.value = systemInfo.images[activeIndex.value]
-}
-
-const selectImage = (index: number) => {
-  activeIndex.value = index
-  activeImage.value = systemInfo.images[index]
-}
-
-const onMouseMove = (e: MouseEvent) => {
-  mouseX = (e.clientX / window.innerWidth) * 2 - 1
-  mouseY = (e.clientY / window.innerHeight) * 2 - 1
+function onDistortionLeave() {
+  isHovering.value = false
 }
 
 onMounted(() => {
@@ -104,12 +77,11 @@ onMounted(() => {
   }
   resize()
   window.addEventListener('resize', resize)
-  window.addEventListener('mousemove', onMouseMove)
 
   const gridSize = 35
 
   const draw = () => {
-    ctx.fillStyle = '#0a0a0f'
+    ctx.fillStyle = '#000000'
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
     for (let x = gridSize; x < canvas.width; x += gridSize) {
@@ -124,10 +96,20 @@ onMounted(() => {
 
   draw()
 
+  const observer = new IntersectionObserver(
+    (entries) => {
+      if (entries[0].isIntersecting) {
+        visible.value = true
+      }
+    },
+    { threshold: 0.15 },
+  )
+  observer.observe(canvas.parentElement!)
+
   onUnmounted(() => {
     cancelAnimationFrame(animationId)
     window.removeEventListener('resize', resize)
-    window.removeEventListener('mousemove', onMouseMove)
+    observer.disconnect()
   })
 })
 </script>
@@ -137,66 +119,106 @@ onMounted(() => {
     <canvas ref="canvasRef" class="bg-canvas"></canvas>
 
     <div class="container">
-      <div class="project-trigger" @click="openModal">
-        <div class="trigger-content">
-          <span class="trigger-label">PROYECTO DESTACADO</span>
-          <h2 class="glitch-text" data-text="SISTEMA INTEGRAL">SISTEMA INTEGRAL</h2>
-          <p>DECSA - Distribuidora Eléctrica</p>
-          <div class="trigger-features">
-            <span>RAG</span>
-            <span>SignalR</span>
-            <span>AI</span>
-            <span>Maps</span>
-            <span>Voice</span>
+      <div class="section-header" :class="{ visible }">
+        <span class="label">// CASE STUDY</span>
+        <h2>
+          <span class="word" style="--delay: 0.1s">PLATAFORMA</span>
+          <span class="word" style="--delay: 0.25s">INTEGRAL</span>
+          <span class="word accent" style="--delay: 0.4s">DECSA</span>
+        </h2>
+        <div class="divider" :class="{ visible }">
+          <span class="divider-line"></span>
+          <span class="divider-dot"></span>
+          <span class="divider-line"></span>
+        </div>
+      </div>
+
+      <div class="content-grid" :class="{ visible }">
+        <div class="info-panel">
+          <div class="panel-header">
+            <span class="panel-tag">SYS.OVERVIEW</span>
+            <div class="panel-line"></div>
+          </div>
+
+          <p class="panel-text">
+            Sistema integral de gestión eléctrica para ~13,000 clientes. Los usuarios generan
+            reclamos y consultan facturas vía WhatsApp. Operadores gestionan reclamos auditados por
+            origen, despachan guardias con tracking GPS, y monitorean la red en mapa con datos
+            geoespaciales de PostGIS. IA detecta anomalías de consumo por categoría.
+          </p>
+
+          <div class="panel-specs">
+            <div v-for="(s, i) in techStack" :key="i" class="spec-row">
+              <span class="spec-key">{{ s.key }}</span>
+              <span class="spec-val">{{ s.val }}</span>
+            </div>
+          </div>
+
+          <div class="module-header">
+            <span class="module-tag">MODULES</span>
+            <div class="module-line"></div>
+          </div>
+
+          <div class="feature-list">
+            <div v-for="(f, i) in modules" :key="i" class="feature-item" :style="{ '--i': i }">
+              <span class="feature-dot"></span>
+              <div class="feature-body">
+                <span class="feature-label">{{ f.label }}</span>
+                <span class="feature-desc">{{ f.desc }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="carousel-wrapper"
+          @mousemove="onDistortionMove"
+          @mouseenter="onDistortionEnter"
+          @mouseleave="onDistortionLeave"
+        >
+          <div
+            class="distort-container"
+            :class="{ active: isHovering }"
+            :style="{ '--mx': mouseX + '%', '--my': mouseY + '%' }"
+          >
+            <Swiper
+              :modules="[Autoplay, Pagination]"
+              :autoplay="{ delay: 3000, disableOnInteraction: false }"
+              :pagination="{ clickable: true }"
+              :loop="true"
+              :speed="600"
+              class="swiper"
+              @slide-change="onSwiperSlideChange"
+            >
+              <SwiperSlide v-for="(img, i) in images" :key="i">
+                <img :src="img.src" :alt="img.title" />
+              </SwiperSlide>
+            </Swiper>
           </div>
         </div>
       </div>
     </div>
 
-    <Teleport to="body">
-      <Transition name="modal">
-        <div v-if="isModalOpen" class="modal-overlay" @click="closeModal">
-          <div class="modal-content" @click.stop>
-            <button class="modal-close" @click="closeModal">CLOSE</button>
-
-            <div class="modal-header">
-              <h2>{{ systemInfo.title }}</h2>
-              <p>{{ systemInfo.company }}</p>
-            </div>
-
-            <div class="carousel-container">
-              <button class="nav-btn prev" @click="prevImage">PREV</button>
-
-              <div class="carousel-main" v-if="activeImage">
-                <img :src="activeImage.src" :alt="activeImage.title" class="main-image" />
-                <div class="image-info">
-                  <h3>{{ activeImage.title }}</h3>
-                  <p>{{ activeImage.desc }}</p>
-                </div>
-              </div>
-
-              <button class="nav-btn next" @click="nextImage">NEXT</button>
-            </div>
-
-            <div class="thumbnails">
-              <div
-                v-for="(img, index) in systemInfo.images"
-                :key="index"
-                class="thumb"
-                :class="{ active: activeIndex === index }"
-                @click="selectImage(index)"
-              >
-                <img :src="img.src" :alt="img.title" />
-              </div>
-            </div>
-
-            <div class="modal-footer">
-              <p>{{ systemInfo.description }}</p>
-            </div>
-          </div>
-        </div>
-      </Transition>
-    </Teleport>
+    <svg style="position: absolute; width: 0; height: 0; overflow: hidden" aria-hidden="true">
+      <defs>
+        <filter id="decsa-distort" x="-20%" y="-20%" width="140%" height="140%">
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.02"
+            numOctaves="4"
+            result="noise"
+            seed="2"
+          />
+          <feDisplacementMap
+            in="SourceGraphic"
+            in2="noise"
+            scale="25"
+            xChannelSelector="R"
+            yChannelSelector="G"
+          />
+        </filter>
+      </defs>
+    </svg>
   </section>
 </template>
 
@@ -204,7 +226,7 @@ onMounted(() => {
 .projects-section {
   position: relative;
   padding: 6rem 2rem;
-  background: #0a0a0f;
+  background: #000000;
   overflow: hidden;
 }
 
@@ -221,293 +243,368 @@ onMounted(() => {
 .container {
   position: relative;
   z-index: 1;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
-.project-trigger {
-  position: relative;
-  background: transparent;
-  border: 1px solid #1f2937;
-  padding: 3rem;
-  cursor: pointer;
-  transition: all 0.4s ease;
-}
-
-.project-trigger:hover {
-  border-color: #dc2626;
-  transform: translateY(-2px);
-}
-
-.trigger-content {
+.section-header {
   text-align: center;
+  margin-bottom: 3rem;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.trigger-label {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 0.7rem;
-  color: #dc2626;
-  letter-spacing: 0.3em;
+.section-header.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.label {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.75rem;
+  color: #f59e0b;
+  letter-spacing: 0.2em;
   display: block;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
 }
 
-.trigger-content h2 {
-  font-family: 'Orbitron', monospace;
-  font-size: clamp(2.5rem, 6vw, 4rem);
-  color: #ffffff;
-  letter-spacing: 0.1em;
-  position: relative;
-  display: inline-block;
-}
-
-.glitch-text {
-  animation: glitch 3s infinite;
-}
-
-@keyframes glitch {
-  0%,
-  90%,
-  100% {
-    text-shadow: none;
-  }
-  91% {
-    text-shadow:
-      2px 0 #dc2626,
-      -2px 0 #fff;
-  }
-  92% {
-    text-shadow:
-      -2px 0 #dc2626,
-      2px 0 #fff;
-  }
-  93% {
-    text-shadow:
-      2px 2px #dc2626,
-      -2px -2px #fff;
-  }
-  94% {
-    text-shadow:
-      -2px 2px #dc2626,
-      2px -2px #fff;
-  }
-  95% {
-    text-shadow:
-      1px -1px #dc2626,
-      -1px 1px #fff;
-  }
-}
-
-.trigger-content p {
+h2 {
   font-family: 'Inter', sans-serif;
-  font-size: 1.125rem;
-  color: #6b7280;
-  margin: 1rem 0 1.5rem;
-}
-
-.trigger-features {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.trigger-features span {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 0.65rem;
-  padding: 0.4rem 0.8rem;
-  border: 1px solid #374151;
-  color: #9ca3af;
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  font-weight: 200;
+  color: #ffffff;
   letter-spacing: 0.15em;
-  transition: all 0.2s ease;
+  line-height: 1.1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.3em;
+  text-transform: uppercase;
 }
 
-.trigger-features span:hover {
-  border-color: #dc2626;
-  color: #dc2626;
+.word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(40px) scaleY(0.8);
+  transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--delay);
 }
 
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.95);
-  z-index: 9999;
+.section-header.visible .word {
+  opacity: 1;
+  transform: translateY(0) scaleY(1);
+}
+
+.word.accent {
+  color: #f59e0b;
+}
+
+.divider {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  opacity: 0;
+  transition: opacity 0.5s ease 0.6s;
 }
 
-.modal-content {
-  background: #0a0a0f;
-  width: 100%;
-  max-width: 1100px;
-  max-height: 90vh;
-  border: 1px solid #1f2937;
-  overflow-y: auto;
-  position: relative;
-  padding: 2rem;
+.divider.visible {
+  opacity: 1;
 }
 
-.modal-close {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: #dc2626;
-  border: none;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 0.7rem;
-  color: #fff;
-  cursor: pointer;
-  padding: 0.5rem 1rem;
-  letter-spacing: 0.1em;
-  z-index: 10;
+.divider-line {
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #f59e0b, transparent);
 }
 
-.modal-close:hover {
-  background: #b91c1c;
+.divider-dot {
+  width: 4px;
+  height: 4px;
+  background: #f59e0b;
+  border-radius: 50%;
 }
 
-.modal-header {
-  text-align: center;
-  margin-bottom: 2rem;
+.content-grid {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 2rem;
+  align-items: start;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.2s;
 }
 
-.modal-header h2 {
-  font-family: 'Orbitron', monospace;
-  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
-  color: #fff;
-  letter-spacing: 0.1em;
+.content-grid.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.modal-header p {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 0.8rem;
-  color: #dc2626;
-  margin-top: 0.5rem;
-  letter-spacing: 0.1em;
+.info-panel {
+  position: sticky;
+  top: 6rem;
+  background: #050505;
+  border: 1px solid #1a1a1a;
+  border-radius: 8px;
+  padding: 1.5rem;
 }
 
-.carousel-container {
+.panel-header {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.panel-tag {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #f59e0b;
+  letter-spacing: 0.2em;
+}
+
+.panel-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, #f59e0b, transparent);
+}
+
+.panel-text {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.75rem;
+  line-height: 1.7;
+  color: #9ca3af;
   margin-bottom: 1.5rem;
 }
 
-.nav-btn {
-  background: transparent;
-  border: 1px solid #374151;
+.panel-specs {
+  border-top: 1px solid #1a1a1a;
+  padding-top: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.spec-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid #111;
+}
+
+.spec-key {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  color: #4b5563;
+  letter-spacing: 0.15em;
+}
+
+.spec-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: #e5e7eb;
+  letter-spacing: 0.05em;
+}
+
+.module-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.module-tag {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: #6b7280;
+  letter-spacing: 0.2em;
+}
+
+.module-line {
+  flex: 1;
+  height: 1px;
+  background: #1a1a1a;
+}
+
+.feature-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.5rem 0.6rem;
+  border-radius: 4px;
+  background: #0a0a0a;
+  border: 1px solid #151515;
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(0.4s + var(--i) * 0.08s);
+}
+
+.content-grid.visible .feature-item {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.feature-dot {
+  width: 4px;
+  height: 4px;
+  background: #f59e0b;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+.feature-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.feature-label {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.55rem;
+  font-weight: 700;
+  color: #f59e0b;
+  letter-spacing: 0.15em;
+}
+
+.feature-desc {
   font-family: 'Share Tech Mono', monospace;
   font-size: 0.65rem;
   color: #6b7280;
-  cursor: pointer;
-  padding: 0.75rem 1rem;
-  transition: all 0.2s ease;
-  letter-spacing: 0.1em;
-  flex-shrink: 0;
+  line-height: 1.4;
 }
 
-.nav-btn:hover {
-  border-color: #dc2626;
-  color: #dc2626;
+.carousel-wrapper {
+  position: relative;
+  padding: 2px;
+  background: #000000;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: crosshair;
 }
 
-.carousel-main {
-  flex: 1;
+.carousel-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  padding: 2px;
+  background: linear-gradient(
+    135deg,
+    rgba(245, 158, 11, 0.4),
+    transparent,
+    rgba(245, 158, 11, 0.2)
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  filter: blur(1px);
+  z-index: 2;
+  pointer-events: none;
 }
 
-.main-image {
+.carousel-wrapper::after {
+  content: '';
+  position: absolute;
+  inset: -10px;
+  border-radius: 16px;
+  background: transparent;
+  box-shadow:
+    0 0 40px rgba(245, 158, 11, 0.08),
+    0 0 80px rgba(245, 158, 11, 0.03);
+  filter: blur(16px);
+  z-index: -1;
+}
+
+.distort-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.distort-container.active {
+  animation: glitchShift 0.1s ease infinite;
+}
+
+.distort-container.active .swiper {
+  filter: url(#decsa-distort);
+}
+
+.swiper {
   width: 100%;
-  height: 420px;
-  object-fit: contain;
-  background: #111827;
+  height: 600px;
+  border-radius: 10px;
 }
 
-.image-info {
-  text-align: center;
-  margin-top: 1rem;
-  padding: 1rem;
-  background: #111827;
-}
-
-.image-info h3 {
-  font-family: 'Orbitron', monospace;
-  font-size: 0.95rem;
-  font-weight: 400;
-  color: #fff;
-}
-
-.image-info p {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.8rem;
-  color: #6b7280;
-  margin-top: 0.25rem;
-}
-
-.thumbnails {
+.swiper :deep(.swiper-slide) {
   display: flex;
-  gap: 0.5rem;
+  align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 2rem;
+  background: #000000;
 }
 
-.thumb {
-  width: 65px;
-  height: 45px;
-  cursor: pointer;
-  opacity: 0.35;
-  transition: all 0.2s ease;
-  border: 1px solid transparent;
-}
-
-.thumb:hover {
-  opacity: 0.6;
-}
-
-.thumb.active {
-  opacity: 1;
-  border-color: #dc2626;
-}
-
-.thumb img {
+.swiper :deep(.swiper-slide img) {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
-.modal-footer {
-  text-align: center;
-  padding-top: 1rem;
-  border-top: 1px solid #1f2937;
+.swiper :deep(.swiper-pagination) {
+  bottom: 8px;
 }
 
-.modal-footer p {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.85rem;
-  color: #6b7280;
-  max-width: 600px;
-  margin: 0 auto;
-  line-height: 1.6;
+.swiper :deep(.swiper-pagination-bullet) {
+  background: #374151;
+  opacity: 1;
+  width: 8px;
+  height: 8px;
 }
 
-.modal-enter-active,
-.modal-leave-active {
-  transition: opacity 0.3s ease;
+.swiper :deep(.swiper-pagination-bullet-active) {
+  background: #f59e0b;
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.5);
 }
 
-.modal-enter-from,
-.modal-leave-to {
-  opacity: 0;
+@keyframes glitchShift {
+  0% {
+    transform: translate(0);
+  }
+  25% {
+    transform: translate(-1px, 1px);
+  }
+  50% {
+    transform: translate(1px, -1px);
+  }
+  75% {
+    transform: translate(-1px, -1px);
+  }
+  100% {
+    transform: translate(0);
+  }
 }
 
-@media (max-width: 768px) {
-  .main-image {
-    height: 280px;
+@media (max-width: 900px) {
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .info-panel {
+    position: static;
+  }
+
+  .swiper {
+    height: 350px;
   }
 }
 </style>

@@ -59,37 +59,28 @@ onMounted(() => {
     <!-- Right Sidebar - 3D Design -->
     <NavigationSidebar position="right" :texts="['DESIGN', '3D']" @click="scrollTo('experience')" />
 
-    <!-- Content Overlay -->
-    <div class="hero-content" :class="{ visible: showContent }">
-      <div class="hero-text">
-        <h1 class="hero-title">
-          <span class="line-1">ALEXANDER</span>
-          <span class="line-2">TEJADA</span>
-        </h1>
+    <!-- Nombre en esquina inferior izquierda -->
+    <div class="corner-title" :class="{ visible: showContent }">
+      <h1 class="hero-title">
+        <span class="line-1">ALEXANDER</span>
+        <span class="line-2">TEJADA</span>
+      </h1>
+      <p class="hero-subtitle">SENIOR AI IMPLEMENTER & FULL-STACK DEVELOPER</p>
+    </div>
 
-        <p class="hero-subtitle">SENIOR AI IMPLEMENTER & FULL-STACK DEVELOPER</p>
+    <!-- CTA Buttons en esquina inferior derecha -->
+    <div class="corner-cta" :class="{ visible: showContent }">
+      <button class="btn-primary" @click="scrollTo('projects')">
+        <span>VIEW PROJECTS</span>
+      </button>
+      <button class="btn-secondary" @click="scrollTo('experience')">
+        <span>CONTACT</span>
+      </button>
+    </div>
 
-        <div class="hero-tags">
-          <span class="tag">LangChain • LangGraph</span>
-          <span class="tag">RAG • Vector Search</span>
-          <span class="tag">C# .NET • FastAPI</span>
-          <span class="tag">ZBrush • Blender • Three.js</span>
-        </div>
-
-        <div class="cta-buttons">
-          <button class="btn-primary" @click="scrollTo('projects')">
-            <span>[ VIEW PROJECTS ]</span>
-          </button>
-          <button class="btn-secondary" @click="scrollTo('experience')">
-            <span>[ CONTACT ]</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Scroll indicator -->
-      <div class="scroll-indicator" v-show="scrollProgress < 0.1">
-        <span>↓</span>
-      </div>
+    <!-- Scroll indicator -->
+    <div class="scroll-indicator" :class="{ visible: showContent }" v-show="scrollProgress < 0.1">
+      <span>↓</span>
     </div>
   </section>
 </template>
@@ -243,42 +234,47 @@ onMounted(() => {
   }
 }
 
-.hero-content {
+.corner-title {
   position: absolute;
+  bottom: 3rem;
+  left: 3rem;
   z-index: 10;
-  width: 100%;
-  max-width: 1000px;
-  padding: 2rem;
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateX(-20px);
   transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
 
-.hero-content.visible {
+.corner-title.visible {
   opacity: 1;
-  transform: translate(-50%, -50%);
+  transform: translateX(0);
 }
 
-.hero-text {
-  text-align: center;
-  width: 100%;
-  padding: 3rem 2rem;
-  background: transparent;
-  position: relative;
+.corner-cta {
+  position: absolute;
+  bottom: 3rem;
+  right: 3rem;
+  z-index: 10;
+  display: flex;
+  gap: 1rem;
+  opacity: 0;
+  transform: translateX(20px);
+  transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.corner-cta.visible {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .hero-title {
   font-family: 'Orbitron', sans-serif;
-  font-size: clamp(3rem, 10vw, 6rem);
+  font-size: clamp(1.5rem, 3vw, 2rem);
   font-weight: 700;
-  line-height: 1;
-  margin-bottom: 1rem;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
   letter-spacing: 0.08em;
   position: relative;
-  display: inline-block;
+  display: block;
 }
 
 .hero-title .line-1 {
@@ -298,18 +294,17 @@ onMounted(() => {
 }
 
 .hero-title .line-1::before {
-  color: #dc2626;
+  color: #1f2937;
   animation: glitch-tv-1 5s infinite steps(20);
 }
 
 .hero-title .line-1::after {
-  color: #000;
+  color: #6b7280;
   animation: glitch-tv-2 5s infinite steps(20);
 }
 
 .hero-title .line-2 {
-  display: inline-block;
-  margin-left: 0.3em;
+  display: block;
   animation: glitch-tv 5s infinite steps(20);
   animation-delay: 0.1s;
 }
@@ -325,13 +320,13 @@ onMounted(() => {
 }
 
 .hero-title .line-2::before {
-  color: #dc2626;
+  color: #1f2937;
   animation: glitch-tv-1 5s infinite steps(20);
   animation-delay: 0.1s;
 }
 
 .hero-title .line-2::after {
-  color: #000;
+  color: #6b7280;
   animation: glitch-tv-2 5s infinite steps(20);
   animation-delay: 0.1s;
 }
@@ -461,37 +456,38 @@ onMounted(() => {
   }
   91% {
     text-shadow:
-      2px 0 #dc2626,
-      -2px 0 #000;
+      2px 0 #1f2937,
+      -2px 0 #6b7280;
   }
   92% {
     text-shadow:
-      -2px 0 #dc2626,
-      2px 0 #000;
+      -2px 0 #1f2937,
+      2px 0 #6b7280;
   }
   93% {
     text-shadow:
-      2px 2px #dc2626,
-      -2px -2px #000;
+      2px 2px #1f2937,
+      -2px -2px #6b7280;
   }
   94% {
     text-shadow:
-      -2px 2px #dc2626,
-      2px -2px #000;
+      -2px 2px #1f2937,
+      2px -2px #6b7280;
   }
   95% {
     text-shadow:
-      1px -1px #dc2626,
-      -1px 1px #000;
+      1px -1px #1f2937,
+      -1px 1px #6b7280;
   }
 }
 
-.hero-subtitle {
+.corner-title .hero-subtitle {
   font-family: 'Inter', sans-serif;
-  font-size: 1rem;
-  color: #374151;
-  margin-bottom: 1.5rem;
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-bottom: 0;
   font-weight: 400;
+  letter-spacing: 0.05em;
 }
 
 .content-frame {
@@ -1025,93 +1021,31 @@ onMounted(() => {
   }
 }
 
-.hero-subtitle {
-  font-family: 'Inter', sans-serif;
-  font-size: 1rem;
-  color: #4b5563;
-  margin-bottom: 1.5rem;
-  font-weight: 400;
-}
-
-.hero-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 3rem;
-  justify-content: center;
-}
-
-.tag {
-  padding: 0.4rem 0.8rem;
-  background: #f3f4f6;
-  border-radius: 20px;
+.corner-cta .btn-primary,
+.corner-cta .btn-secondary {
+  padding: 0.75rem 1.5rem;
   font-size: 0.75rem;
-  font-family: 'Inter', sans-serif;
-  color: #4b5563;
-  transition: all 0.2s ease;
-}
-
-.tag:hover {
-  background: #e5e7eb;
-  color: #111827;
-}
-
-.cta-buttons {
-  display: flex;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.btn-primary,
-.btn-secondary {
-  padding: 0.5rem 0;
-  font-size: 0.875rem;
   font-weight: 500;
   font-family: 'Inter', sans-serif;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
   cursor: pointer;
-  transition: all 0.2s ease;
-  background: none;
-  border: none;
+  transition: all 0.3s ease;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  color: #111827;
+  white-space: nowrap;
 }
 
-.btn-primary {
-  color: #000000;
-  position: relative;
-}
-
-.btn-primary::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: #000000;
-  transform: scaleX(0);
-  transition: transform 0.2s ease;
-}
-
-.btn-primary:hover {
-  color: #000000;
-}
-
-.btn-primary:hover::after {
-  transform: scaleX(1);
-}
-
-.btn-secondary {
-  color: #374151;
-}
-
-.btn-secondary:hover {
-  color: #000000;
+.corner-cta .btn-primary:hover,
+.corner-cta .btn-secondary:hover {
+  background: #111827;
+  color: #ffffff;
+  border-color: #111827;
 }
 
 .scroll-indicator {
   position: absolute;
-  bottom: 3rem;
+  bottom: 2rem;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -1119,9 +1053,14 @@ onMounted(() => {
   align-items: center;
   color: var(--text-muted);
   font-size: 1.5rem;
+  opacity: 0;
+  font-family: 'Share Tech Mono', monospace;
+  transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scroll-indicator.visible {
   opacity: 0.4;
   animation: bounce 2s infinite;
-  font-family: 'Share Tech Mono', monospace;
 }
 
 @keyframes bounce {
@@ -1173,50 +1112,35 @@ onMounted(() => {
     display: flex;
   }
 
-  .hero-content {
-    padding: 1.5rem;
+  .corner-title {
+    bottom: 5rem;
+    left: 1.5rem;
   }
 
   .hero-title {
-    font-size: clamp(1.5rem, 8vw, 2.5rem);
-    margin-bottom: 1.5rem;
+    font-size: clamp(1.2rem, 5vw, 1.5rem);
   }
 
-  .line-2 {
-    font-size: 0.8em;
+  .corner-title .hero-subtitle {
+    font-size: 0.65rem;
   }
 
-  .hero-subtitle {
-    font-size: 0.875rem;
-    margin-bottom: 2rem;
-  }
-
-  .hero-tags {
-    gap: 0.4rem;
-    margin-bottom: 2rem;
-  }
-
-  .tag {
-    font-size: 0.7rem;
-    padding: 0.35rem 0.7rem;
-  }
-
-  .cta-buttons {
+  .corner-cta {
+    bottom: 1.5rem;
+    right: 1.5rem;
+    left: 1.5rem;
     flex-direction: column;
-    gap: 1rem;
-    width: 100%;
   }
 
-  .btn-primary,
-  .btn-secondary {
+  .corner-cta .btn-primary,
+  .corner-cta .btn-secondary {
     width: 100%;
-    padding: 0.75rem 1.5rem;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
+    padding: 0.65rem 1rem;
   }
 
   .scroll-indicator {
-    bottom: 2rem;
-    font-size: 1.2rem;
+    display: none;
   }
 }
 </style>

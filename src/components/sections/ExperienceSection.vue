@@ -128,12 +128,12 @@ onMounted(() => {
   const gridSize = 35
 
   const draw = () => {
-    ctx.fillStyle = '#0a0a0f'
+    ctx.fillStyle = '#fafafa'
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
     for (let x = gridSize; x < canvas.width; x += gridSize) {
       for (let y = gridSize; y < canvas.height; y += gridSize) {
-        ctx.fillStyle = 'rgba(80, 80, 90, 0.25)'
+        ctx.fillStyle = 'rgba(31, 41, 55, 0.15)'
         ctx.fillRect(x - 1, y - 1, 2, 2)
       }
     }
@@ -229,7 +229,7 @@ onMounted(() => {
 .experience-section {
   position: relative;
   padding: 6rem 2rem;
-  background: #0a0a0f;
+  background: #fafafa;
   overflow: hidden;
 }
 
@@ -254,11 +254,11 @@ onMounted(() => {
   font-family: 'Orbitron', monospace;
   font-size: clamp(1.75rem, 4vw, 2.5rem);
   font-weight: 700;
-  color: #ffffff;
+  color: #111827;
   letter-spacing: 0.1em;
   margin-bottom: 3rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid #1f2937;
+  border-bottom: 1px solid #e5e7eb;
   animation: glitch 3s infinite;
 }
 
@@ -270,28 +270,28 @@ onMounted(() => {
   }
   91% {
     text-shadow:
-      2px 0 #dc2626,
-      -2px 0 #fff;
+      2px 0 #1f2937,
+      -2px 0 #6b7280;
   }
   92% {
     text-shadow:
-      -2px 0 #dc2626,
-      2px 0 #fff;
+      -2px 0 #1f2937,
+      2px 0 #6b7280;
   }
   93% {
     text-shadow:
-      2px 2px #dc2626,
-      -2px -2px #fff;
+      2px 2px #1f2937,
+      -2px -2px #6b7280;
   }
   94% {
     text-shadow:
-      -2px 2px #dc2626,
-      2px -2px #fff;
+      -2px 2px #1f2937,
+      2px -2px #6b7280;
   }
   95% {
     text-shadow:
-      1px -1px #dc2626,
-      -1px 1px #fff;
+      1px -1px #1f2937,
+      -1px 1px #6b7280;
   }
 }
 
@@ -308,7 +308,7 @@ onMounted(() => {
   top: 0;
   bottom: 0;
   width: 1px;
-  background: #1f2937;
+  background: #d1d5db;
 }
 
 .timeline-item {
@@ -323,23 +323,26 @@ onMounted(() => {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: #dc2626;
+  background: #1f2937;
 }
 
 .timeline-content {
-  background: rgba(17, 24, 39, 0.6);
-  border: 1px solid #1f2937;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
   padding: 1.5rem;
   cursor: pointer;
   transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .timeline-content:hover {
-  border-color: #374151;
+  border-color: #d1d5db;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 .timeline-item.expanded .timeline-content {
-  border-color: #dc2626;
+  border-color: #1f2937;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .job-header {
@@ -354,27 +357,27 @@ onMounted(() => {
   font-family: 'Inter', sans-serif;
   font-size: 1.1rem;
   font-weight: 600;
-  color: #ffffff;
+  color: #111827;
 }
 
 .job-company {
   font-family: 'Share Tech Mono', monospace;
   font-size: 0.85rem;
-  color: #dc2626;
+  color: #1f2937;
   margin-top: 0.25rem;
 }
 
 .job-period {
   font-family: 'Share Tech Mono', monospace;
   font-size: 0.75rem;
-  color: #4b5563;
+  color: #6b7280;
   white-space: nowrap;
 }
 
 .job-description {
   font-family: 'Inter', sans-serif;
   font-size: 0.875rem;
-  color: #6b7280;
+  color: #4b5563;
   margin-top: 0.75rem;
   line-height: 1.5;
 }
@@ -382,7 +385,7 @@ onMounted(() => {
 .job-highlights {
   margin-top: 1rem;
   padding-top: 1rem;
-  border-top: 1px solid #1f2937;
+  border-top: 1px solid #e5e7eb;
 }
 
 .job-highlights ul {
@@ -394,22 +397,23 @@ onMounted(() => {
 .job-highlights li {
   font-family: 'Inter', sans-serif;
   font-size: 0.825rem;
-  color: #d1d5db;
+  color: #374151;
   padding: 0.35rem 0;
   padding-left: 1rem;
-  border-left: 2px solid #1f2937;
+  border-left: 2px solid #d1d5db;
   margin-bottom: 0.25rem;
 }
 
 .job-highlights li:hover {
-  border-left-color: #dc2626;
+  border-left-color: #1f2937;
+  color: #111827;
 }
 
 .expand-hint {
   display: block;
   font-family: 'Share Tech Mono', monospace;
   font-size: 0.7rem;
-  color: #4b5563;
+  color: #9ca3af;
   margin-top: 1rem;
   text-align: right;
   letter-spacing: 0.1em;
@@ -421,16 +425,17 @@ onMounted(() => {
 }
 
 .skill-category {
-  background: rgba(17, 24, 39, 0.6);
-  border: 1px solid #1f2937;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
   padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .skill-category h3 {
   font-family: 'Share Tech Mono', monospace;
   font-size: 0.75rem;
   font-weight: 400;
-  color: #dc2626;
+  color: #1f2937;
   margin-bottom: 1rem;
   letter-spacing: 0.2em;
 }
@@ -445,16 +450,17 @@ onMounted(() => {
   font-family: 'Share Tech Mono', monospace;
   font-size: 0.7rem;
   padding: 0.35rem 0.6rem;
-  background: #0a0a0f;
-  border: 1px solid #1f2937;
-  color: #6b7280;
+  background: #f9fafb;
+  border: 1px solid #d1d5db;
+  color: #4b5563;
   letter-spacing: 0.05em;
   transition: all 0.2s ease;
 }
 
 .skill-tag:hover {
-  border-color: #dc2626;
-  color: #fff;
+  border-color: #1f2937;
+  color: #111827;
+  background: #ffffff;
 }
 
 @media (max-width: 768px) {

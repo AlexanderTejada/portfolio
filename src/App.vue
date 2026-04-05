@@ -13,34 +13,35 @@ const rows = 8
 const tiles = Array.from({ length: cols * rows }, (_, i) => i)
 
 const handleScroll = () => {
-  const viewportHeight = window.innerHeight
+  // Transición desactivada - demasiado frecuente
+  // const viewportHeight = window.innerHeight
 
-  for (const sectionId of sections) {
-    const el = document.getElementById(sectionId)
-    if (el) {
-      const rect = el.getBoundingClientRect()
-      if (rect.top >= -viewportHeight / 2 && rect.top <= viewportHeight / 2) {
-        const prevSection = currentSection.value
-        const newSection = sectionId
+  // for (const sectionId of sections) {
+  //   const el = document.getElementById(sectionId)
+  //   if (el) {
+  //     const rect = el.getBoundingClientRect()
+  //     if (rect.top >= -viewportHeight / 2 && rect.top <= viewportHeight / 2) {
+  //       const prevSection = currentSection.value
+  //       const newSection = sectionId
 
-        const currentIdx = sections.indexOf(newSection)
-        const prevIdx = sections.indexOf(prevSection)
+  //       const currentIdx = sections.indexOf(newSection)
+  //       const prevIdx = sections.indexOf(prevSection)
 
-        if (currentIdx !== prevIdx && !isTransitioning.value) {
-          isTransitioning.value = true
+  //       if (currentIdx !== prevIdx && !isTransitioning.value) {
+  //         isTransitioning.value = true
 
-          setTimeout(() => {
-            currentSection.value = newSection
-          }, 500)
+  //         setTimeout(() => {
+  //           currentSection.value = newSection
+  //         }, 500)
 
-          setTimeout(() => {
-            isTransitioning.value = false
-          }, 1200)
-        }
-        break
-      }
-    }
-  }
+  //         setTimeout(() => {
+  //           isTransitioning.value = false
+  //         }, 1200)
+  //       }
+  //       break
+  //     }
+  //   }
+  // }
 }
 
 onMounted(() => {
@@ -137,7 +138,7 @@ onUnmounted(() => {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(220, 38, 38, 0.15);
+  background: rgba(31, 41, 55, 0.1);
   opacity: 0;
   z-index: 2;
 }
@@ -172,7 +173,7 @@ onUnmounted(() => {
 }
 
 .transition-tile {
-  background: #dc2626;
+  background: #1f2937;
   transform: scale(0) rotate(45deg);
   opacity: 0;
 }
@@ -207,11 +208,11 @@ onUnmounted(() => {
   left: 0;
   width: 100%;
   height: 3px;
-  background: #fff;
+  background: #1f2937;
   box-shadow:
-    0 0 15px #dc2626,
-    0 0 30px #dc2626,
-    0 0 60px rgba(220, 38, 38, 0.5);
+    0 0 15px rgba(31, 41, 55, 0.5),
+    0 0 30px rgba(31, 41, 55, 0.3),
+    0 0 60px rgba(31, 41, 55, 0.2);
   opacity: 0;
   z-index: 4;
 }
