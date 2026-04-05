@@ -10,7 +10,6 @@ defineProps<{
     <div class="sidebar-content">
       <span v-for="text in texts" :key="text" class="sidebar-text">{{ text }}</span>
     </div>
-    <div class="sidebar-glow"></div>
   </div>
 </template>
 
@@ -23,25 +22,11 @@ defineProps<{
   display: flex;
   align-items: center;
   gap: 1.5rem;
-  padding: 4.5rem 3rem;
-  background: rgba(20, 20, 31, 0.8);
-  border: 1px solid rgba(34, 211, 238, 0.15);
-  backdrop-filter: blur(20px);
-  transition: all 0.4s ease;
+  padding: 4rem 2.5rem;
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  transition: all 0.2s ease;
   cursor: pointer;
-}
-
-.sidebar::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(34, 211, 238, 0.05) 0%, rgba(236, 72, 153, 0.05) 100%);
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.4s ease;
 }
 
 .sidebar.left {
@@ -55,45 +40,28 @@ defineProps<{
 }
 
 .sidebar:hover {
-  border-color: rgba(34, 211, 238, 0.4);
-  transform: translateY(-50%) scale(1.02);
-}
-
-.sidebar:hover::before {
-  opacity: 1;
+  background: #fafafa;
+  border-color: #d1d5db;
 }
 
 .sidebar:hover .sidebar-text {
-  color: #22d3ee;
-  text-shadow: 0 0 20px rgba(34, 211, 238, 0.5);
-}
-
-.sidebar-glow {
-  position: absolute;
-  width: 60px;
-  height: 60px;
-  background: radial-gradient(circle, rgba(34, 211, 238, 0.15) 0%, transparent 70%);
-  border-radius: 50%;
-  bottom: 30px;
-  right: 30px;
-  pointer-events: none;
+  color: #2563eb;
 }
 
 .sidebar-content {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.5rem;
 }
 
 .sidebar-text {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 1rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
   font-weight: 500;
-  letter-spacing: 0.25em;
-  color: #64748b;
+  letter-spacing: 0.15em;
+  color: #9ca3af;
   writing-mode: vertical-rl;
   text-orientation: mixed;
-  transition: all 0.3s ease;
 }
 
 .sidebar.left .sidebar-text {

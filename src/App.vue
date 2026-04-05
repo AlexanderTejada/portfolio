@@ -3,10 +3,9 @@ import HeroSection from './components/sections/HeroSection.vue'
 </script>
 
 <template>
-  <div id="app" class="ambient-glow grid-bg">
+  <div id="app">
     <HeroSection />
 
-    <!-- Placeholder for future sections -->
     <section class="placeholder-section">
       <div class="container">
         <h2>[ LOADING SECTIONS ]</h2>
