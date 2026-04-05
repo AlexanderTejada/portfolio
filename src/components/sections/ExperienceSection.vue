@@ -3,7 +3,7 @@
     <canvas ref="canvasRef" class="bg-canvas"></canvas>
 
     <div class="container">
-      <h2 class="section-title glitch-text" data-text="EXPERIENCIA">EXPERIENCIA</h2>
+      <h2 class="section-title glitch-text" data-text="EXPERIENCE">EXPERIENCE</h2>
 
       <div class="timeline">
         <div

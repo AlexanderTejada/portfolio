@@ -42,12 +42,12 @@ const toggleAudio = () => {
 watch(isModalAudioActive, (active) => {
   if (!audioRef.value) return
   if (active) {
-    // Si la música global estaba sonando, la pausamos
+    // If global music was playing, we pause it
     if (isPlaying.value) {
       audioRef.value.pause()
     }
   } else {
-    // Si la música global debería estar sonando (según el toggle), la reanudamos
+    // If global music should be playing (based on the toggle), we resume it
     if (isPlaying.value) {
       audioRef.value.play().catch(() => {})
     }
@@ -58,17 +58,17 @@ onUnmounted(() => {})
 
 const isTransitioning = ref(false)
 
-// Partículas de transición entre secciones
+// Section transition particles
 const particleCount = 800
 const particles = Array.from({ length: particleCount }, (_, i) => {
   const x = Math.random() * 100
   const y = Math.random() * 100
 
-  // Dirección aleatoria para el vuelo
+  // Random travel direction
   const angle = Math.random() * Math.PI * 2
   const distance = Math.random() * 80 + 40
 
-  // Puntos de control Bézier para trayectoria orgánica
+  // Bézier control points for organic trajectory
   const control1X = x + Math.cos(angle) * distance * 0.3 + (Math.random() - 0.5) * 30
   const control1Y = y + Math.sin(angle) * distance * 0.3 + (Math.random() - 0.5) * 30
   const control2X = x + Math.cos(angle) * distance * 0.7 + (Math.random() - 0.5) * 40
@@ -76,14 +76,14 @@ const particles = Array.from({ length: particleCount }, (_, i) => {
   const endX = x + Math.cos(angle) * distance + (Math.random() - 0.5) * 50
   const endY = y + Math.sin(angle) * distance + (Math.random() - 0.5) * 50
 
-  // Paleta de colores grises con variación
+  // Gray color palette with variation
   const colors = ['#1f2937', '#374151', '#4b5563', '#6b7280', '#9ca3af', '#d1d5db']
   const color = colors[Math.floor(Math.random() * colors.length)]
 
-  // Tamaño aleatorio de partícula
+  // Random particle size
   const size = Math.random() * 4 + 1
 
-  // Delay basado en posición para efecto de barrido
+  // Position-based delay for sweeping effect
   const delay = (x / 100) * 0.6 + Math.random() * 0.3
 
   return {

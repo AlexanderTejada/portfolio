@@ -15,21 +15,21 @@ const modulesOpen = ref(false)
 
 const images = [
   { src: '/DECSA/1.png', title: 'Dashboard' },
-  { src: '/DECSA/2.png', title: 'Búsqueda' },
-  { src: '/DECSA/3.png', title: 'Geolocalización' },
-  { src: '/DECSA/4.png', title: 'Voz' },
-  { src: '/DECSA/5.png', title: 'Chatbot RAG' },
-  { src: '/DECSA/6.png', title: 'Chat Operadores' },
-  { src: '/DECSA/7.png', title: 'Gestión de Guardias' },
+  { src: '/DECSA/2.png', title: 'Search' },
+  { src: '/DECSA/3.png', title: 'Geolocation' },
+  { src: '/DECSA/4.png', title: 'Voice' },
+  { src: '/DECSA/5.png', title: 'RAG Chatbot' },
+  { src: '/DECSA/6.png', title: 'Operator Chat' },
+  { src: '/DECSA/7.png', title: 'Guard Management' },
 ]
 
 const modules = [
-  { label: 'WHATSAPPI', desc: 'Reclamos, consultas y facturación vía WhatsApp' },
-  { label: 'FIELD APP', desc: 'App móvil para guardias: cierre de reclamos en terreno' },
-  { label: 'AI DETECT', desc: 'Detección de anomalías de consumo por categoría de usuario' },
-  { label: 'GEO-MAP', desc: 'PostGIS → coordenadas: SETAs, REDMT, seccionadores' },
-  { label: 'MSG AUDIT', desc: 'Auditoría completa de mensajes y chat en tiempo real' },
-  { label: 'KPIs', desc: 'Consumo, notas de crédito, facturas, dinero pendiente' },
+  { label: 'WHATSAPPI', desc: 'Claims, inquiries, and billing via WhatsApp' },
+  { label: 'FIELD APP', desc: 'Mobile app for guards: on-field claim resolution' },
+  { label: 'AI DETECT', desc: 'Anomaly detection in consumption by user category' },
+  { label: 'GEO-MAP', desc: 'PostGIS → coordinates: SETAs, REDMT, disconnectors' },
+  { label: 'MSG AUDIT', desc: 'Full message and real-time chat auditing' },
+  { label: 'KPIs', desc: 'Consumption, credit notes, invoices, pending balance' },
 ]
 
 const techStack = [
@@ -63,9 +63,9 @@ onUnmounted(() => observer?.disconnect())
       <div class="section-header" :class="{ visible }">
         <span class="label">// CASE STUDY</span>
         <h2>
-          <span class="word" style="--delay: 0.1s">PLATAFORMA</span>
-          <span class="word" style="--delay: 0.25s">INTEGRAL</span>
-          <span class="word accent" style="--delay: 0.4s">DECSA</span>
+          <span class="word" style="--delay: 0.1s">COMPLETE</span>
+          <span class="word" style="--delay: 0.25s">DECSA</span>
+          <span class="word accent" style="--delay: 0.4s">PLATFORM</span>
         </h2>
         <div class="divider" :class="{ visible }">
           <span class="divider-line"></span>
@@ -82,10 +82,10 @@ onUnmounted(() => observer?.disconnect())
           </div>
 
           <p class="panel-text">
-            Sistema integral de gestión eléctrica para ~13,000 clientes. Los usuarios generan
-            reclamos y consultan facturas vía WhatsApp. Operadores gestionan reclamos auditados por
-            origen, despachan guardias con tracking GPS, y monitorean la red en mapa con datos
-            geoespaciales de PostGIS. IA detecta anomalías de consumo por categoría.
+            Comprehensive electrical management system for ~13,000 customers. Users generate
+            claims and consult invoices via WhatsApp. Operators manage claims audited by
+            origin, dispatch guards with GPS tracking, and monitor the network on a map with
+            geospatial data from PostGIS. AI detects consumption anomalies by category.
           </p>
 
           <div class="panel-specs">
