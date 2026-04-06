@@ -19,11 +19,16 @@ const mouse = new THREE.Vector2()
 const targetMouse = new THREE.Vector2()
 const raycaster = new THREE.Raycaster()
 const intersectionPoint = new THREE.Vector3()
-const mouseInfluenceRadius = 8
+
+// Track whether a real mouse is present
+let lastMouseTime = 0
+let hasRealMouse = false
 
 const onMouseMove = (event: MouseEvent) => {
   targetMouse.x = (event.clientX / window.innerWidth) * 2 - 1
   targetMouse.y = -(event.clientY / window.innerHeight) * 2 + 1
+  lastMouseTime = performance.now()
+  hasRealMouse = true
 }
 
 defineExpose({ mouse, intersectionPoint })
@@ -255,6 +260,16 @@ onMounted(() => {
   const animate = () => {
     time += 0.02
     
+    // Auto idle animation: drives targetMouse on a circular path
+    // when no real mouse has moved for >1s (or never, e.g. touch devices)
+    const idleTimeout = 1000
+    const isIdle = !hasRealMouse || (performance.now() - lastMouseTime > idleTimeout)
+    if (isIdle) {
+      // Gentle circular sweep — same amplitude the cursor would produce
+      targetMouse.x = Math.sin(time * 0.35) * 0.55
+      targetMouse.y = Math.cos(time * 0.22) * 0.28
+    }
+
     // Smooth mouse
     mouse.x += (targetMouse.x - mouse.x) * 0.05
     mouse.y += (targetMouse.y - mouse.y) * 0.05

@@ -118,6 +118,7 @@ onMounted(() =>
       <div class="hud-corner bl" />
       <div class="hud-corner br" />
       <span class="hud-label">// SYS_ARCH_NODE</span>
+      <span class="hud-label hud-label--mobile">SOFTWARE</span>
       <div class="hud-divider" />
       <p class="hud-bio">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -139,6 +140,7 @@ onMounted(() =>
       <div class="hud-corner bl" />
       <div class="hud-corner br" />
       <span class="hud-label">// 3D ARTIST</span>
+      <span class="hud-label hud-label--mobile">3D</span>
       <div class="hud-divider" />
       <p class="hud-bio">Character & Creature Artist | ZBrush, Substance & Mobile Game Assets</p>
     </div>
@@ -171,10 +173,11 @@ onMounted(() =>
   transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(8px);
-  padding: 2rem;
+  padding: clamp(1.5rem, 5vw, 2rem);
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 4px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+  max-width: calc(100% - 4rem);
 }
 
 .corner-content.visible {
@@ -198,7 +201,7 @@ onMounted(() =>
 
 .hero-subtitle {
   font-family: 'Inter', sans-serif;
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
   color: #374151;
   margin: 0;
   font-weight: 600;
@@ -347,6 +350,17 @@ onMounted(() =>
   transition: none;
 }
 
+/* Mobile-only short label — hidden on desktop */
+.hud-label--mobile {
+  display: none;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #4b5563;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
 .hud-divider {
   height: 1px;
   background: rgba(0, 0, 0, 0.08);
@@ -360,6 +374,85 @@ onMounted(() =>
   line-height: 1.7;
   margin: 0;
 }
+
+@media (max-width: 1024px) {
+  .hud-panel {
+    width: 150px;
+    padding: 0.9rem 1rem;
+    top: 25%;
+  }
+  .hud-left { left: 1.5rem; }
+  .hud-right { right: 1.5rem; }
+}
+
+@media (max-width: 768px) {
+  /* Paneles en la parte superior del hero, debajo de la navbar */
+  .hud-left,
+  .hud-right {
+    top: 7rem;
+    bottom: auto;
+    transform: none !important;
+    opacity: 1 !important;
+    width: auto;
+    min-width: 70px;
+    padding: 0.6rem 0.9rem;
+  }
+
+  .hud-panel.visible {
+    transform: none !important;
+  }
+
+  .hud-panel.visible:hover {
+    transform: translateY(-2px) !important;
+  }
+
+  .hud-left  { left: 1rem; }
+  .hud-right { right: 1rem; }
+
+  /* En mobile ocultamos el texto largo y el divider */
+  .hud-bio,
+  .hud-divider {
+    display: none;
+  }
+
+  /* Intercambiamos los labels: se oculta el largo y se muestra el corto */
+  .hud-label:not(.hud-label--mobile) {
+    display: none;
+  }
+
+  .hud-label--mobile {
+    display: block;
+    margin-bottom: 0;
+    color: #374151;
+  }
+
+  .corner-content {
+    bottom: 1.5rem;
+    left: 1rem;
+    width: calc(100% - 2rem);
+    max-width: none;
+    padding: 1.25rem;
+    gap: 1rem;
+  }
+
+  .corner-content.visible {
+    transform: translateY(0);
+  }
+
+  .cta-buttons {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    flex: 1;
+    min-width: 100px;
+    text-align: center;
+    padding: 0.7rem 0.75rem;
+  }
+}
+
 
 /* Glitch */
 .glitch-text {

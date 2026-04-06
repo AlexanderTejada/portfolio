@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import Lenis from 'lenis'
 import { Wave } from '@foobar404/wave'
 import { useScrollLock } from '@/composables/useScrollLock'
@@ -59,9 +59,26 @@ onUnmounted(() => {})
 
 const isTransitioning = ref(false)
 
+// Adaptive particle count for performance on mobile
+const baseParticleCount = 800
+const isMobile = ref(false)
+const checkMobile = () => {
+  isMobile.value = window.innerWidth < 768
+}
+
+onMounted(() => {
+  checkMobile()
+  window.addEventListener('resize', checkMobile)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', checkMobile)
+})
+
+const activeParticleCount = computed(() => (isMobile.value ? 250 : baseParticleCount))
+
 // Section transition particles
-const particleCount = 800
-const particles = Array.from({ length: particleCount }, (_, i) => {
+const particles = Array.from({ length: baseParticleCount }, (_, i) => {
   const x = Math.random() * 100
   const y = Math.random() * 100
 
@@ -153,7 +170,7 @@ onUnmounted(() => {
     <div class="transition-container" :class="{ active: isTransitioning }">
       <div class="particles-container">
         <div
-          v-for="p in particles"
+          v-for="p in particles.slice(0, activeParticleCount)"
           :key="p.id"
           class="particle"
           :style="{
@@ -302,5 +319,14 @@ onUnmounted(() => {
 
 .audio-toggle:hover {
   transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+  .audio-toggle {
+    bottom: 1rem;
+    right: 1.5rem;
+    width: 60px;
+    height: 60px;
+  }
 }
 </style>
