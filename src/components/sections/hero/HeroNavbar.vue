@@ -49,7 +49,7 @@ onUnmounted(() => {
     <div class="hud-corner bl"></div>
     <div class="hud-corner br"></div>
 
-    <div class="nav-logo" @mouseenter="isMenuOpen = false">
+    <div class="nav-logo" @click="emit('navigate', 'hero')" @mouseenter="isMenuOpen = false">
       <span class="logo-text">ALEX</span>
     </div>
 

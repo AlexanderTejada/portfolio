@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { useScrollProgress } from '@/composables/useScrollProgress'
 import { useAudioState } from '@/composables/useAudioState'
+import { useActiveSectionTheme } from '@/composables/useActiveSectionTheme'
 import HeroScene from '@/components/3d/HeroScene.vue'
 import NavigationSidebar from '@/components/sections/NavigationSidebar.vue'
 import HeroNavbar from './HeroNavbar.vue'
@@ -14,6 +15,7 @@ const glitchAudioRef = ref<HTMLAudioElement | null>(null)
 const aylexAudioRef = ref<HTMLAudioElement | null>(null)
 const { scrollProgress } = useScrollProgress()
 const { isModalAudioActive } = useAudioState()
+const { activeTheme } = useActiveSectionTheme()
 const showContent = ref(false)
 const showSoftwareModal = ref(false)
 const showThreeDModal = ref(false)
@@ -37,10 +39,9 @@ const toggleModalAudio = (isPlaying: boolean) => {
 }
 
 const navItems = [
-  { label: '3D', to: 'threed' },
-  { label: 'PROJECTS', to: 'projects' },
+  { label: 'WORKS', to: 'projects' },
   { label: 'EXPERIENCE', to: 'experience' },
-  { label: 'CONTACT', to: 'experience' },
+  { label: 'CONTACT', to: 'contact' },
 ]
 
 const scrollTo = (id: string) => {
@@ -66,9 +67,15 @@ onMounted(() =>
     <NavigationSidebar
       position="left"
       :texts="['ENGINEER', 'SOFTWARE']"
+      :theme="activeTheme"
       @click="scrollTo('projects')"
     />
-    <NavigationSidebar position="right" :texts="['DESIGN', '3D']" @click="scrollTo('threed')" />
+    <NavigationSidebar
+      position="right"
+      :texts="['DESIGN', '3D']"
+      :theme="activeTheme"
+      @click="scrollTo('threed')"
+    />
 
     <div class="corner-content" :class="{ visible: showContent }">
       <div class="role-badge glitch-text" data-text="PORTFOLIO 2026">PORTFOLIO 2026</div>
@@ -77,7 +84,7 @@ onMounted(() =>
       </p>
       <div class="cta-buttons">
         <button class="btn-primary" @click="scrollTo('projects')">VIEW PROJECTS</button>
-        <button class="btn-secondary" @click="scrollTo('experience')">CONTACT</button>
+        <button class="btn-secondary" @click="scrollTo('contact')">CONTACT</button>
       </div>
     </div>
 

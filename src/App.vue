@@ -8,6 +8,7 @@ import HeroSection from './components/sections/hero/index.vue'
 import ThreeDSection from './components/sections/ThreeDSection.vue'
 import ProjectsSection from './components/sections/ProjectsSection.vue'
 import ExperienceSection from './components/sections/ExperienceSection.vue'
+import ContactSection from './components/sections/ContactSection.vue'
 
 const audioRef = ref<HTMLAudioElement | null>(null)
 const canvasRef = ref<HTMLCanvasElement | null>(null)
@@ -147,6 +148,7 @@ onUnmounted(() => {
     <ThreeDSection id="threed" />
     <ProjectsSection id="projects" />
     <ExperienceSection id="experience" />
+    <ContactSection id="contact" />
 
     <div class="transition-container" :class="{ active: isTransitioning }">
       <div class="particles-container">

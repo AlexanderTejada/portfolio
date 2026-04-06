@@ -255,8 +255,6 @@ const toggleJob = (index: number) => {
 }
 </script>
 
-
-
 <style scoped>
 .experience-section {
   position: relative;

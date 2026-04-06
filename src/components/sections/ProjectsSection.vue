@@ -130,7 +130,6 @@ onUnmounted(() => observer?.disconnect())
         </div>
       </div>
     </div>
-
   </section>
 </template>
 
@@ -467,12 +466,6 @@ h2 {
     0 0 80px rgba(0, 0, 0, 0.01);
   filter: blur(16px);
   z-index: -1;
-}
-
-.distort-container {
-  position: relative;
-  overflow: hidden;
-  border-radius: 10px;
 }
 
 .swiper {

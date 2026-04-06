@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { useScrollLock } from '@/composables/useScrollLock'
+import ProfileImage from '@/components/shared/ProfileImage.vue'
 
 const props = defineProps<{ open: boolean }>()
 const emit = defineEmits<{ close: [] }>()
@@ -81,9 +82,12 @@ const skills = [
           <div class="hud-line-top" />
           
           <div class="modal-header">
-            <div class="header-main">
-              <span class="system-id">[SYS.ID: SF_ENG_026]</span>
-              <h2 class="modal-title glitch-text" data-text="SOFTWARE ENGINEERING">SOFTWARE ENGINEERING</h2>
+            <div class="header-left">
+              <ProfileImage :size="60" :show-status="false" />
+              <div class="header-main">
+                <span class="system-id">[SYS.ID: SF_ENG_026]</span>
+                <h2 class="modal-title glitch-text" data-text="SOFTWARE ENGINEERING">SOFTWARE ENGINEERING</h2>
+              </div>
             </div>
             <button class="modal-close" @click="emit('close')">
               <span class="close-label">CLOSE</span>
@@ -227,7 +231,13 @@ const skills = [
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center; /* Changed from flex-end for better alignment with avatar */
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
 }
 
 .system-id {
