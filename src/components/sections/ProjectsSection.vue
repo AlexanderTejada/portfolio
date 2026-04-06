@@ -46,7 +46,9 @@ let observer: IntersectionObserver | null = null
 onMounted(() => {
   if (!sectionRef.value) return
   observer = new IntersectionObserver(
-    ([entry]) => { if (entry?.isIntersecting) visible.value = true },
+    ([entry]) => {
+      if (entry?.isIntersecting) visible.value = true
+    },
     { threshold: 0.15 },
   )
   observer.observe(sectionRef.value)
@@ -82,10 +84,10 @@ onUnmounted(() => observer?.disconnect())
           </div>
 
           <p class="panel-text">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. 
-            Vivamus hendrerit arcu sed erat molestie vehicula. Sed auctor neque eu tellus 
-            rhoncus ut eleifend nibh porttitor. Ut enim ad minim veniam, quis nostrud 
-            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus
+            hendrerit arcu sed erat molestie vehicula. Sed auctor neque eu tellus rhoncus ut
+            eleifend nibh porttitor. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+            laboris nisi ut aliquip ex ea commodo consequat.
           </p>
 
           <div class="panel-specs">
@@ -353,7 +355,9 @@ h2 {
   font-size: 1rem;
   color: #9ca3af;
   line-height: 1;
-  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), color 0.2s;
+  transition:
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.2s;
   transform: rotate(0deg);
 }
 
@@ -439,12 +443,7 @@ h2 {
   inset: 0;
   border-radius: 12px;
   padding: 2px;
-  background: linear-gradient(
-    135deg,
-    rgba(31, 41, 55, 0.2),
-    transparent,
-    rgba(31, 41, 55, 0.1)
-  );
+  background: linear-gradient(135deg, rgba(31, 41, 55, 0.2), transparent, rgba(31, 41, 55, 0.1));
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
@@ -530,11 +529,53 @@ h2 {
 
 @media (max-width: 600px) {
   .projects-section {
-    padding: 4rem 1rem;
+    padding: 3rem 1rem;
   }
-  
+
   .info-panel {
-    padding: 1.25rem;
+    padding: 1rem;
+  }
+
+  .label {
+    font-size: 0.65rem;
+  }
+
+  h2 {
+    font-size: clamp(1.8rem, 8vw, 2.5rem);
+    gap: 0.15em;
+  }
+
+  .panel-tag {
+    font-size: 0.55rem;
+  }
+
+  .panel-text {
+    font-size: 0.65rem;
+    line-height: 1.6;
+  }
+
+  .spec-row {
+    padding: 0.25rem 0;
+  }
+
+  .spec-key {
+    font-size: 0.55rem;
+  }
+
+  .spec-val {
+    font-size: 0.6rem;
+  }
+
+  .feature-item {
+    padding: 0.4rem 0.5rem;
+  }
+
+  .feature-label {
+    font-size: 0.5rem;
+  }
+
+  .feature-desc {
+    font-size: 0.6rem;
   }
 }
 </style>

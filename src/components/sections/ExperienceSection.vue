@@ -509,7 +509,7 @@ const toggleJob = (index: number) => {
 
 @media (max-width: 768px) {
   .experience-section {
-    padding: 4rem 1rem;
+    padding: 3rem 1rem;
   }
 
   .timeline {
@@ -518,11 +518,61 @@ const toggleJob = (index: number) => {
 
   .timeline-marker {
     left: -1.5rem;
+    width: 8px;
+    height: 8px;
   }
 
   .job-header {
     flex-direction: column;
     gap: 0.25rem;
+  }
+
+  .job-role {
+    font-size: 0.95rem;
+  }
+
+  .job-company {
+    font-size: 0.75rem;
+  }
+
+  .job-period {
+    font-size: 0.65rem;
+  }
+
+  .job-description {
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+  }
+
+  .timeline-content {
+    padding: 1rem;
+  }
+
+  .highlight-title {
+    font-size: 0.65rem;
+  }
+
+  .highlight-desc {
+    font-size: 0.75rem;
+  }
+
+  .section-title {
+    font-size: clamp(1.5rem, 6vw, 2rem);
+    margin-bottom: 2rem;
+  }
+
+  .skill-category {
+    padding: 1rem;
+  }
+
+  .skill-category h3 {
+    font-size: 0.65rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .skill-tag {
+    font-size: 0.6rem;
+    padding: 0.3rem 0.5rem;
   }
 }
 </style>

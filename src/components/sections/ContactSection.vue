@@ -24,7 +24,9 @@ const handleSubmit = () => {
     <div class="container">
       <div class="section-header">
         <span class="label">// COMMUNICATION NODE</span>
-        <h2 class="glitch-text" data-text="GET IN TOUCH">GET IN <span class="accent">TOUCH</span></h2>
+        <h2 class="glitch-text" data-text="GET IN TOUCH">
+          GET IN <span class="accent">TOUCH</span>
+        </h2>
         <p class="subtitle">Available for collaborative projects and technical consultations.</p>
       </div>
 
@@ -43,12 +45,19 @@ const handleSubmit = () => {
           <div class="info-block">
             <span class="block-tag">ACTIVE_CHANNELS</span>
             <div class="social-links">
-              <a href="https://www.linkedin.com/in/alexander-tejada-3a11041ab/" target="_blank" class="social-link">LN_IN</a>
-              <a href="https://github.com/AlexanderTejada" target="_blank" class="social-link">GH_UB</a>
+              <a
+                href="https://www.linkedin.com/in/alexander-tejada-3a11041ab/"
+                target="_blank"
+                class="social-link"
+                >LN_IN</a
+              >
+              <a href="https://github.com/AlexanderTejada" target="_blank" class="social-link"
+                >GH_UB</a
+              >
               <a href="#" class="social-link">AW_WDS</a>
             </div>
           </div>
-          
+
           <!-- HUD Graphic Placeholder -->
           <div class="hud-graphic">
             <div class="radar-circle"></div>
@@ -61,7 +70,12 @@ const handleSubmit = () => {
           <form @submit.prevent="handleSubmit" class="contact-form">
             <div class="input-group">
               <label>SENDER_NAME</label>
-              <input v-model="form.name" type="text" placeholder="Enter identification..." required />
+              <input
+                v-model="form.name"
+                type="text"
+                placeholder="Enter identification..."
+                required
+              />
             </div>
             <div class="input-group">
               <label>SIGNAL_RETURN</label>
@@ -69,7 +83,12 @@ const handleSubmit = () => {
             </div>
             <div class="input-group">
               <label>ENCODED_MESSAGE</label>
-              <textarea v-model="form.message" rows="5" placeholder="Type your inquiry here..." required></textarea>
+              <textarea
+                v-model="form.message"
+                rows="5"
+                placeholder="Type your inquiry here..."
+                required
+              ></textarea>
             </div>
 
             <button type="submit" class="submit-btn" :disabled="status !== 'IDLE'">
@@ -230,8 +249,12 @@ h2 {
 }
 
 @keyframes rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Form Side */
@@ -323,11 +346,80 @@ h2 {
 @media (max-width: 900px) {
   .contact-grid {
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 2.5rem;
   }
-  
+
   .hud-graphic {
     display: none;
+  }
+
+  .contact-info {
+    align-items: center;
+    text-align: center;
+    gap: 1.5rem;
+  }
+
+  .info-block {
+    align-items: center;
+  }
+
+  .social-links {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .contact-section {
+    padding: 4rem 1rem;
+  }
+
+  .section-header {
+    margin-bottom: 3rem;
+  }
+
+  .label {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+  }
+
+  h2 {
+    font-size: clamp(1.8rem, 8vw, 2.5rem);
+  }
+
+  .subtitle {
+    font-size: 0.75rem;
+  }
+
+  .block-tag {
+    font-size: 0.5rem;
+  }
+
+  .block-val {
+    font-size: 0.9rem;
+  }
+
+  .social-link {
+    font-size: 0.7rem;
+  }
+
+  .contact-form {
+    padding: 1.5rem;
+    gap: 1rem;
+  }
+
+  .input-group label {
+    font-size: 0.55rem;
+  }
+
+  .input-group input,
+  .input-group textarea {
+    padding: 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .submit-btn {
+    padding: 1rem;
+    font-size: 0.7rem;
   }
 }
 </style>

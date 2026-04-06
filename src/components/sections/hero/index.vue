@@ -91,15 +91,15 @@ onMounted(() =>
     <SoftwareModal
       :open="showSoftwareModal"
       @close="
-        showSoftwareModal = false;
-        toggleModalAudio(false);
+        showSoftwareModal = false
+        toggleModalAudio(false)
       "
     />
     <ThreeDModal
       :open="showThreeDModal"
       @close="
-        showThreeDModal = false;
-        toggleModalAudio(false);
+        showThreeDModal = false
+        toggleModalAudio(false)
       "
     />
 
@@ -108,8 +108,8 @@ onMounted(() =>
       class="hud-panel hud-left"
       :class="{ visible: showContent }"
       @click="
-        showSoftwareModal = true;
-        toggleModalAudio(true);
+        showSoftwareModal = true
+        toggleModalAudio(true)
       "
       @mouseenter="playGlitchSound"
     >
@@ -120,9 +120,7 @@ onMounted(() =>
       <span class="hud-label">// SYS_ARCH_NODE</span>
       <span class="hud-label hud-label--mobile">SOFTWARE</span>
       <div class="hud-divider" />
-      <p class="hud-bio">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      </p>
+      <p class="hud-bio">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
     </div>
 
     <!-- HUD: 3D -->
@@ -130,8 +128,8 @@ onMounted(() =>
       class="hud-panel hud-right"
       :class="{ visible: showContent }"
       @click="
-        showThreeDModal = true;
-        toggleModalAudio(true);
+        showThreeDModal = true
+        toggleModalAudio(true)
       "
       @mouseenter="playGlitchSound"
     >
@@ -381,21 +379,24 @@ onMounted(() =>
     padding: 0.9rem 1rem;
     top: 25%;
   }
-  .hud-left { left: 1.5rem; }
-  .hud-right { right: 1.5rem; }
+  .hud-left {
+    left: 1.5rem;
+  }
+  .hud-right {
+    right: 1.5rem;
+  }
 }
 
 @media (max-width: 768px) {
-  /* Paneles en la parte superior del hero, debajo de la navbar */
   .hud-left,
   .hud-right {
-    top: 7rem;
+    top: 6rem;
     bottom: auto;
     transform: none !important;
     opacity: 1 !important;
     width: auto;
-    min-width: 70px;
-    padding: 0.6rem 0.9rem;
+    min-width: 60px;
+    padding: 0.5rem 0.7rem;
   }
 
   .hud-panel.visible {
@@ -406,16 +407,18 @@ onMounted(() =>
     transform: translateY(-2px) !important;
   }
 
-  .hud-left  { left: 1rem; }
-  .hud-right { right: 1rem; }
+  .hud-left {
+    left: 0.75rem;
+  }
+  .hud-right {
+    right: 0.75rem;
+  }
 
-  /* En mobile ocultamos el texto largo y el divider */
   .hud-bio,
   .hud-divider {
     display: none;
   }
 
-  /* Intercambiamos los labels: se oculta el largo y se muestra el corto */
   .hud-label:not(.hud-label--mobile) {
     display: none;
   }
@@ -424,35 +427,45 @@ onMounted(() =>
     display: block;
     margin-bottom: 0;
     color: #374151;
+    font-size: 0.55rem;
   }
 
   .corner-content {
-    bottom: 1.5rem;
-    left: 1rem;
-    width: calc(100% - 2rem);
-    max-width: none;
-    padding: 1.25rem;
-    gap: 1rem;
+    bottom: 1rem;
+    left: 0.75rem;
+    right: 0.75rem;
+    width: auto;
+    padding: 1rem;
+    gap: 0.75rem;
   }
 
   .corner-content.visible {
     transform: translateY(0);
   }
 
+  .role-badge {
+    font-size: 0.55rem;
+    padding: 0.25rem 0.6rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.8rem;
+  }
+
   .cta-buttons {
     flex-wrap: wrap;
-    gap: 0.75rem;
+    gap: 0.5rem;
   }
 
   .btn-primary,
   .btn-secondary {
     flex: 1;
-    min-width: 100px;
+    min-width: 80px;
     text-align: center;
-    padding: 0.7rem 0.75rem;
+    padding: 0.6rem 0.5rem;
+    font-size: 0.65rem;
   }
 }
-
 
 /* Glitch */
 .glitch-text {

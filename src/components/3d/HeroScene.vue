@@ -176,13 +176,17 @@ onMounted(() => {
       const i = (y * width + x) * 3
       // Horizontal line
       if (x + step < width) {
-        segments.push(posArr[i]!, posArr[i+1]!, posArr[i+2]!)
+        segments.push(posArr[i]!, posArr[i + 1]!, posArr[i + 2]!)
         segments.push(posArr[i + step * 3]!, posArr[i + step * 3 + 1]!, posArr[i + step * 3 + 2]!)
       }
       // Vertical line
       if (y + step < height) {
-        segments.push(posArr[i]!, posArr[i+1]!, posArr[i+2]!)
-        segments.push(posArr[i + width * step * 3]!, posArr[i + width * step * 3 + 1]!, posArr[i + width * step * 3 + 2]!)
+        segments.push(posArr[i]!, posArr[i + 1]!, posArr[i + 2]!)
+        segments.push(
+          posArr[i + width * step * 3]!,
+          posArr[i + width * step * 3 + 1]!,
+          posArr[i + width * step * 3 + 2]!,
+        )
       }
     }
   }
@@ -223,47 +227,48 @@ onMounted(() => {
   scene.add(dirLight)
 
   // 2. LOAD 3D TEXT "ALEXANDER TEJADA"
-  const loader = new GLTFLoader()
-  loader.load(
-    '/ALEXANDER TEJADA.glb',
-    (gltf) => {
-      const model = gltf.scene
-      const box = new THREE.Box3().setFromObject(model)
-      const size = box.getSize(new THREE.Vector3())
-      const scale = 25 / Math.max(size.x, size.y, size.z)
-      model.scale.setScalar(scale)
-      model.position.set(0, 7, 0)
+  const isMobile = window.innerWidth < 768
+  const targetScale = isMobile ? 14 : 25
+  const targetY = isMobile ? 5 : 7
 
-      model.traverse((child) => {
-        if (child instanceof THREE.Mesh) {
-          child.material = new THREE.MeshStandardMaterial({
-            color: 0x111827,
-            roughness: 0.2,
-            metalness: 0.1,
+  const loader = new GLTFLoader()
+  loader.load('/ALEXANDER TEJADA.glb', (gltf) => {
+    const model = gltf.scene
+    const box = new THREE.Box3().setFromObject(model)
+    const size = box.getSize(new THREE.Vector3())
+    const scale = targetScale / Math.max(size.x, size.y, size.z)
+    model.scale.setScalar(scale)
+    model.position.set(0, targetY, 0)
+
+    model.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        child.material = new THREE.MeshStandardMaterial({
+          color: 0x111827,
+          roughness: 0.2,
+          metalness: 0.1,
+        })
+        const posAttr = child.geometry.getAttribute('position')
+        if (posAttr) {
+          solidMeshesData.push({
+            mesh: child as THREE.Mesh,
+            originalPositions: new Float32Array(posAttr.array),
           })
-          const posAttr = child.geometry.getAttribute('position')
-          if (posAttr) {
-            solidMeshesData.push({
-              mesh: child as THREE.Mesh,
-              originalPositions: new Float32Array(posAttr.array)
-            })
-          }
         }
-      })
-      scene.add(model)
-      textModel = model
-    }
-  )
+      }
+    })
+    scene.add(model)
+    textModel = model
+  })
 
   let time = 0
 
   const animate = () => {
     time += 0.02
-    
+
     // Auto idle animation: drives targetMouse on a circular path
     // when no real mouse has moved for >1s (or never, e.g. touch devices)
     const idleTimeout = 1000
-    const isIdle = !hasRealMouse || (performance.now() - lastMouseTime > idleTimeout)
+    const isIdle = !hasRealMouse || performance.now() - lastMouseTime > idleTimeout
     if (isIdle) {
       // Gentle circular sweep — same amplitude the cursor would produce
       targetMouse.x = Math.sin(time * 0.35) * 0.55
@@ -280,9 +285,11 @@ onMounted(() => {
     if (intersects.length > 0) intersectionPoint.copy(intersects[0]!.point)
 
     if (pointMat.uniforms.uTime) pointMat.uniforms.uTime.value = time
-    if (pointMat.uniforms.uMouse) pointMat.uniforms.uMouse.value.copy(intersectionPoint).sub(new THREE.Vector3(0, -10, 0))
+    if (pointMat.uniforms.uMouse)
+      pointMat.uniforms.uMouse.value.copy(intersectionPoint).sub(new THREE.Vector3(0, -10, 0))
     if (lineMat.uniforms.uTime) lineMat.uniforms.uTime.value = time
-    if (lineMat.uniforms.uMouse) lineMat.uniforms.uMouse.value.copy(intersectionPoint).sub(new THREE.Vector3(0, -10, 0))
+    if (lineMat.uniforms.uMouse)
+      lineMat.uniforms.uMouse.value.copy(intersectionPoint).sub(new THREE.Vector3(0, -10, 0))
 
     // B. TEXT MODEL ANIMATION (ALEXANDER TEJADA)
     if (solidMeshesData.length > 0 && textModel) {
@@ -291,7 +298,7 @@ onMounted(() => {
         const { mesh, originalPositions } = data
         const posAttr = mesh.geometry.getAttribute('position')
         const textArr = posAttr.array as Float32Array
-        
+
         mesh.updateWorldMatrix(true, false)
         const invMat = mesh.matrixWorld.clone().invert()
         const locMouse = mouse3D.clone().applyMatrix4(invMat)
@@ -331,8 +338,29 @@ onMounted(() => {
 const onResize = () => {
   if (!camera || !renderer) return
   camera.aspect = window.innerWidth / window.innerHeight
+
+  // Adjust camera for mobile
+  const isMobile = window.innerWidth < 768
+  if (isMobile) {
+    camera.position.set(0, 4, 18)
+    camera.fov = 60
+  } else {
+    camera.position.set(0, 5, 25)
+    camera.fov = 75
+  }
+
   camera.updateProjectionMatrix()
   renderer.setSize(window.innerWidth, window.innerHeight)
+
+  // Adjust model scale for mobile
+  if (textModel) {
+    const box = new THREE.Box3().setFromObject(textModel)
+    const size = box.getSize(new THREE.Vector3())
+    const baseScale = 25 / Math.max(size.x, size.y, size.z)
+    const mobileScale = window.innerWidth < 768 ? baseScale * 0.55 : baseScale
+    textModel.scale.setScalar(mobileScale)
+    textModel.position.set(0, isMobile ? 5 : 7, 0)
+  }
 }
 
 onUnmounted(() => {

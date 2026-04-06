@@ -85,7 +85,7 @@ body {
 
 canvas {
   outline: none;
-  touch-action: none;
+  touch-action: pan-y pinch-zoom;
 }
 
 /* Film grain overlay */
