@@ -512,8 +512,17 @@ const toggleJob = (index: number) => {
     padding: 4rem 1rem;
   }
 
+  .timeline {
+    padding-left: 1.5rem;
+  }
+
+  .timeline-marker {
+    left: -1.5rem;
+  }
+
   .job-header {
     flex-direction: column;
+    gap: 0.25rem;
   }
 }
 </style>

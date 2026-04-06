@@ -2,9 +2,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Autoplay, Pagination } from 'swiper/modules'
-// @ts-expect-error — Swiper CSS imports lack type declarations
 import 'swiper/css'
-// @ts-expect-error — Swiper CSS imports lack type declarations
 import 'swiper/css/pagination'
 import { useCanvasDotGrid } from '@/composables/useCanvasDotGrid'
 
@@ -448,6 +446,9 @@ h2 {
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   filter: blur(1px);
@@ -508,14 +509,30 @@ h2 {
 @media (max-width: 900px) {
   .content-grid {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 
   .info-panel {
-    max-height: 400px;
+    max-height: none;
+    order: 2;
+  }
+
+  .carousel-wrapper {
+    order: 1;
   }
 
   .swiper {
-    height: 350px;
+    height: clamp(250px, 50vw, 400px);
+  }
+}
+
+@media (max-width: 600px) {
+  .projects-section {
+    padding: 4rem 1rem;
+  }
+  
+  .info-panel {
+    padding: 1.25rem;
   }
 }
 </style>

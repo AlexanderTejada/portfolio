@@ -282,10 +282,11 @@ h2 {
 
 .subtitle {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 0.8rem;
+  font-size: clamp(0.7rem, 2vw, 0.8rem);
   color: #9ca3af;
   margin-top: 0.75rem;
   letter-spacing: 0.05em;
+  padding: 0 1rem;
 }
 
 /* Categories */
@@ -326,12 +327,29 @@ h2 {
   background: linear-gradient(90deg, rgba(255, 255, 255, 0.2), transparent);
 }
 
+@media (max-width: 768px) {
+  .category-header {
+    gap: 1rem;
+  }
+  .category-subtitle {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+  }
+}
+
 /* Grid */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.5rem;
   perspective: 2000px; /* Enable 3D space */
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
 }
 
 .grid-item {
@@ -576,7 +594,7 @@ h2 {
 .lightbox-content img,
 .lightbox-content video {
   max-width: 100%;
-  max-height: 75vh;
+  max-height: 70vh;
   object-fit: contain;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -654,8 +672,24 @@ h2 {
 }
 
 @media (max-width: 768px) {
-  .grid {
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  .threed-section {
+    padding: 6rem 1rem;
+  }
+  
+  .lightbox {
+    padding: 1rem;
+  }
+  
+  .lightbox-close {
+    top: 1rem;
+    right: 1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+  
+  .lightbox-title {
+    font-size: 0.8rem;
+    text-align: center;
   }
 }
 </style>
