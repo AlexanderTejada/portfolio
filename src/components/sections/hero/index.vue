@@ -66,7 +66,7 @@ onMounted(() =>
 
     <NavigationSidebar
       position="left"
-      :texts="['ENGINEER', 'SOFTWARE']"
+      :texts="['LOREM', 'IPSUM']"
       :theme="activeTheme"
       @click="scrollTo('projects')"
     />
@@ -79,8 +79,8 @@ onMounted(() =>
 
     <div class="corner-content" :class="{ visible: showContent }">
       <div class="role-badge glitch-text" data-text="PORTFOLIO 2026">PORTFOLIO 2026</div>
-      <p class="hero-subtitle glitch-text" data-text="SENIOR AI IMPLEMENTER & FULL-STACK ENGINEER">
-        SENIOR AI IMPLEMENTER &amp; FULL-STACK ENGINEER
+      <p class="hero-subtitle glitch-text" data-text="LOREM IPSUM DOLOR SIT AMET">
+        LOREM IPSUM DOLOR SIT AMET
       </p>
       <div class="cta-buttons">
         <button class="btn-primary" @click="scrollTo('projects')">VIEW PROJECTS</button>
@@ -117,10 +117,10 @@ onMounted(() =>
       <div class="hud-corner tr" />
       <div class="hud-corner bl" />
       <div class="hud-corner br" />
-      <span class="hud-label">// SOFTWARE ENG</span>
+      <span class="hud-label">// SYS_ARCH_NODE</span>
       <div class="hud-divider" />
       <p class="hud-bio">
-        Senior AI Implementer & Full-Stack Developer | LangGraph, RAG & .NET Architect
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
       </p>
     </div>
 

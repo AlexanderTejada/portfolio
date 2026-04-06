@@ -23,16 +23,16 @@ const onBackdropWheel = (e: WheelEvent) => {
 const experience = [
   {
     id: '0x01',
-    company: 'Excelencia Digital Software',
-    role: 'Senior AI Implementer & Full-Stack Developer',
+    company: 'Lorem Ipsum Systems',
+    role: 'Lorem Ipsum Architect & Technical Developer',
     period: 'Apr 2024 – Present',
     description:
-      'Architecting and deploying production-grade AI solutions and high-scale transactional systems. Bridging the gap between Large Language Models (Claude, Gemini, GPT-4) and complex enterprise operations.',
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula. Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor.',
     highlights: [
-      { title: 'Agentic Workflows', desc: 'Multi-agent systems using LangChain and LangGraph for real-time utility claims.' },
-      { title: 'Advanced RAG', desc: 'Retrieval-Augmented Generation pipelines leveraging Qdrant and vector search.' },
-      { title: 'AI Security', desc: 'Robust defense mechanisms against Prompt Injection and Model Poisoning.' },
-      { title: 'Full-Stack Eng', desc: 'Backends using .NET and FastAPI, integrated with PostGIS for fleet optimization.' },
+      { title: 'Lorem Ipsum', desc: 'Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' },
+      { title: 'Sit Amet', desc: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.' },
+      { title: 'Adipiscing Elit', desc: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.' },
+      { title: 'Eiusmod Tempor', desc: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.' },
     ],
   },
   {
@@ -41,26 +41,26 @@ const experience = [
     role: 'Full Stack Developer & 3D Specialist',
     period: 'Jan 2020 – Feb 2025',
     description:
-      'Consultant delivering integrated .NET, Angular, and high-fidelity 3D solutions for international clients across US, LATAM, and Europe.',
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula.',
     highlights: [
-      { title: 'Production SaaS', desc: '15+ applications using .NET Core, C#, and Vue.js with Clean Architecture.' },
+      { title: 'Lorem Ipsum', desc: 'Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' },
       { title: '3D Engineering', desc: 'Professional 3D pipeline using ZBrush, Blender, and Substance Painter.' },
-      { title: 'Data Opt', desc: 'Complex SQL Server schemas and optimized data layers using ADO.NET.' },
+      { title: 'Sit Amet', desc: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.' },
     ],
   },
 ]
 
 const skills = [
   {
-    group: 'AI & INTELLIGENCE',
-    items: ['LangChain', 'LangGraph', 'Claude', 'GPT-4', 'RAG', 'Qdrant'],
+    group: 'SYSTEM_INTEL',
+    items: ['Lorem', 'Ipsum', 'Dolor', 'Sit', 'Amet', 'Consectetur'],
   },
   {
-    group: 'CORE BACKEND',
-    items: ['.NET Core', 'C#', 'FastAPI', 'Python', 'PostgreSQL', 'PostGIS'],
+    group: 'CORE_LAYERS',
+    items: ['Adipiscing', 'Elit', 'Sed', 'Do', 'Eiusmod', 'Tempor'],
   },
-  { group: 'MODERN FRONTEND', items: ['Vue.js', 'Angular', 'TypeScript', 'Capacitor'] },
-  { group: 'DEVOPS / ARCH', items: ['Docker', 'Linux', 'Git', 'Clean Arch'] },
+  { group: 'INTERFACE_MODS', items: ['Incididunt', 'Labore', 'Dolore', 'Magna'] },
+  { group: 'ARCH_DEVOPS', items: ['Aliqua', 'Ut', 'Enim', 'Ad'] },
 ]
 </script>
 
@@ -86,7 +86,7 @@ const skills = [
               <ProfileImage :size="60" :show-status="false" />
               <div class="header-main">
                 <span class="system-id">[SYS.ID: SF_ENG_026]</span>
-                <h2 class="modal-title glitch-text" data-text="SOFTWARE ENGINEERING">SOFTWARE ENGINEERING</h2>
+                <h2 class="modal-title glitch-text" data-text="TECHNICAL ARCHITECTURE">TECHNICAL ARCHITECTURE</h2>
               </div>
             </div>
             <button class="modal-close" @click="emit('close')">

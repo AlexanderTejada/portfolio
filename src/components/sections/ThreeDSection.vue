@@ -9,7 +9,6 @@ interface MediaItem {
 }
 
 const { canvasRef } = useCanvasDotGrid(true)
-const activeCategory = ref<'ART' | 'INDUSTRIAL'>('ART')
 const lightboxItem = ref<MediaItem | null>(null)
 const lightboxImgRef = ref<HTMLImageElement | null>(null)
 const isMagnifying = ref(false)
@@ -91,7 +90,11 @@ const categories: Record<'ART' | 'INDUSTRIAL', MediaItem[]> = {
   ],
 }
 
-const currentItems = computed(() => categories[activeCategory.value])
+// Categories list for template iteration
+const categoryList = [
+  { id: 'ART', label: '[01. ARTISTIC CREATIONS]' },
+  { id: 'INDUSTRIAL', label: '[02. INDUSTRIAL SYSTEMS]' }
+] as const
 
 const handleMouseMove = (e: MouseEvent) => {
   const card = e.currentTarget as HTMLElement
@@ -136,57 +139,53 @@ const closeLightbox = () => {
         <p class="subtitle">Character art, organic sculpting &amp; hard surface modeling</p>
       </div>
 
-      <div class="tabs">
-        <button
-          v-for="cat in ['ART', 'INDUSTRIAL'] as const"
-          :key="cat"
-          class="tab"
-          :class="{ active: activeCategory === cat }"
-          @click="activeCategory = cat"
-        >
-          {{ cat }}
-        </button>
-      </div>
+      <div v-for="cat in categoryList" :key="cat.id" class="category-block">
+        <div class="category-header">
+          <span class="category-num">{{ cat.id === 'ART' ? '01' : '02' }}</span>
+          <h3 class="category-subtitle">{{ cat.label }}</h3>
+          <div class="category-line"></div>
+        </div>
 
-      <div class="grid">
-        <div
-          v-for="(item, index) in currentItems"
-          :key="item.src"
-          class="grid-item"
-          :class="{ 'is-video': item.type === 'video' }"
-          :style="{ '--index': index }"
-          @mousemove="handleMouseMove"
-          @mouseleave="handleMouseLeave"
-          @click="openLightbox(item)"
-        >
-          <!-- Holographic Overlays -->
-          <div class="card-gloss"></div>
-          <div class="card-scanline"></div>
-          <div class="card-border">
-            <span class="bracket tl"></span>
-            <span class="bracket tr"></span>
-            <span class="bracket bl"></span>
-            <span class="bracket br"></span>
-          </div>
+        <div class="grid">
+          <div
+            v-for="(item, index) in categories[cat.id]"
+            :key="item.src"
+            class="grid-item"
+            :class="{ 'is-video': item.type === 'video' }"
+            :style="{ '--index': index }"
+            @mousemove="handleMouseMove"
+            @mouseleave="handleMouseLeave"
+            @click="openLightbox(item)"
+          >
+            <!-- Holographic Overlays -->
+            <div class="card-gloss"></div>
+            <div class="card-scanline"></div>
+            <div class="card-border">
+              <span class="bracket tl"></span>
+              <span class="bracket tr"></span>
+              <span class="bracket bl"></span>
+              <span class="bracket br"></span>
+            </div>
 
-          <div class="media-container">
-            <template v-if="item.type === 'image'">
-              <img :src="item.src" :alt="item.title" loading="lazy" />
-            </template>
-            <template v-else>
-              <video :src="item.src" preload="auto" muted loop autoplay playsinline />
-              <div class="play-icon">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
+            <div class="media-container">
+              <template v-if="item.type === 'image'">
+                <img :src="item.src" :alt="item.title" loading="lazy" />
+              </template>
+              <template v-else>
+                <video :src="item.src" preload="auto" muted loop autoplay playsinline />
+                <div class="play-icon">
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </div>
+              </template>
+            </div>
+
+            <div class="item-overlay">
+              <div class="overlay-content">
+                <span class="item-tag">{{ cat.id === 'ART' ? 'VIS' : 'IND' }}_{{ index + 1 }}</span>
+                <span class="item-title">{{ item.title }}</span>
               </div>
-            </template>
-          </div>
-
-          <div class="item-overlay">
-            <div class="overlay-content">
-              <span class="item-tag">PROJ_{{ index + 1 }}</span>
-              <span class="item-title">{{ item.title }}</span>
             </div>
           </div>
         </div>
@@ -213,7 +212,7 @@ const closeLightbox = () => {
               :style="{
                 left: `${magnifierPos.x}px`,
                 top: `${magnifierPos.y}px`,
-                backgroundImage: `url(${lightboxItem.src})`,
+                backgroundImage: `url('${lightboxItem.src}')`,
                 backgroundPosition: `-${magnifierPos.bgX}px -${magnifierPos.bgY}px`,
                 backgroundSize: `${(lightboxImgRef?.width || 0) * ZOOM}px ${(lightboxImgRef?.height || 0) * ZOOM}px`
               }"
@@ -289,46 +288,42 @@ h2 {
   letter-spacing: 0.05em;
 }
 
-/* Tabs */
-.tabs {
+/* Categories */
+.category-block {
+  margin-bottom: 6rem;
+}
+
+.category-block:last-child {
+  margin-bottom: 0;
+}
+
+.category-header {
   display: flex;
-  gap: 0;
+  align-items: center;
+  gap: 1.5rem;
   margin-bottom: 2.5rem;
-  border-bottom: 1px solid #333;
+  opacity: 0.8;
 }
 
-.tab {
+.category-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.category-subtitle {
   font-family: 'Orbitron', monospace;
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   font-weight: 700;
-  letter-spacing: 0.2em;
-  color: #444;
-  background: none;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  cursor: pointer;
-  position: relative;
-  transition: color 0.2s;
+  letter-spacing: 0.3em;
+  color: #ffffff;
+  white-space: nowrap;
 }
 
-.tab::after {
-  content: '';
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: #fff;
-  transform: scaleX(0);
-  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.tab.active {
-  color: #fff;
-}
-
-.tab.active::after {
-  transform: scaleX(1);
+.category-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.2), transparent);
 }
 
 /* Grid */

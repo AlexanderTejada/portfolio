@@ -14,31 +14,31 @@ const visible = ref(false)
 const modulesOpen = ref(false)
 
 const images = [
-  { src: '/DECSA/1.png', title: 'Dashboard' },
-  { src: '/DECSA/2.png', title: 'Search' },
-  { src: '/DECSA/3.png', title: 'Geolocation' },
-  { src: '/DECSA/4.png', title: 'Voice' },
-  { src: '/DECSA/5.png', title: 'RAG Chatbot' },
-  { src: '/DECSA/6.png', title: 'Operator Chat' },
-  { src: '/DECSA/7.png', title: 'Guard Management' },
+  { src: '/DECSA/1.png', title: 'Interface Alpha' },
+  { src: '/DECSA/2.png', title: 'Neural Map' },
+  { src: '/DECSA/3.png', title: 'Data Stream' },
+  { src: '/DECSA/4.png', title: 'Signal Track' },
+  { src: '/DECSA/5.png', title: 'Node Sync' },
+  { src: '/DECSA/6.png', title: 'Core Process' },
+  { src: '/DECSA/7.png', title: 'System Link' },
 ]
 
 const modules = [
-  { label: 'WHATSAPPI', desc: 'Claims, inquiries, and billing via WhatsApp' },
-  { label: 'FIELD APP', desc: 'Mobile app for guards: on-field claim resolution' },
-  { label: 'AI DETECT', desc: 'Anomaly detection in consumption by user category' },
-  { label: 'GEO-MAP', desc: 'PostGIS → coordinates: SETAs, REDMT, disconnectors' },
-  { label: 'MSG AUDIT', desc: 'Full message and real-time chat auditing' },
-  { label: 'KPIs', desc: 'Consumption, credit notes, invoices, pending balance' },
+  { label: 'MOD_ALPHA', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.' },
+  { label: 'CORE_SYNC', desc: 'Nullam in dui mauris, vivamus hendrerit arcu sed erat.' },
+  { label: 'DATA_FLOW', desc: 'Sed auctor neque eu tellus rhoncus ut eleifend nibh.' },
+  { label: 'NODE_MGMT', desc: 'Porttitor ut eleifend nibh, vivamus hendrerit arcu sed.' },
+  { label: 'SYS_AUDIT', desc: 'Adipiscing elit, sed do eiusmod tempor incididunt ut.' },
+  { label: 'VAL_STAT', desc: 'Labore et dolore magna aliqua, ut enim ad minim veniam.' },
 ]
 
 const techStack = [
-  { key: 'CLIENTS', val: '~13,000' },
-  { key: 'BACKEND', val: 'C# .NET' },
-  { key: 'FRONTEND', val: 'Vue.js' },
-  { key: 'DB', val: 'PostGIS' },
-  { key: 'REAL-TIME', val: 'SignalR' },
-  { key: 'AI', val: 'RAG + LLM' },
+  { key: 'NODES', val: '~13,000' },
+  { key: 'ARCH', val: 'LOREM IPSUM' },
+  { key: 'LAYER', val: 'DOLOR SIT' },
+  { key: 'DATA', val: 'CONSECTETUR' },
+  { key: 'SYNC', val: 'ADIPISCING' },
+  { key: 'LOGIC', val: 'ELIT_SED' },
 ]
 
 let observer: IntersectionObserver | null = null
@@ -63,9 +63,9 @@ onUnmounted(() => observer?.disconnect())
       <div class="section-header" :class="{ visible }">
         <span class="label">// CASE STUDY</span>
         <h2>
-          <span class="word" style="--delay: 0.1s">COMPLETE</span>
-          <span class="word" style="--delay: 0.25s">DECSA</span>
-          <span class="word accent" style="--delay: 0.4s">PLATFORM</span>
+          <span class="word" style="--delay: 0.1s">CORE</span>
+          <span class="word" style="--delay: 0.25s">SYSTEM</span>
+          <span class="word accent" style="--delay: 0.4s">ARCHITECTURE</span>
         </h2>
         <div class="divider" :class="{ visible }">
           <span class="divider-line"></span>
@@ -82,10 +82,10 @@ onUnmounted(() => observer?.disconnect())
           </div>
 
           <p class="panel-text">
-            Comprehensive electrical management system for ~13,000 customers. Users generate
-            claims and consult invoices via WhatsApp. Operators manage claims audited by
-            origin, dispatch guards with GPS tracking, and monitor the network on a map with
-            geospatial data from PostGIS. AI detects consumption anomalies by category.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. 
+            Vivamus hendrerit arcu sed erat molestie vehicula. Sed auctor neque eu tellus 
+            rhoncus ut eleifend nibh porttitor. Ut enim ad minim veniam, quis nostrud 
+            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
           </p>
 
           <div class="panel-specs">
