@@ -2,7 +2,9 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Autoplay, Pagination } from 'swiper/modules'
+// @ts-expect-error — Swiper CSS imports lack type declarations
 import 'swiper/css'
+// @ts-expect-error — Swiper CSS imports lack type declarations
 import 'swiper/css/pagination'
 import { useCanvasDotGrid } from '@/composables/useCanvasDotGrid'
 
