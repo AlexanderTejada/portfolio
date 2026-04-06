@@ -39,25 +39,25 @@
 
       <div class="skills-grid">
         <div class="skill-category">
-          <h3>AI & Machine Learning</h3>
+          <h3>SYSTEM_INTEL</h3>
           <div class="skill-tags">
             <span v-for="skill in skills.ai" :key="skill" class="skill-tag">{{ skill }}</span>
           </div>
         </div>
         <div class="skill-category">
-          <h3>Backend</h3>
+          <h3>CORE_LAYERS</h3>
           <div class="skill-tags">
             <span v-for="skill in skills.backend" :key="skill" class="skill-tag">{{ skill }}</span>
           </div>
         </div>
         <div class="skill-category">
-          <h3>Frontend</h3>
+          <h3>INTERFACE_MODS</h3>
           <div class="skill-tags">
             <span v-for="skill in skills.frontend" :key="skill" class="skill-tag">{{ skill }}</span>
           </div>
         </div>
         <div class="skill-category">
-          <h3>DevOps & Architecture</h3>
+          <h3>ARCH_DEVOPS</h3>
           <div class="skill-tags">
             <span v-for="skill in skills.devops" :key="skill" class="skill-tag">{{ skill }}</span>
           </div>
@@ -94,32 +94,32 @@ const { canvasRef } = useCanvasDotGrid()
 
 const experience: Job[] = [
   {
-    company: 'Excelencia Digital Software',
-    role: 'Senior AI Implementer & Full-Stack Engineer',
+    company: 'Lorem Ipsum Inc.',
+    role: 'Lorem Ipsum Architect',
     period: 'Apr 2024 – Present',
     location: 'Remote',
     description:
-      'Architecting and deploying production-grade AI solutions and high-scale transactional systems. Bridging the gap between Large Language Models (Claude, Gemini, GPT-4) and complex enterprise operations, ensuring scalability, security, and measurable business impact.',
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula. Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor.',
     highlights: [
       {
-        title: 'Agentic Workflows & Orchestration',
-        desc: 'Engineered sophisticated multi-agent systems using LangChain and LangGraph to automate real-time utility claim management and technical dispatching, handling high-concurrency operational data.',
+        title: 'Lorem Ipsum Dolor',
+        desc: 'Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
       },
       {
-        title: 'Advanced RAG Architectures',
-        desc: 'Designed and optimized Retrieval-Augmented Generation pipelines leveraging Qdrant and vector search strategies, significantly enhancing information retrieval speed and accuracy for technical documentation.',
+        title: 'Sit Amet Consectetur',
+        desc: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
       },
       {
-        title: 'AI Security & Red Teaming',
-        desc: 'Established robust defense mechanisms against Prompt Injection, Sensitive Information Disclosure, and Model Poisoning, ensuring secure LLM integration within sensitive financial and transactional environments.',
+        title: 'Adipiscing Elit Sed',
+        desc: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
       },
       {
-        title: 'Full-Stack & Geospatial Engineering',
-        desc: 'Built resilient backends using C# .NET and FastAPI, integrated with PostGIS for real-time fleet optimization and geospatial anomaly detection.',
+        title: 'Eiusmod Tempor Incididunt',
+        desc: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
       },
       {
-        title: 'Product-Ready Infrastructure',
-        desc: 'Managed the end-to-end lifecycle of AI applications, from containerization with Docker to cross-platform deployment via Capacitor and Vue.js, serving a user base of ~13,000+ individuals.',
+        title: 'Labore Et Dolore',
+        desc: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.',
       },
     ],
   },
@@ -151,15 +151,15 @@ const experience: Job[] = [
   },
   {
     company: 'Freelance',
-    role: 'Full-Stack Developer & 3D Digital Specialist',
+    role: 'Technical Specialist & 3D Artist',
     period: 'Jan 2020 – Feb 2025',
     location: 'Remote — US, LATAM, Europe',
     description:
-      'Consultant delivering integrated .NET, Angular, and high-fidelity 3D solutions for international clients. Specialized in bridging enterprise software architecture with interactive digital assets and real-time visualization.',
+      'Consultant delivering integrated technical solutions and high-fidelity 3D assets for international clients. Specialized in bridging complex technical systems with interactive digital assets and real-time visualization.',
     highlights: [
       {
-        title: 'Full-Stack Solutions (2020–2025)',
-        desc: 'Delivered 15+ production-ready applications using .NET Core, C#, and Vue.js, specializing in technical management tools and scalable SaaS architectures with Clean Architecture principles.',
+        title: 'Lorem Ipsum (2020–2025)',
+        desc: 'Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.',
       },
       {
         title: '3D Character Art & Engineering',
@@ -167,19 +167,19 @@ const experience: Job[] = [
       },
       {
         title: 'Interactive 3D Integration',
-        desc: 'Developed web-based 3D modules and interactive simulations, combining traditional software engineering with advanced digital sculpting to create immersive user experiences.',
+        desc: 'Developed web-based 3D modules and interactive simulations, combining advanced technical logic with digital sculpting to create immersive user experiences.',
       },
       {
-        title: 'Database & Performance Optimization',
-        desc: 'Architected complex SQL Server schemas and optimized data layers using ADO.NET, achieving up to 70% reduction in query latency for high-traffic data monitoring systems.',
+        title: 'Sit Amet Adipiscing',
+        desc: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
       },
       {
-        title: 'Infrastructure & DevOps',
-        desc: 'Managed end-to-end deployments in Linux and Windows Server environments, utilizing Docker for containerization and automated release cycles.',
+        title: 'Eiusmod Tempor',
+        desc: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
       },
       {
-        title: 'AI Integration (2023–2025)',
-        desc: 'Integrated LLM-powered features and automated data extraction into client applications, enhancing functional capabilities through intelligent API orchestration.',
+        title: 'Lorem Ipsum (2023–2025)',
+        desc: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.',
       },
     ],
   },
@@ -213,25 +213,25 @@ const experience: Job[] = [
 
 const skills = {
   ai: [
-    'LangChain',
-    'LangGraph',
-    'Large Language Models',
-    'Retrieval-Augmented Generation (RAG)',
-    'Vector Databases (Qdrant)',
-    'AI Security & Red Teaming',
-    'Prompt Engineering',
+    'Consectetur',
+    'Adipiscing',
+    'Elit Sed',
+    'Do Eiusmod',
+    'Tempor Incididunt',
+    'Labore Et Dolore',
+    'Magna Aliqua',
   ],
   backend: [
-    '.NET Core / C#',
-    'FastAPI',
-    'Python',
-    'PostgreSQL',
-    'PostGIS',
-    'SQL Server',
-    'REST APIs',
+    'Ut Enim',
+    'Ad Minim',
+    'Veniam Quis',
+    'Nostrud',
+    'Exercitation',
+    'Ullamco',
+    'Laboris Nisi',
   ],
-  frontend: ['Vue.js', 'Angular', 'TypeScript', 'Capacitor'],
-  devops: ['Docker', 'Linux', 'Git / Version Control', 'Clean Architecture', 'Agile Methodologies'],
+  frontend: ['Aliquip Ex', 'Ea Commodo', 'Consequat', 'Duis Aute'],
+  devops: ['Irure Dolor', 'Reprehenderit', 'Voluptate', 'Velit Esse', 'Cillum Dolore'],
   '3d': [
     'Blender',
     'ZBrush',

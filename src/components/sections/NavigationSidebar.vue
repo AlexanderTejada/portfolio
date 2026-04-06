@@ -74,7 +74,7 @@ const handleClick = () => {
     <!-- Tech Overlays -->
     <div class="sidebar-scanline"></div>
     <div class="sidebar-labels">
-      <span class="label">ID_{{ position === 'left' ? 'SOFT_ENG' : '3D_ART' }}</span>
+      <span class="label">ID_{{ position === 'left' ? 'SYS_ARCH' : '3D_ART' }}</span>
       <span class="label">SEC_0{{ position === 'left' ? 1 : 2 }}</span>
     </div>
 
