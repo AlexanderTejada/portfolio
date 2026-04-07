@@ -91,25 +91,30 @@ onMounted(() =>
     <SoftwareModal
       :open="showSoftwareModal"
       @close="
-        showSoftwareModal = false
-        toggleModalAudio(false)
+        (() => {
+          showSoftwareModal = false
+          toggleModalAudio(false)
+        })()
       "
     />
     <ThreeDModal
       :open="showThreeDModal"
       @close="
-        showThreeDModal = false
-        toggleModalAudio(false)
+        (() => {
+          showThreeDModal = false
+          toggleModalAudio(false)
+        })()
       "
     />
 
-    <!-- HUD: Software Engineering -->
     <div
       class="hud-panel hud-left"
       :class="{ visible: showContent }"
       @click="
-        showSoftwareModal = true
-        toggleModalAudio(true)
+        (() => {
+          showSoftwareModal = true
+          toggleModalAudio(true)
+        })()
       "
       @mouseenter="playGlitchSound"
     >
@@ -123,13 +128,14 @@ onMounted(() =>
       <p class="hud-bio">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
     </div>
 
-    <!-- HUD: 3D -->
     <div
       class="hud-panel hud-right"
       :class="{ visible: showContent }"
       @click="
-        showThreeDModal = true
-        toggleModalAudio(true)
+        (() => {
+          showThreeDModal = true
+          toggleModalAudio(true)
+        })()
       "
       @mouseenter="playGlitchSound"
     >
@@ -390,7 +396,7 @@ onMounted(() =>
 @media (max-width: 768px) {
   .hud-left,
   .hud-right {
-    top: 6rem;
+    top: 8rem;
     bottom: auto;
     transform: none !important;
     opacity: 1 !important;
@@ -408,10 +414,10 @@ onMounted(() =>
   }
 
   .hud-left {
-    left: 0.75rem;
+    left: 1rem;
   }
   .hud-right {
-    right: 0.75rem;
+    right: 1rem;
   }
 
   .hud-bio,
@@ -431,7 +437,7 @@ onMounted(() =>
   }
 
   .corner-content {
-    bottom: 1rem;
+    bottom: 2rem;
     left: 0.75rem;
     right: 0.75rem;
     width: auto;

@@ -227,9 +227,20 @@ onMounted(() => {
   scene.add(dirLight)
 
   // 2. LOAD 3D TEXT "ALEXANDER TEJADA"
-  const isMobile = window.innerWidth < 768
-  const targetScale = isMobile ? 14 : 25
-  const targetY = isMobile ? 5 : 7
+  const winWidth = window.innerWidth
+  const winHeight = window.innerHeight
+  const minDim = Math.min(winWidth, winHeight)
+  const getAdaptiveScale = () => {
+    if (winWidth <= 375) return 7
+    if (winWidth <= 390) return 7.5
+    if (winWidth <= 414) return 8
+    if (winWidth <= 430) return 8.5
+    if (winWidth <= 480) return 9
+    if (winWidth <= 768) return 10
+    return 25
+  }
+  const targetScale = getAdaptiveScale()
+  const targetY = minDim < 700 ? 1.5 : 5
 
   const loader = new GLTFLoader()
   loader.load('/ALEXANDER TEJADA.glb', (gltf) => {
@@ -339,11 +350,24 @@ const onResize = () => {
   if (!camera || !renderer) return
   camera.aspect = window.innerWidth / window.innerHeight
 
-  // Adjust camera for mobile
-  const isMobile = window.innerWidth < 768
-  if (isMobile) {
-    camera.position.set(0, 4, 18)
-    camera.fov = 60
+  const winW = window.innerWidth
+  const winH = window.innerHeight
+  const minDim = Math.min(winW, winH)
+  const isSmall = minDim < 700
+
+  const getAdaptiveScale = () => {
+    if (winW <= 375) return 7
+    if (winW <= 390) return 7.5
+    if (winW <= 414) return 8
+    if (winW <= 430) return 8.5
+    if (winW <= 480) return 9
+    if (winW <= 768) return 10
+    return 25
+  }
+
+  if (isSmall) {
+    camera.position.set(0, 1.5, 12)
+    camera.fov = 50
   } else {
     camera.position.set(0, 5, 25)
     camera.fov = 75
@@ -352,14 +376,13 @@ const onResize = () => {
   camera.updateProjectionMatrix()
   renderer.setSize(window.innerWidth, window.innerHeight)
 
-  // Adjust model scale for mobile
   if (textModel) {
     const box = new THREE.Box3().setFromObject(textModel)
     const size = box.getSize(new THREE.Vector3())
     const baseScale = 25 / Math.max(size.x, size.y, size.z)
-    const mobileScale = window.innerWidth < 768 ? baseScale * 0.55 : baseScale
-    textModel.scale.setScalar(mobileScale)
-    textModel.position.set(0, isMobile ? 5 : 7, 0)
+    const scale = isSmall ? getAdaptiveScale() / Math.max(size.x, size.y, size.z) : baseScale
+    textModel.scale.setScalar(scale)
+    textModel.position.set(0, isSmall ? 1.5 : 7, 0)
   }
 }
 
