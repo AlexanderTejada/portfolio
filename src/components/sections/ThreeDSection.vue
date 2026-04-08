@@ -14,7 +14,7 @@ const lightboxImgRef = ref<HTMLImageElement | null>(null)
 const isMagnifying = ref(false)
 const magnifierPos = ref({ x: 0, y: 0, bgX: 0, bgY: 0 })
 const videoRefs = ref<(HTMLVideoElement | null)[]>([])
-const sectionExpanded = ref(true)
+const sectionExpanded = ref(false)
 const ZOOM = 3
 
 const handleVideoHover = (video: HTMLVideoElement | null | undefined, hover: boolean) => {
