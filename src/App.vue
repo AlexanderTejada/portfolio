@@ -78,7 +78,14 @@ let rafId: number
 
 watch(locked, (val) => {
   if (!lenis) return
-  val ? lenis.stop() : lenis.start()
+  if (val) {
+    lenis.stop()
+  } else {
+    lenis.start()
+  }
+  document.body.style.overflow = val ? 'hidden' : ''
+  document.body.style.position = val ? 'fixed' : ''
+  document.body.style.width = val ? '100%' : ''
 })
 
 onMounted(() => {

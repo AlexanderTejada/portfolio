@@ -622,54 +622,173 @@ const skills = [
 
 @media (max-width: 640px) {
   .modal-backdrop {
-    padding: 0;
-    align-items: flex-start;
-    padding-top: 15vh;
+    padding: 1rem;
+    align-items: flex-end;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+  }
+
+  .modal-wrapper {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 1rem 1rem;
+    border-radius: 12px;
   }
 
   .modal {
-    height: 100vh;
-    max-height: 100vh;
+    height: 85vh;
+    max-height: 85vh;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   }
 
   .modal-header {
-    padding: 1.25rem 1.5rem 1rem;
+    padding: 1.25rem 1.25rem 1rem;
     flex-direction: column;
-    gap: 1rem;
-    align-items: flex-start;
-  }
-
-  .header-left {
-    flex-direction: column;
-    align-items: flex-start;
     gap: 0.75rem;
+    align-items: flex-start;
+    position: relative;
   }
 
   .header-main {
-    padding-left: 0;
+    width: 100%;
+  }
+
+  .system-id {
+    font-size: 0.45rem;
   }
 
   .modal-title {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+    line-height: 1.2;
   }
 
   .modal-close {
     position: absolute;
     top: 1rem;
     right: 1rem;
+    gap: 0.5rem;
+  }
+
+  .close-label {
+    font-size: 0.5rem;
+  }
+
+  .close-x {
+    width: 20px;
+    height: 20px;
+    font-size: 0.7rem;
   }
 
   .modal-body {
-    padding: 1.5rem;
-    gap: 2rem;
+    padding: 1.5rem 1.25rem;
+    gap: 1.5rem;
+  }
+
+  .section-label {
+    font-size: 0.5rem;
+  }
+
+  .timeline {
+    gap: 1.5rem;
+    padding-left: 1rem;
+  }
+
+  .timeline-dot {
+    left: calc(-1rem - 4px);
+  }
+
+  .job-role {
+    font-size: 0.8rem;
+  }
+
+  .job-company {
+    font-size: 0.7rem;
+  }
+
+  .job-period {
+    font-size: 0.6rem;
+  }
+
+  .job-desc {
+    font-size: 0.75rem;
+    line-height: 1.6;
   }
 
   .highlights {
     grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .highlight {
+    padding: 0.6rem;
+  }
+
+  .h-title {
+    font-size: 0.6rem;
+  }
+
+  .h-desc {
+    font-size: 0.65rem;
   }
 
   .skills-grid {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .skill-group-name {
+    font-size: 0.55rem;
+  }
+
+  .skill-tag {
+    font-size: 0.6rem;
+    padding: 0.3rem 0.6rem;
+  }
+
+  .modal-footer {
+    padding: 1rem 1.25rem;
+  }
+
+  .footer-meta {
+    font-size: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-wrapper {
+    margin: 0 0.75rem 0.75rem;
+  }
+
+  .modal {
+    height: 88vh;
+    max-height: 88vh;
+  }
+
+  .modal-header {
+    padding: 1rem 1rem 0.75rem;
+  }
+
+  .modal-body {
+    padding: 1.25rem 1rem;
+    gap: 1.25rem;
+  }
+
+  .modal-title {
+    font-size: 0.75rem;
+  }
+
+  .modal-close {
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+
+  .job-role {
+    font-size: 0.75rem;
+  }
+
+  .timeline {
+    gap: 1.25rem;
   }
 }
 </style>
