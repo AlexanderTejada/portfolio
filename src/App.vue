@@ -1,61 +1,12 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import Lenis from 'lenis'
-import { Wave } from '@foobar404/wave'
 import { useScrollLock } from '@/composables/useScrollLock'
-import { useAudioState } from '@/composables/useAudioState'
 import HeroSection from './components/sections/hero/index.vue'
 import ThreeDSection from './components/sections/ThreeDSection.vue'
 import ProjectsSection from './components/sections/ProjectsSection.vue'
 import ExperienceSection from './components/sections/ExperienceSection.vue'
 import ContactSection from './components/sections/ContactSection.vue'
-
-const audioRef = ref<HTMLAudioElement | null>(null)
-const canvasRef = ref<HTMLCanvasElement | null>(null)
-const isPlaying = ref(false)
-const { isModalAudioActive } = useAudioState()
-let wave: Wave | null = null
-
-const toggleAudio = () => {
-  if (!audioRef.value || !canvasRef.value) return
-
-  if (!isPlaying.value) {
-    if (!wave) {
-      wave = new Wave(audioRef.value, canvasRef.value)
-      wave.addAnimation(
-        new wave.animations.Wave({
-          count: 30,
-          lineWidth: 3,
-          lineColor: '#6366f1',
-          fillColor: { gradient: ['#6366f1', '#a855f7'], rotate: 0 },
-        }),
-      )
-    }
-
-    audioRef.value.play()
-    isPlaying.value = true
-  } else {
-    audioRef.value.pause()
-    isPlaying.value = false
-  }
-}
-
-watch(isModalAudioActive, (active) => {
-  if (!audioRef.value) return
-  if (active) {
-    // If global music was playing, we pause it
-    if (isPlaying.value) {
-      audioRef.value.pause()
-    }
-  } else {
-    // If global music should be playing (based on the toggle), we resume it
-    if (isPlaying.value) {
-      audioRef.value.play().catch(() => {})
-    }
-  }
-})
-
-onUnmounted(() => {})
 
 const isTransitioning = ref(false)
 
@@ -149,18 +100,6 @@ onUnmounted(() => {
 
 <template>
   <div id="app" class="grain">
-    <audio ref="audioRef" src="/audio/Alegend - Dawn (freetouse.com).mp3" loop />
-
-    <button class="audio-toggle" @click="toggleAudio" :class="{ playing: isPlaying }">
-      <svg v-if="!isPlaying" class="icon" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M8 5v14l11-7z" />
-      </svg>
-      <svg v-else class="icon" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-      </svg>
-      <canvas ref="canvasRef" width="80" height="80" />
-    </button>
-
     <HeroSection />
     <ThreeDSection id="threed" />
     <ProjectsSection id="projects" />
@@ -278,55 +217,6 @@ onUnmounted(() => {
       scale(0) rotate(360deg);
     opacity: 0;
     filter: blur(4px) brightness(0.4);
-  }
-}
-
-.audio-toggle {
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  z-index: 9999;
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-  padding: 8px;
-}
-
-.audio-toggle .icon {
-  position: absolute;
-  width: 24px;
-  height: 24px;
-  opacity: 0.3;
-  transition: opacity 0.2s;
-}
-
-.audio-toggle:hover .icon {
-  opacity: 0.7;
-}
-
-.audio-toggle canvas {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.audio-toggle:hover {
-  transform: scale(1.1);
-}
-
-@media (max-width: 768px) {
-  .audio-toggle {
-    bottom: 1rem;
-    right: 1.5rem;
-    width: 60px;
-    height: 60px;
   }
 }
 </style>

@@ -58,8 +58,8 @@ onMounted(() =>
     />
 
     <div class="corner-content" :class="{ visible: showContent }">
-      <p class="hero-subtitle glitch-text" data-text="SOFTWARE ENGINEER | .NET · C# · AZURE OPENAI">
-        SOFTWARE ENGINEER | .NET · C# · AZURE OPENAI
+      <p class="hero-subtitle glitch-text" data-text="............">
+        --------------------------------------------------
       </p>
       <div class="cta-buttons">
         <button class="btn-primary" @click="scrollTo('projects')">VIEW PROJECTS</button>
