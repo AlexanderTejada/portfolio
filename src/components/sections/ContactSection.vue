@@ -58,10 +58,17 @@ const handleSubmit = () => {
             </div>
           </div>
 
-          <!-- HUD Graphic Placeholder -->
-          <div class="hud-graphic">
-            <div class="radar-circle"></div>
-            <div class="radar-line"></div>
+          <!-- Stats Display -->
+          <div class="stats-display">
+            <div class="stat-item">
+              <span class="stat-label">PROJECTS</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">YEARS</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">USERS</span>
+            </div>
           </div>
         </div>
 
@@ -217,44 +224,26 @@ h2 {
   transform: translateY(-2px);
 }
 
-.hud-graphic {
-  position: relative;
-  width: 150px;
-  height: 150px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 50%;
-  margin-top: 2rem;
+/* Stats Display */
+.stats-display {
   display: flex;
+  gap: 2rem;
+  margin-top: 1rem;
+  padding: 1rem 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
 }
 
-.radar-circle {
-  width: 80%;
-  height: 80%;
-  border: 1px dashed rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
-  animation: rotate 10s linear infinite;
-}
-
-.radar-line {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 50%;
-  height: 1px;
-  background: linear-gradient(to right, #fff, transparent);
-  transform-origin: left center;
-  animation: rotate 4s linear infinite;
-}
-
-@keyframes rotate {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.stat-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: #6b7280;
+  letter-spacing: 0.15em;
 }
 
 /* Form Side */
@@ -326,9 +315,10 @@ h2 {
   cursor: not-allowed;
 }
 
-/* Glitch effects (reused or adapted) */
+/* Glitch effects */
 .glitch-text {
   position: relative;
+  animation: contact-glitch 4s infinite steps(2);
 }
 
 .glitch-text::before,
@@ -339,8 +329,108 @@ h2 {
   left: 0;
   width: 100%;
   height: 100%;
-  background: #050505;
-  clip-path: inset(0 0 0 0);
+  pointer-events: none;
+}
+
+.glitch-text::before {
+  color: #ff0040;
+  animation: glitch-clip-1 4s infinite steps(2);
+  mix-blend-mode: screen;
+  z-index: -1;
+}
+
+.glitch-text::after {
+  color: #00e5ff;
+  animation: glitch-clip-2 4s infinite steps(2);
+  mix-blend-mode: screen;
+  z-index: -1;
+}
+
+@keyframes contact-glitch {
+  0%,
+  88%,
+  100% {
+    transform: translate(0);
+    filter: none;
+  }
+  89% {
+    transform: translate(-3px, 1px) skewX(-2deg);
+    filter: hue-rotate(90deg) saturate(2);
+  }
+  90% {
+    transform: translate(3px, -1px) skewX(2deg);
+    filter: hue-rotate(-90deg) saturate(1.5);
+  }
+  91% {
+    transform: translate(-1px, 0);
+    filter: none;
+  }
+  92% {
+    transform: translate(2px, 0) skewX(-1deg);
+    filter: hue-rotate(180deg);
+  }
+  93% {
+    transform: translate(0);
+    filter: none;
+  }
+}
+
+@keyframes glitch-clip-1 {
+  0%,
+  88%,
+  100% {
+    clip-path: inset(0 0 100% 0);
+    transform: translate(0);
+  }
+  89% {
+    clip-path: inset(20% 0 40% 0);
+    transform: translate(-5px, 0);
+  }
+  90% {
+    clip-path: inset(60% 0 10% 0);
+    transform: translate(5px, 0);
+  }
+  91% {
+    clip-path: inset(10% 0 70% 0);
+    transform: translate(-3px, 0);
+  }
+  92% {
+    clip-path: inset(40% 0 30% 0);
+    transform: translate(4px, 0);
+  }
+  93% {
+    clip-path: inset(0 0 100% 0);
+    transform: translate(0);
+  }
+}
+
+@keyframes glitch-clip-2 {
+  0%,
+  88%,
+  100% {
+    clip-path: inset(100% 0 0 0);
+    transform: translate(0);
+  }
+  89% {
+    clip-path: inset(50% 0 20% 0);
+    transform: translate(5px, 0);
+  }
+  90% {
+    clip-path: inset(10% 0 60% 0);
+    transform: translate(-5px, 0);
+  }
+  91% {
+    clip-path: inset(70% 0 10% 0);
+    transform: translate(3px, 0);
+  }
+  92% {
+    clip-path: inset(30% 0 40% 0);
+    transform: translate(-4px, 0);
+  }
+  93% {
+    clip-path: inset(100% 0 0 0);
+    transform: translate(0);
+  }
 }
 
 @media (max-width: 900px) {
@@ -349,8 +439,8 @@ h2 {
     gap: 2.5rem;
   }
 
-  .hud-graphic {
-    display: none;
+  .stats-display {
+    justify-content: center;
   }
 
   .contact-info {

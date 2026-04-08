@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useScrollProgress } from '@/composables/useScrollProgress'
-import { useAudioState } from '@/composables/useAudioState'
 import { useActiveSectionTheme } from '@/composables/useActiveSectionTheme'
 import HeroScene from '@/components/3d/HeroScene.vue'
 import NavigationSidebar from '@/components/sections/NavigationSidebar.vue'
@@ -11,32 +10,11 @@ import ThreeDModal from './ThreeDModal.vue'
 
 defineOptions({ name: 'HeroSection' })
 
-const glitchAudioRef = ref<HTMLAudioElement | null>(null)
-const aylexAudioRef = ref<HTMLAudioElement | null>(null)
 const { scrollProgress } = useScrollProgress()
-const { isModalAudioActive } = useAudioState()
 const { activeTheme } = useActiveSectionTheme()
 const showContent = ref(false)
 const showSoftwareModal = ref(false)
 const showThreeDModal = ref(false)
-
-const playGlitchSound = () => {
-  if (glitchAudioRef.value) {
-    glitchAudioRef.value.currentTime = 0
-    glitchAudioRef.value.play().catch(() => {})
-  }
-}
-
-const toggleModalAudio = (isPlaying: boolean) => {
-  if (!aylexAudioRef.value) return
-  isModalAudioActive.value = isPlaying
-  if (isPlaying) {
-    aylexAudioRef.value.currentTime = 0
-    aylexAudioRef.value.play().catch(() => {})
-  } else {
-    aylexAudioRef.value.pause()
-  }
-}
 
 const navItems = [
   { label: 'WORKS', to: 'projects' },
@@ -59,14 +37,16 @@ onMounted(() =>
   <section id="hero" class="hero" data-theme="light">
     <HeroScene />
 
-    <audio ref="glitchAudioRef" src="/audio/kakaist-digital-glitch-sfx-438248.mp3" preload="auto" />
-    <audio ref="aylexAudioRef" src="/audio/Aylex - Too Hot (freetouse.com).mp3" preload="auto" />
-
     <HeroNavbar :nav-items="navItems" @navigate="scrollTo" />
+
+    <!-- Mobile Hero Title - positioned at top -->
+    <h2 class="hero-title-mobile glitch-text" data-text="ALEXANDER TEJADA">
+      ALEXANDER TEJADA<span>ALEXANDER TEJADA</span>
+    </h2>
 
     <NavigationSidebar
       position="left"
-      :texts="['LOREM', 'IPSUM']"
+      :texts="['FULL', 'STACK']"
       :theme="activeTheme"
       @click="scrollTo('projects')"
     />
@@ -78,9 +58,8 @@ onMounted(() =>
     />
 
     <div class="corner-content" :class="{ visible: showContent }">
-      <div class="role-badge glitch-text" data-text="PORTFOLIO 2026">PORTFOLIO 2026</div>
-      <p class="hero-subtitle glitch-text" data-text="LOREM IPSUM DOLOR SIT AMET">
-        LOREM IPSUM DOLOR SIT AMET
+      <p class="hero-subtitle glitch-text" data-text="SOFTWARE ENGINEER | .NET · C# · AZURE OPENAI">
+        SOFTWARE ENGINEER | .NET · C# · AZURE OPENAI
       </p>
       <div class="cta-buttons">
         <button class="btn-primary" @click="scrollTo('projects')">VIEW PROJECTS</button>
@@ -88,35 +67,13 @@ onMounted(() =>
       </div>
     </div>
 
-    <SoftwareModal
-      :open="showSoftwareModal"
-      @close="
-        (() => {
-          showSoftwareModal = false
-          toggleModalAudio(false)
-        })()
-      "
-    />
-    <ThreeDModal
-      :open="showThreeDModal"
-      @close="
-        (() => {
-          showThreeDModal = false
-          toggleModalAudio(false)
-        })()
-      "
-    />
+    <SoftwareModal :open="showSoftwareModal" @close="showSoftwareModal = false" />
+    <ThreeDModal :open="showThreeDModal" @close="showThreeDModal = false" />
 
     <div
       class="hud-panel hud-left"
       :class="{ visible: showContent }"
-      @click="
-        (() => {
-          showSoftwareModal = true
-          toggleModalAudio(true)
-        })()
-      "
-      @mouseenter="playGlitchSound"
+      @click="showSoftwareModal = true"
     >
       <div class="hud-corner tl" />
       <div class="hud-corner tr" />
@@ -125,19 +82,13 @@ onMounted(() =>
       <span class="hud-label">// SYS_ARCH_NODE</span>
       <span class="hud-label hud-label--mobile">SOFTWARE</span>
       <div class="hud-divider" />
-      <p class="hud-bio">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+      <p class="hud-bio">Full-stack Developer | .NET · C# · Vue.js · RAG & LLM Systems</p>
     </div>
 
     <div
       class="hud-panel hud-right"
       :class="{ visible: showContent }"
-      @click="
-        (() => {
-          showThreeDModal = true
-          toggleModalAudio(true)
-        })()
-      "
-      @mouseenter="playGlitchSound"
+      @click="showThreeDModal = true"
     >
       <div class="hud-corner tl" />
       <div class="hud-corner tr" />
@@ -147,6 +98,16 @@ onMounted(() =>
       <span class="hud-label hud-label--mobile">3D</span>
       <div class="hud-divider" />
       <p class="hud-bio">Character & Creature Artist | ZBrush, Substance & Mobile Game Assets</p>
+    </div>
+
+    <!-- Mobile: panels in a row below content -->
+    <div class="hud-panels-row" :class="{ visible: showContent }">
+      <div class="hud-panel-mobile" @click="showSoftwareModal = true">
+        <span class="hud-label--mobile">SOFTWARE</span>
+      </div>
+      <div class="hud-panel-mobile" @click="showThreeDModal = true">
+        <span class="hud-label--mobile">3D</span>
+      </div>
     </div>
 
     <div v-show="scrollProgress < 0.1" class="scroll-indicator" :class="{ visible: showContent }">
@@ -190,7 +151,9 @@ onMounted(() =>
 }
 
 .role-badge {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   font-family: 'Inter', sans-serif;
   font-size: 0.65rem;
   font-weight: 600;
@@ -201,6 +164,25 @@ onMounted(() =>
   border-radius: 2px;
   width: fit-content;
   background: #ffffff;
+}
+
+.name-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.verified-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  background: #0a65ff;
+  color: #ffffff;
+  font-size: 0.6rem;
+  font-weight: 700;
+  border-radius: 50%;
 }
 
 .hero-subtitle {
@@ -379,97 +361,303 @@ onMounted(() =>
   margin: 0;
 }
 
-@media (max-width: 1024px) {
-  .hud-panel {
-    width: 150px;
-    padding: 0.9rem 1rem;
-    top: 25%;
+.hud-panels-row {
+  display: none;
+}
+
+.hero-title-mobile {
+  display: none;
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(1.5rem, 8vw, 2.5rem);
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #111827;
+  margin: 0;
+  padding: 0 1rem;
+  text-align: center;
+  position: relative;
+  animation: glitch-rgb 2.5s infinite steps(8);
+}
+
+.hero-title-mobile::before,
+.hero-title-mobile::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.hero-title-mobile::before {
+  color: #ff0040;
+  animation: glitch-rgb-1 2.5s infinite steps(8);
+}
+
+.hero-title-mobile::after {
+  color: #00ff40;
+  animation: glitch-rgb-2 2.5s infinite steps(8);
+}
+
+.hero-title-mobile span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0080ff;
+  animation: glitch-rgb-3 2.5s infinite steps(8);
+}
+
+@keyframes glitch-rgb {
+  0%,
+  80%,
+  100% {
+    transform: translate(0);
+    filter: none;
+    font-family: 'Orbitron', sans-serif;
   }
-  .hud-left {
-    left: 1.5rem;
+  81% {
+    font-family: 'Bebas Neue', cursive;
   }
-  .hud-right {
-    right: 1.5rem;
+  82% {
+    transform: translate(-6px, 0) skewX(-4deg);
+  }
+  83% {
+    transform: translate(6px, 0) skewX(4deg);
+    font-family: 'Share Tech Mono', monospace;
+  }
+  84% {
+    transform: translate(-3px, 0);
+  }
+  85% {
+    transform: translate(0);
   }
 }
 
-@media (max-width: 768px) {
-  .hud-left,
-  .hud-right {
-    top: 8rem;
-    bottom: auto;
-    transform: none !important;
-    opacity: 1 !important;
-    width: auto;
-    min-width: 60px;
-    padding: 0.5rem 0.7rem;
+@keyframes glitch-rgb-1 {
+  0%,
+  80%,
+  100% {
+    transform: translate(0);
+    opacity: 0;
   }
-
-  .hud-panel.visible {
-    transform: none !important;
+  81% {
+    transform: translate(-3px, 0);
+    opacity: 0.85;
   }
-
-  .hud-panel.visible:hover {
-    transform: translateY(-2px) !important;
+  82% {
+    transform: translate(4px, 0);
+    opacity: 0.6;
   }
+  83% {
+    transform: translate(-2px, 0);
+    opacity: 0.7;
+  }
+  84% {
+    transform: translate(0);
+    opacity: 0;
+  }
+}
 
+@keyframes glitch-rgb-2 {
+  0%,
+  80%,
+  100% {
+    transform: translate(0);
+    opacity: 0;
+  }
+  81% {
+    transform: translate(3px, 0);
+    opacity: 0.75;
+  }
+  82% {
+    transform: translate(-4px, 0);
+    opacity: 0.8;
+  }
+  83% {
+    transform: translate(2px, 0);
+    opacity: 0.65;
+  }
+  84% {
+    transform: translate(0);
+    opacity: 0;
+  }
+}
+
+@keyframes glitch-rgb-3 {
+  0%,
+  80%,
+  100% {
+    transform: translate(0);
+    opacity: 0;
+  }
+  81% {
+    transform: translate(-2px, 2px);
+    opacity: 0.7;
+  }
+  82% {
+    transform: translate(2px, -2px);
+    opacity: 0.8;
+  }
+  83% {
+    transform: translate(-1px, 1px);
+    opacity: 0.75;
+  }
+  84% {
+    transform: translate(0);
+    opacity: 0;
+  }
+}
+
+.hud-panel-mobile {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.hud-panel-mobile:hover {
+  background: rgba(255, 255, 255, 0.98);
+  border-color: rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.hud-panel-mobile .hud-label--mobile {
+  display: block;
+  color: #374151;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+}
+
+@media (max-width: 1024px) {
+  .hud-panel {
+    width: 140px;
+    padding: 0.8rem 1rem;
+    top: 30%;
+  }
   .hud-left {
     left: 1rem;
   }
   .hud-right {
     right: 1rem;
   }
+  .corner-content {
+    left: 2rem;
+    bottom: 2rem;
+    max-width: 45%;
+  }
+}
 
-  .hud-bio,
-  .hud-divider {
+@media (max-width: 768px) {
+  .hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100dvh;
+    padding: 5rem 1rem 2rem;
+    position: relative;
+  }
+
+  .hud-panel {
     display: none;
   }
 
-  .hud-label:not(.hud-label--mobile) {
-    display: none;
+  .hud-panels-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .hud-label--mobile {
-    display: block;
-    margin-bottom: 0;
-    color: #374151;
-    font-size: 0.55rem;
+  .hud-panels-row.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .hero-title-mobile {
+    display: block !important;
+    position: relative;
+    margin-bottom: 1rem;
+  }
+
+  .hud-panel-mobile {
+    flex: 1;
+    padding: 0.8rem 0.5rem;
   }
 
   .corner-content {
-    bottom: 2rem;
-    left: 0.75rem;
-    right: 0.75rem;
-    width: auto;
+    position: relative;
+    bottom: auto;
+    left: auto !important;
+    right: auto !important;
+    width: 100%;
+    max-width: 100%;
     padding: 1rem;
-    gap: 0.75rem;
-  }
-
-  .corner-content.visible {
-    transform: translateY(0);
+    margin-top: 0;
+    transform: none !important;
+    opacity: 1 !important;
   }
 
   .role-badge {
     font-size: 0.55rem;
-    padding: 0.25rem 0.6rem;
+    padding: 0.2rem 0.5rem;
+  }
+
+  .name-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+    position: relative;
+  }
+
+  .verified-badge {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 14px;
+    height: 14px;
+    font-size: 0.5rem;
   }
 
   .hero-subtitle {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
+    line-height: 1.4;
   }
 
   .cta-buttons {
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 0.5rem;
   }
 
   .btn-primary,
   .btn-secondary {
-    flex: 1;
-    min-width: 80px;
-    text-align: center;
-    padding: 0.6rem 0.5rem;
+    padding: 0.6rem 0.8rem;
     font-size: 0.65rem;
+  }
+
+  .scroll-indicator {
+    display: none;
   }
 }
 
@@ -478,6 +666,10 @@ onMounted(() =>
   position: relative;
   display: inline-block;
   animation: glitch-tv 5s infinite steps(20);
+}
+
+.hero-title-mobile.glitch-text {
+  display: none;
 }
 
 .glitch-text::before,

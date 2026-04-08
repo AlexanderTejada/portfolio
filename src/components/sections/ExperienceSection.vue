@@ -1,71 +1,126 @@
 <template>
   <section class="experience-section" v-bind="$attrs" data-theme="light">
-    <canvas ref="canvasRef" class="bg-canvas"></canvas>
-
     <div class="container">
-      <h2 class="section-title glitch-text" data-text="EXPERIENCE">EXPERIENCE</h2>
+      <div class="section-header">
+        <span class="section-label">// CAREER PATH</span>
+        <h2 class="section-title glitch-text" data-text="EXPERIENCE">EXPERIENCE</h2>
+      </div>
 
       <div class="timeline">
         <div
           v-for="(job, index) in experience"
           :key="index"
           class="timeline-item"
-          :class="{ expanded: expandedJob === index }"
+          :class="{ visible: visibleItems.has(index), expanded: expandedJob === index }"
+          :style="{ '--delay': `${index * 0.15}s` }"
         >
-          <div class="timeline-marker"></div>
-          <div class="timeline-content" @click="toggleJob(index)">
-            <div class="job-header">
-              <div>
+          <div class="timeline-line">
+            <div class="timeline-dot"></div>
+          </div>
+
+          <div class="timeline-card" @click="toggleJob(index)">
+            <div class="card-top">
+              <div class="card-info">
+                <span class="job-index">{{ String(index + 1).padStart(2, '0') }}</span>
                 <h3 class="job-role">{{ job.role }}</h3>
                 <p class="job-company">{{ job.company }}</p>
               </div>
-              <span class="job-period">{{ job.period }}</span>
+              <div class="card-meta">
+                <span class="job-period">{{ job.period }}</span>
+                <span class="job-location">{{ job.location }}</span>
+              </div>
             </div>
+
             <p class="job-description">{{ job.description }}</p>
+
             <div class="job-highlights" v-if="expandedJob === index">
-              <ul>
-                <li v-for="(highlight, hIndex) in job.highlights" :key="hIndex">
-                  <span class="highlight-title">{{ highlight.title }}</span>
-                  <span class="highlight-desc">{{ highlight.desc }}</span>
-                </li>
-              </ul>
+              <div
+                v-for="(highlight, hIndex) in job.highlights"
+                :key="hIndex"
+                class="highlight-item"
+                :style="{ '--h-delay': `${hIndex * 0.08}s` }"
+              >
+                <span class="highlight-title">{{ highlight.title }}</span>
+                <span class="highlight-desc">{{ highlight.desc }}</span>
+              </div>
             </div>
-            <span class="expand-hint">{{ expandedJob === index ? '[-]' : '[+]' }}</span>
+
+            <span class="expand-hint">{{ expandedJob === index ? 'COLLAPSE' : 'EXPAND' }}</span>
           </div>
         </div>
       </div>
 
-      <h2 class="section-title glitch-text" data-text="SKILLS">SKILLS</h2>
+      <div class="skills-section">
+        <div class="skills-header">
+          <span class="section-label">// TECH ARSENAL</span>
+          <h2 class="section-title glitch-text" data-text="SKILLS">SKILLS</h2>
+        </div>
 
-      <div class="skills-grid">
-        <div class="skill-category">
-          <h3>SYSTEM_INTEL</h3>
-          <div class="skill-tags">
-            <span v-for="skill in skills.ai" :key="skill" class="skill-tag">{{ skill }}</span>
+        <div class="skills-grid">
+          <div class="skill-category">
+            <h3>SYSTEM_INTEL</h3>
+            <div class="skill-tags">
+              <span v-for="skill in skills.ai" :key="skill.name" class="skill-tag">
+                <span
+                  v-if="getSkillIcon(skill.icon)"
+                  v-html="getSkillIcon(skill.icon)"
+                  class="skill-icon"
+                ></span>
+                {{ skill.name }}
+              </span>
+            </div>
           </div>
-        </div>
-        <div class="skill-category">
-          <h3>CORE_LAYERS</h3>
-          <div class="skill-tags">
-            <span v-for="skill in skills.backend" :key="skill" class="skill-tag">{{ skill }}</span>
+          <div class="skill-category">
+            <h3>CORE_LAYERS</h3>
+            <div class="skill-tags">
+              <span v-for="skill in skills.backend" :key="skill.name" class="skill-tag">
+                <span
+                  v-if="getSkillIcon(skill.icon)"
+                  v-html="getSkillIcon(skill.icon)"
+                  class="skill-icon"
+                ></span>
+                {{ skill.name }}
+              </span>
+            </div>
           </div>
-        </div>
-        <div class="skill-category">
-          <h3>INTERFACE_MODS</h3>
-          <div class="skill-tags">
-            <span v-for="skill in skills.frontend" :key="skill" class="skill-tag">{{ skill }}</span>
+          <div class="skill-category">
+            <h3>INTERFACE_MODS</h3>
+            <div class="skill-tags">
+              <span v-for="skill in skills.frontend" :key="skill.name" class="skill-tag">
+                <span
+                  v-if="getSkillIcon(skill.icon)"
+                  v-html="getSkillIcon(skill.icon)"
+                  class="skill-icon"
+                ></span>
+                {{ skill.name }}
+              </span>
+            </div>
           </div>
-        </div>
-        <div class="skill-category">
-          <h3>ARCH_DEVOPS</h3>
-          <div class="skill-tags">
-            <span v-for="skill in skills.devops" :key="skill" class="skill-tag">{{ skill }}</span>
+          <div class="skill-category">
+            <h3>ARCH_DEVOPS</h3>
+            <div class="skill-tags">
+              <span v-for="skill in skills.devops" :key="skill.name" class="skill-tag">
+                <span
+                  v-if="getSkillIcon(skill.icon)"
+                  v-html="getSkillIcon(skill.icon)"
+                  class="skill-icon"
+                ></span>
+                {{ skill.name }}
+              </span>
+            </div>
           </div>
-        </div>
-        <div class="skill-category">
-          <h3>3D Digital</h3>
-          <div class="skill-tags">
-            <span v-for="skill in skills['3d']" :key="skill" class="skill-tag">{{ skill }}</span>
+          <div class="skill-category full-width">
+            <h3>3D DIGITAL</h3>
+            <div class="skill-tags">
+              <span v-for="skill in skills['3d']" :key="skill.name" class="skill-tag">
+                <span
+                  v-if="getSkillIcon(skill.icon)"
+                  v-html="getSkillIcon(skill.icon)"
+                  class="skill-icon"
+                ></span>
+                {{ skill.name }}
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -74,8 +129,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useCanvasDotGrid } from '@/composables/useCanvasDotGrid'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
+import * as Si from 'simple-icons'
 
 interface Highlight {
   title: string
@@ -90,46 +145,84 @@ interface Job {
   highlights: Highlight[]
 }
 
-const { canvasRef } = useCanvasDotGrid()
+interface SkillItem {
+  name: string
+  icon: string | null
+}
+
+const getSkillIcon = (iconName: string | null) => {
+  if (!iconName) return null
+  const nameMap: Record<string, string> = {
+    dotnet: 'Dotnet',
+    vuedotjs: 'Vuedotjs',
+    angular: 'Angular',
+    typescript: 'Typescript',
+    docker: 'Docker',
+    postgresql: 'Postgresql',
+    mongodb: 'Mongodb',
+    linux: 'Linux',
+    redis: 'Redis',
+    blender: 'Blender',
+    unrealengine: 'Unrealengine',
+    fastapi: 'Fastapi',
+    langchain: 'Langchain',
+    capacitor: 'Capacitor',
+    csharp: 'Csharp',
+    azure: 'Azure',
+    html: 'Html5',
+  }
+  const key = nameMap[iconName]
+  if (!key) return null
+  const icon = Si[('si' + key) as keyof typeof Si] as { path: string; hex: string } | undefined
+  if (!icon) return null
+  const color = `#${icon.hex}`
+  return `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="color:${color}"><path fill="currentColor" d="${icon.path}"/></svg>`
+}
+
+interface Job {
+  company: string
+  role: string
+  period: string
+  location: string
+  description: string
+  highlights: Highlight[]
+}
+
+interface SkillItem {
+  name: string
+  icon: string | null
+}
 
 const experience: Job[] = [
   {
-    company: 'Lorem Ipsum Inc.',
-    role: 'Lorem Ipsum Architect',
+    company: 'Excelencia Digital Software',
+    role: 'AI & Full Stack Developer',
     period: 'Apr 2024 – Present',
-    location: 'Remote',
+    location: 'Hybrid — Argentina',
     description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula. Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor.',
+      'AI & Full Stack Developer working on a utility management system. Day-to-day work spans RAG pipelines (LangChain, LangGraph, vector databases), LLM integration with WhatsApp-connected transactional systems, real-time operations, and geospatial data processing with PostGIS.',
     highlights: [
       {
-        title: 'Lorem Ipsum Dolor',
-        desc: 'Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        title: 'RAG Pipelines & LLM Integration',
+        desc: 'Building production RAG pipelines with LangChain, LangGraph, and vector databases. Integrating LLMs with WhatsApp for transactional systems serving 13,000+ users.',
       },
       {
-        title: 'Sit Amet Consectetur',
-        desc: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+        title: 'Real-time Operations',
+        desc: 'Managing mass claim operations, shift tracking, and geospatial data processing with PostGIS for utility management.',
       },
       {
-        title: 'Adipiscing Elit Sed',
-        desc: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-      },
-      {
-        title: 'Eiusmod Tempor Incididunt',
-        desc: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-      },
-      {
-        title: 'Labore Et Dolore',
-        desc: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.',
+        title: 'Full-stack Development',
+        desc: 'Backend in C# .NET with Entity Framework Core. Frontend and mobile with Vue.js and Capacitor. Data layer across PostgreSQL, SQL Server, MongoDB, and Redis.',
       },
     ],
   },
   {
     company: 'Zelcar Games LLC',
-    role: 'Character & Creature Artist (Mobile Focus)',
+    role: '3D Artist',
     period: 'Oct 2024 – Feb 2025',
     location: 'Remote',
     description:
-      '3D Character and Creature Artist dedicated to developing high-quality, game-ready assets for mobile platforms. Managed the end-to-end character pipeline, ensuring artistic vision and technical performance lived in harmony within the game engine.',
+      '3D modeling of creatures and characters for a mobile video game, including sculpting, retopology, texturing, and optimization for real-time rendering.',
     highlights: [
       {
         title: 'High-to-Low Workflow',
@@ -137,49 +230,29 @@ const experience: Job[] = [
       },
       {
         title: 'Performance-Driven Retopology',
-        desc: 'Mastered hand-crafted retopology focused on edge flow for animation, ensuring character joints and silhouettes deformed correctly under real-time constraints.',
-      },
-      {
-        title: 'Texturing & LookDev',
-        desc: 'Developed PBR textures using Substance Painter to achieve high-end visual fidelity, focusing on material definition and readability tailored for smaller mobile screens.',
-      },
-      {
-        title: 'Mobile Optimization',
-        desc: 'Drastically reduced engine overhead by optimizing UV layouts and texture budgets, ensuring smooth frame rates across a wide range of mobile hardware without compromising artistic integrity.',
+        desc: 'Delivered optimized character models ensuring smooth performance on mobile devices while maintaining visual fidelity.',
       },
     ],
   },
   {
     company: 'Freelance',
-    role: 'Technical Specialist & 3D Artist',
-    period: 'Jan 2020 – Feb 2025',
-    location: 'Remote — US, LATAM, Europe',
+    role: 'Full-stack Developer & 3D Artist',
+    period: 'Jun 2020 – Present',
+    location: 'Remote — Argentina',
     description:
-      'Consultant delivering integrated technical solutions and high-fidelity 3D assets for international clients. Specialized in bridging complex technical systems with interactive digital assets and real-time visualization.',
+      'Consultant delivering integrated .NET, Angular, and high-fidelity 3D solutions for international clients. Specialized in bridging enterprise software architecture with interactive digital assets and real-time visualization.',
     highlights: [
       {
-        title: 'Lorem Ipsum (2020–2025)',
-        desc: 'Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.',
+        title: 'Full Stack Solutions (2020–2025)',
+        desc: 'Delivered 15+ production-ready applications using .NET Core, C#, and Angular/Vue.js, focusing on scalable SaaS architectures and Clean Architecture principles.',
+      },
+      {
+        title: 'AI & LLM Integration (2023–2025)',
+        desc: 'Architecting RAG pipelines and intelligent API orchestration to enhance functional capabilities through automated data extraction and LLM-powered features.',
       },
       {
         title: '3D Character Art & Engineering',
-        desc: 'Established a professional 3D pipeline for high-fidelity character and creature design. Expert in ZBrush, Blender, and Substance Painter — anatomical precision, retopology, and PBR texturing for real-time engines.',
-      },
-      {
-        title: 'Interactive 3D Integration',
-        desc: 'Developed web-based 3D modules and interactive simulations, combining advanced technical logic with digital sculpting to create immersive user experiences.',
-      },
-      {
-        title: 'Sit Amet Adipiscing',
-        desc: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-      },
-      {
-        title: 'Eiusmod Tempor',
-        desc: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-      },
-      {
-        title: 'Lorem Ipsum (2023–2025)',
-        desc: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.',
+        desc: 'Established professional pipelines for high-fidelity character/creature design. Expert in ZBrush, Blender, and Substance Painter, focusing on retopology and PBR texturing for real-time engines.',
       },
     ],
   },
@@ -187,9 +260,9 @@ const experience: Job[] = [
     company: 'Golemstudio',
     role: '3D Modeler',
     period: 'Dec 2021 – Jan 2023',
-    location: 'Remote',
+    location: 'Remote — Lima, Peru',
     description:
-      'High-fidelity 3D Modeler specializing in hard surface workflows for the luxury goods sector — fine jewelry and high-end fashion accessories. Delivered production-ready digital twins bridging conceptual design and commercial visualization.',
+      'Hard surface modeling for the luxury goods sector — fine jewelry and high-end fashion accessories. Delivered production-ready digital twins bridging conceptual design and commercial visualization.',
     highlights: [
       {
         title: 'Precision Hard Surface Modeling',
@@ -197,15 +270,7 @@ const experience: Job[] = [
       },
       {
         title: 'Digital Craftsmanship',
-        desc: 'Leveraged ZBrush to sculpt realistic leather textures, stitching, and intricate metalwork for luxury bags, achieving photorealistic quality that enhanced virtual catalog presentations.',
-      },
-      {
-        title: 'Workflow Optimization',
-        desc: 'Mastered a seamless pipeline between Blender and ZBrush, utilizing advanced retopology and baking techniques to deliver high-detail assets optimized for high-resolution renders and interactive 3D viewers.',
-      },
-      {
-        title: 'Technical Artistry',
-        desc: 'Collaborated on shader and lighting environment setup to accurately represent precious metals, gemstones, and exotic materials for luxury brand campaigns.',
+        desc: 'Leveraged ZBrush to sculpt realistic leather textures, stitching, and intricate metalwork for luxury bags, achieving photorealistic quality.',
       },
     ],
   },
@@ -213,366 +278,499 @@ const experience: Job[] = [
 
 const skills = {
   ai: [
-    'Consectetur',
-    'Adipiscing',
-    'Elit Sed',
-    'Do Eiusmod',
-    'Tempor Incididunt',
-    'Labore Et Dolore',
-    'Magna Aliqua',
+    { name: 'LangChain', icon: 'langchain' },
+    { name: 'LangGraph', icon: null },
+    { name: 'RAG Systems', icon: null },
+    { name: 'LLM Integration', icon: null },
+    { name: 'Azure OpenAI', icon: 'azure' },
+    { name: 'Claude API', icon: null },
+    { name: 'GPT-4 API', icon: null },
   ],
   backend: [
-    'Ut Enim',
-    'Ad Minim',
-    'Veniam Quis',
-    'Nostrud',
-    'Exercitation',
-    'Ullamco',
-    'Laboris Nisi',
+    { name: '.NET', icon: 'dotnet' },
+    { name: 'C#', icon: 'csharp' },
+    { name: 'ASP.NET', icon: null },
+    { name: 'Entity Framework', icon: null },
+    { name: 'FastAPI', icon: 'fastapi' },
+    { name: 'PostgreSQL', icon: 'postgresql' },
+    { name: 'SQL Server', icon: null },
   ],
-  frontend: ['Aliquip Ex', 'Ea Commodo', 'Consequat', 'Duis Aute'],
-  devops: ['Irure Dolor', 'Reprehenderit', 'Voluptate', 'Velit Esse', 'Cillum Dolore'],
+  frontend: [
+    { name: 'Vue.js', icon: 'vuedotjs' },
+    { name: 'Angular', icon: 'angular' },
+    { name: 'TypeScript', icon: 'typescript' },
+    { name: 'Capacitor', icon: 'capacitor' },
+    { name: 'HTML/CSS', icon: 'html' },
+  ],
+  devops: [
+    { name: 'Docker', icon: 'docker' },
+    { name: 'IIS', icon: null },
+    { name: 'Linux', icon: 'linux' },
+    { name: 'Redis', icon: 'redis' },
+    { name: 'MongoDB', icon: 'mongodb' },
+    { name: 'PostGIS', icon: null },
+  ],
   '3d': [
-    'Blender',
-    'ZBrush',
-    'Substance Painter',
-    'Maya Autodesk',
-    'Unreal Engine',
-    '3D Character Modeling',
-    'Hard Surface Modeling',
-    'Organic Sculpting',
-    'Retopology',
-    'PBR Texturing',
-    'UV Maps',
-    'Rigging',
+    { name: 'Blender', icon: 'blender' },
+    { name: 'ZBrush', icon: null },
+    { name: 'Substance Painter', icon: null },
+    { name: 'Maya Autodesk', icon: null },
+    { name: 'Unreal Engine', icon: 'unrealengine' },
+    { name: '3D Character Modeling', icon: null },
+    { name: 'Hard Surface Modeling', icon: null },
+    { name: 'Organic Sculpting', icon: null },
+    { name: 'Retopology', icon: null },
+    { name: 'PBR Texturing', icon: null },
+    { name: 'UV Maps', icon: null },
+    { name: 'Rigging', icon: null },
   ],
 }
 
 const expandedJob = ref<number | null>(null)
+const visibleItems = ref<Set<number>>(new Set())
 
 const toggleJob = (index: number) => {
   expandedJob.value = expandedJob.value === index ? null : index
 }
+
+let observer: IntersectionObserver | null = null
+
+onMounted(() => {
+  const items = document.querySelectorAll('.timeline-item')
+  observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const index = Array.from(items).indexOf(entry.target as HTMLElement)
+        if (entry.isIntersecting) {
+          visibleItems.value.add(index)
+        }
+      })
+    },
+    { threshold: 0.15 },
+  )
+
+  items.forEach((item) => observer?.observe(item))
+})
+
+onUnmounted(() => observer?.disconnect())
 </script>
 
 <style scoped>
 .experience-section {
   position: relative;
-  padding: 6rem 2rem;
+  padding: 8rem 2rem;
   background: #fafafa;
   overflow: hidden;
-}
-
-.bg-canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
 }
 
 .container {
   position: relative;
   z-index: 1;
-  max-width: 900px;
+  max-width: 800px;
   margin: 0 auto;
 }
 
+.section-header {
+  margin-bottom: 4rem;
+  text-align: center;
+}
+
+.section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: #9ca3af;
+  letter-spacing: 0.3em;
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
 .section-title {
-  font-family: 'Orbitron', monospace;
-  font-size: clamp(1.75rem, 4vw, 2.5rem);
-  font-weight: 700;
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  font-weight: 800;
   color: #111827;
-  letter-spacing: 0.1em;
-  margin-bottom: 3rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #e5e7eb;
-  animation: glitch 3s infinite;
+  letter-spacing: 0.08em;
+  margin: 0;
+  position: relative;
+  display: inline-block;
 }
 
-@keyframes glitch {
-  0%,
-  90%,
-  100% {
-    text-shadow: none;
-  }
-  91% {
-    text-shadow:
-      2px 0 #1f2937,
-      -2px 0 #6b7280;
-  }
-  92% {
-    text-shadow:
-      -2px 0 #1f2937,
-      2px 0 #6b7280;
-  }
-  93% {
-    text-shadow:
-      2px 2px #1f2937,
-      -2px -2px #6b7280;
-  }
-  94% {
-    text-shadow:
-      -2px 2px #1f2937,
-      2px -2px #6b7280;
-  }
-  95% {
-    text-shadow:
-      1px -1px #1f2937,
-      -1px 1px #6b7280;
-  }
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 2px;
+  background: #111827;
 }
 
+/* Timeline */
 .timeline {
   position: relative;
-  padding-left: 2rem;
-  margin-bottom: 4rem;
+  margin-bottom: 6rem;
 }
 
 .timeline::before {
   content: '';
   position: absolute;
-  left: 0;
+  left: 12px;
   top: 0;
   bottom: 0;
   width: 1px;
-  background: #d1d5db;
+  background: linear-gradient(to bottom, transparent, #d1d5db 10%, #d1d5db 90%, transparent);
 }
 
 .timeline-item {
   position: relative;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--delay, 0s);
 }
 
-.timeline-marker {
+.timeline-item.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.timeline-line {
   position: absolute;
-  left: -2rem;
-  top: 0.5rem;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #1f2937;
+  left: 0;
+  top: 1.5rem;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
 }
 
-.timeline-content {
+.timeline-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #111827;
+  border: 2px solid #fafafa;
+  box-shadow: 0 0 0 2px #d1d5db;
+  transition: all 0.3s ease;
+}
+
+.timeline-item:hover .timeline-dot {
+  background: #374151;
+  box-shadow: 0 0 0 3px #9ca3af;
+  transform: scale(1.2);
+}
+
+.timeline-card {
+  margin-left: 3rem;
   background: #ffffff;
   border: 1px solid #e5e7eb;
   padding: 1.5rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  position: relative;
 }
 
-.timeline-content:hover {
+.timeline-card::before {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: 1.25rem;
+  width: 12px;
+  height: 12px;
+  background: #ffffff;
+  border-left: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+  transform: rotate(45deg);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.timeline-card:hover {
   border-color: #d1d5db;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  transform: translateY(-2px);
 }
 
-.timeline-item.expanded .timeline-content {
-  border-color: #1f2937;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.timeline-card:hover::before {
+  opacity: 1;
 }
 
-.job-header {
+.timeline-item.expanded .timeline-card {
+  border-color: #111827;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+.card-top {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  gap: 1rem;
   flex-wrap: wrap;
-  gap: 0.5rem;
+}
+
+.job-index {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  color: #9ca3af;
+  letter-spacing: 0.1em;
+  display: block;
+  margin-bottom: 0.25rem;
 }
 
 .job-role {
   font-family: 'Inter', sans-serif;
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 700;
   color: #111827;
+  margin: 0;
+  line-height: 1.3;
 }
 
 .job-company {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 0.85rem;
-  color: #1f2937;
-  margin-top: 0.25rem;
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin: 0.2rem 0 0;
+}
+
+.card-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.15rem;
+  flex-shrink: 0;
 }
 
 .job-period {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 0.75rem;
-  color: #6b7280;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: #9ca3af;
   white-space: nowrap;
+}
+
+.job-location {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.6rem;
+  color: #d1d5db;
 }
 
 .job-description {
   font-family: 'Inter', sans-serif;
-  font-size: 0.875rem;
+  font-size: 0.85rem;
   color: #4b5563;
   margin-top: 0.75rem;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 .job-highlights {
   margin-top: 1rem;
   padding-top: 1rem;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid #f3f4f6;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
-.job-highlights ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.job-highlights li {
+.highlight-item {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
-  padding: 0.5rem 0 0.5rem 1rem;
+  padding: 0.75rem;
+  background: #f9fafb;
   border-left: 2px solid #d1d5db;
-  margin-bottom: 0.4rem;
-  transition: border-color 0.2s;
+  opacity: 0;
+  transform: translateX(-10px);
+  animation: highlightIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: var(--h-delay, 0s);
 }
 
-.job-highlights li:hover {
-  border-left-color: #1f2937;
+@keyframes highlightIn {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .highlight-title {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.7rem;
-  font-weight: 600;
-  color: #1f2937;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #111827;
   letter-spacing: 0.05em;
 }
 
 .highlight-desc {
   font-family: 'Inter', sans-serif;
-  font-size: 0.8rem;
-  color: #4b5563;
+  font-size: 0.78rem;
+  color: #6b7280;
   line-height: 1.55;
 }
 
 .expand-hint {
   display: block;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 0.7rem;
-  color: #9ca3af;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  color: #d1d5db;
   margin-top: 1rem;
   text-align: right;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.15em;
+  transition: color 0.3s ease;
+}
+
+.timeline-card:hover .expand-hint {
+  color: #9ca3af;
+}
+
+/* Skills Section */
+.skills-section {
+  padding-top: 2rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.skills-header {
+  text-align: center;
+  margin-bottom: 3rem;
 }
 
 .skills-grid {
   display: grid;
-  gap: 1.5rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
 }
 
 .skill-category {
   background: #ffffff;
   border: 1px solid #e5e7eb;
-  padding: 1.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  padding: 1.25rem;
+  transition: all 0.3s ease;
+}
+
+.skill-category:hover {
+  border-color: #d1d5db;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.skill-category.full-width {
+  grid-column: 1 / -1;
 }
 
 .skill-category h3 {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 0.75rem;
-  font-weight: 400;
-  color: #1f2937;
-  margin-bottom: 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 0.75rem;
   letter-spacing: 0.2em;
 }
 
 .skill-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.4rem;
 }
 
 .skill-tag {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 0.7rem;
-  padding: 0.35rem 0.6rem;
+  font-size: 0.65rem;
+  padding: 0.3rem 0.55rem;
   background: #f9fafb;
-  border: 1px solid #d1d5db;
-  color: #4b5563;
-  letter-spacing: 0.05em;
+  border: 1px solid #e5e7eb;
+  color: #6b7280;
+  letter-spacing: 0.03em;
   transition: all 0.2s ease;
 }
 
 .skill-tag:hover {
-  border-color: #1f2937;
+  border-color: #111827;
   color: #111827;
   background: #ffffff;
+  transform: translateY(-1px);
+}
+
+.skill-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
+  margin-right: 0.3rem;
+}
+
+.skill-icon :deep(svg) {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
 }
 
 @media (max-width: 768px) {
   .experience-section {
-    padding: 3rem 1rem;
+    padding: 4rem 1rem;
+  }
+
+  .section-header {
+    margin-bottom: 2.5rem;
   }
 
   .timeline {
-    padding-left: 1.5rem;
+    margin-bottom: 3rem;
   }
 
-  .timeline-marker {
-    left: -1.5rem;
-    width: 8px;
-    height: 8px;
+  .timeline::before {
+    left: 8px;
   }
 
-  .job-header {
+  .timeline-line {
+    width: 16px;
+    height: 16px;
+  }
+
+  .timeline-dot {
+    width: 6px;
+    height: 6px;
+  }
+
+  .timeline-card {
+    margin-left: 2rem;
+    padding: 1rem;
+  }
+
+  .timeline-card::before {
+    display: none;
+  }
+
+  .card-top {
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 0.5rem;
+  }
+
+  .card-meta {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.75rem;
   }
 
   .job-role {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
   }
 
   .job-company {
-    font-size: 0.75rem;
-  }
-
-  .job-period {
-    font-size: 0.65rem;
+    font-size: 0.7rem;
   }
 
   .job-description {
     font-size: 0.8rem;
-    margin-top: 0.5rem;
   }
 
-  .timeline-content {
-    padding: 1rem;
-  }
-
-  .highlight-title {
-    font-size: 0.65rem;
-  }
-
-  .highlight-desc {
-    font-size: 0.75rem;
-  }
-
-  .section-title {
-    font-size: clamp(1.5rem, 6vw, 2rem);
-    margin-bottom: 2rem;
+  .skills-grid {
+    grid-template-columns: 1fr;
   }
 
   .skill-category {
     padding: 1rem;
-  }
-
-  .skill-category h3 {
-    font-size: 0.65rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .skill-tag {
-    font-size: 0.6rem;
-    padding: 0.3rem 0.5rem;
   }
 }
 </style>

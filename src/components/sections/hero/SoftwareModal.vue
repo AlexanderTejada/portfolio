@@ -23,44 +23,62 @@ const onBackdropWheel = (e: WheelEvent) => {
 const experience = [
   {
     id: '0x01',
-    company: 'Lorem Ipsum Systems',
-    role: 'Lorem Ipsum Architect & Technical Developer',
+    company: 'Excelencia Digital Software',
+    role: 'AI & Full Stack Developer',
     period: 'Apr 2024 – Present',
     description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula. Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor.',
+      'AI & Full Stack Developer working on a utility management system. RAG pipelines with LangChain, LangGraph, vector databases. LLM integration with WhatsApp-connected transactional systems serving 13,000+ users.',
     highlights: [
-      { title: 'Lorem Ipsum', desc: 'Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' },
-      { title: 'Sit Amet', desc: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.' },
-      { title: 'Adipiscing Elit', desc: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.' },
-      { title: 'Eiusmod Tempor', desc: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.' },
+      {
+        title: 'RAG Pipelines',
+        desc: 'Building production RAG systems with LangChain, LangGraph, and vector databases.',
+      },
+      {
+        title: 'WhatsApp LLM',
+        desc: 'Integrating LLMs with WhatsApp for transactional operations and real-time claim management.',
+      },
+      {
+        title: 'PostGIS',
+        desc: 'Geospatial data processing for utility management and shift tracking.',
+      },
+      { title: 'Full-stack', desc: 'C# .NET backend with EF Core, Vue.js and Capacitor frontend.' },
     ],
   },
   {
     id: '0x02',
     company: 'Freelance',
-    role: 'Full Stack Developer & 3D Specialist',
-    period: 'Jan 2020 – Feb 2025',
+    role: 'Full Stack Developer & 3D Artist',
+    period: 'Jun 2020 – Present',
     description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula.',
+      'Consultant delivering integrated .NET, Angular, and high-fidelity 3D solutions for international clients. Delivered 15+ production-ready applications and established professional 3D pipelines.',
     highlights: [
-      { title: 'Lorem Ipsum', desc: 'Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' },
-      { title: '3D Engineering', desc: 'Professional 3D pipeline using ZBrush, Blender, and Substance Painter.' },
-      { title: 'Sit Amet', desc: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.' },
+      {
+        title: 'SaaS Architecture',
+        desc: 'Scalable applications using .NET Core, C#, Angular/Vue.js and Clean Architecture.',
+      },
+      {
+        title: '3D Pipeline',
+        desc: 'Professional pipeline using ZBrush, Blender, and Substance Painter for real-time engines.',
+      },
+      {
+        title: 'LLM Integration',
+        desc: 'Architecting RAG pipelines and intelligent API orchestration with Claude, GPT-4, Gemini.',
+      },
     ],
   },
 ]
 
 const skills = [
   {
-    group: 'SYSTEM_INTEL',
-    items: ['Lorem', 'Ipsum', 'Dolor', 'Sit', 'Amet', 'Consectetur'],
+    group: 'AI_SYSTEMS',
+    items: ['LangChain', 'LangGraph', 'RAG', 'Azure OpenAI', 'Claude', 'GPT-4'],
   },
   {
-    group: 'CORE_LAYERS',
-    items: ['Adipiscing', 'Elit', 'Sed', 'Do', 'Eiusmod', 'Tempor'],
+    group: 'BACKEND',
+    items: ['.NET', 'C#', 'EF Core', 'FastAPI', 'PostgreSQL', 'SQL Server'],
   },
-  { group: 'INTERFACE_MODS', items: ['Incididunt', 'Labore', 'Dolore', 'Magna'] },
-  { group: 'ARCH_DEVOPS', items: ['Aliqua', 'Ut', 'Enim', 'Ad'] },
+  { group: 'FRONTEND', items: ['Vue.js', 'Angular', 'TypeScript', 'Capacitor'] },
+  { group: 'DEVOPS', items: ['Docker', 'IIS', 'Linux', 'Redis', 'MongoDB', 'PostGIS'] },
 ]
 </script>
 
@@ -80,13 +98,15 @@ const skills = [
           <div class="hud-corner bl" />
           <div class="hud-corner br" />
           <div class="hud-line-top" />
-          
+
           <div class="modal-header">
             <div class="header-left">
               <ProfileImage :size="60" :show-status="false" />
               <div class="header-main">
                 <span class="system-id">[SYS.ID: SF_ENG_026]</span>
-                <h2 class="modal-title glitch-text" data-text="TECHNICAL ARCHITECTURE">TECHNICAL ARCHITECTURE</h2>
+                <h2 class="modal-title glitch-text" data-text="SOFTWARE ENGINEER">
+                  SOFTWARE ENGINEER
+                </h2>
               </div>
             </div>
             <button class="modal-close" @click="emit('close')">
@@ -100,9 +120,9 @@ const skills = [
             <div class="section-container">
               <span class="section-label">// CAREER PATH</span>
               <div class="timeline">
-                <div 
-                  v-for="(job, i) in experience" 
-                  :key="job.id" 
+                <div
+                  v-for="(job, i) in experience"
+                  :key="job.id"
                   class="timeline-item"
                   :style="{ animationDelay: `${0.2 + i * 0.15}s` }"
                 >
@@ -118,9 +138,9 @@ const skills = [
                     </div>
                     <p class="job-desc">{{ job.description }}</p>
                     <div class="highlights">
-                      <div 
-                        v-for="(h, hi) in job.highlights" 
-                        :key="hi" 
+                      <div
+                        v-for="(h, hi) in job.highlights"
+                        :key="hi"
                         class="highlight"
                         :style="{ animationDelay: `${0.4 + i * 0.15 + hi * 0.05}s` }"
                       >
@@ -137,17 +157,17 @@ const skills = [
             <div class="section-container skills-section">
               <span class="section-label">// TECH STACK CONFIG</span>
               <div class="skills-grid">
-                <div 
-                  v-for="(group, i) in skills" 
-                  :key="group.group" 
+                <div
+                  v-for="(group, i) in skills"
+                  :key="group.group"
                   class="skill-group"
                   :style="{ animationDelay: `${0.6 + i * 0.1}s` }"
                 >
                   <p class="skill-group-name">{{ group.group }}</p>
                   <div class="skill-tags">
-                    <span 
-                      v-for="(s, si) in group.items" 
-                      :key="s" 
+                    <span
+                      v-for="(s, si) in group.items"
+                      :key="s"
                       class="skill-tag"
                       :style="{ animationDelay: `${0.7 + i * 0.1 + si * 0.03}s` }"
                     >
@@ -158,7 +178,7 @@ const skills = [
               </div>
             </div>
           </div>
-          
+
           <div class="modal-footer">
             <span class="footer-meta">STATUS: READY / NO_ERRORS_DETECTED</span>
           </div>
@@ -195,7 +215,7 @@ const skills = [
   max-height: 85vh;
   display: flex;
   flex-direction: column;
-  box-shadow: 
+  box-shadow:
     0 30px 100px rgba(0, 0, 0, 0.1),
     inset 0 0 40px rgba(255, 255, 255, 0.5);
   overflow: hidden;
@@ -211,10 +231,26 @@ const skills = [
   opacity: 0.8;
   z-index: 2;
 }
-.tl { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
-.tr { top: -1px; right: -1px; border-width: 2px 2px 0 0; }
-.bl { bottom: -1px; left: -1px; border-width: 0 0 2px 2px; }
-.br { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+.tl {
+  top: -1px;
+  left: -1px;
+  border-width: 2px 0 0 2px;
+}
+.tr {
+  top: -1px;
+  right: -1px;
+  border-width: 2px 2px 0 0;
+}
+.bl {
+  bottom: -1px;
+  left: -1px;
+  border-width: 0 0 2px 2px;
+}
+.br {
+  bottom: -1px;
+  right: -1px;
+  border-width: 0 2px 2px 0;
+}
 
 .hud-line-top {
   position: absolute;
@@ -297,7 +333,7 @@ const skills = [
   flex-direction: column;
   gap: 3.5rem;
   scrollbar-width: thin;
-  scrollbar-color: rgba(0,0,0,0.1) transparent;
+  scrollbar-color: rgba(0, 0, 0, 0.1) transparent;
 }
 
 .section-container {
@@ -344,7 +380,9 @@ const skills = [
   height: 8px;
   background: #111827;
   border-radius: 50%;
-  box-shadow: 0 0 0 4px rgba(255, 255, 255, 1), 0 0 0 5px rgba(0, 0, 0, 0.05);
+  box-shadow:
+    0 0 0 4px rgba(255, 255, 255, 1),
+    0 0 0 5px rgba(0, 0, 0, 0.05);
 }
 
 .job-id {
@@ -359,12 +397,21 @@ const skills = [
 }
 
 /* Text Loading Effect */
-.job-role, .job-company, .job-desc, .h-title, .h-desc, .skill-group-name, .skill-tag, .modal-title {
+.job-role,
+.job-company,
+.job-desc,
+.h-title,
+.h-desc,
+.skill-group-name,
+.skill-tag,
+.modal-title {
   animation: textLoad 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes textLoad {
-  from { color: #d1d5db; }
+  from {
+    color: #d1d5db;
+  }
 }
 
 .job-role {
@@ -467,7 +514,9 @@ const skills = [
   border: 1px solid rgba(0, 0, 0, 0.08);
   color: #4b5563;
   opacity: 0;
-  animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards, textLoad 0.8s ease forwards;
+  animation:
+    slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+    textLoad 0.8s ease forwards;
   transition: all 0.3s ease;
 }
 
@@ -634,17 +683,55 @@ const skills = [
 @media (max-width: 640px) {
   .modal-backdrop {
     padding: 0;
+    align-items: flex-start;
+    padding-top: 15vh;
   }
-  
+
   .modal {
     height: 100vh;
     max-height: 100vh;
   }
-  
+
+  .modal-header {
+    padding: 1.25rem 1.5rem 1rem;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .header-left {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .header-main {
+    padding-left: 0;
+  }
+
+  .system-id {
+    font-size: 0.5rem;
+  }
+
+  .modal-title {
+    font-size: 0.9rem;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
+
+  .modal-body {
+    padding: 1.5rem;
+    gap: 2rem;
+  }
+
   .highlights {
     grid-template-columns: 1fr;
   }
-  
+
   .skills-grid {
     grid-template-columns: 1fr;
   }

@@ -28,10 +28,22 @@ const experience = [
     description:
       '3D Character and Creature Artist dedicated to developing high-quality, game-ready assets for mobile platforms. Managed the end-to-end character pipeline.',
     highlights: [
-      { title: 'High-to-Low Workflow', desc: 'Professional sculpting of creatures translated into optimized low-poly meshes.' },
-      { title: 'Performance Retopo', desc: 'Edge flow for animation, ensuring correct deformation under real-time constraints.' },
-      { title: 'Texturing & LookDev', desc: 'PBR textures using Substance Painter tailored for mobile high-end fidelity.' },
-      { title: 'Optimization', desc: 'Optimized UV layouts and texture budgets for smooth frame rates.' },
+      {
+        title: 'High-to-Low Workflow',
+        desc: 'Professional sculpting of creatures translated into optimized low-poly meshes.',
+      },
+      {
+        title: 'Performance Retopo',
+        desc: 'Edge flow for animation, ensuring correct deformation under real-time constraints.',
+      },
+      {
+        title: 'Texturing & LookDev',
+        desc: 'PBR textures using Substance Painter tailored for mobile high-end fidelity.',
+      },
+      {
+        title: 'Optimization',
+        desc: 'Optimized UV layouts and texture budgets for smooth frame rates.',
+      },
     ],
   },
   {
@@ -42,9 +54,18 @@ const experience = [
     description:
       'High-fidelity 3D Modeler specializing in hard surface workflows for the luxury goods sector, focusing on fine jewelry and fashion accessories.',
     highlights: [
-      { title: 'Precision Modeling', desc: 'Clean topology meshes for intricate jewelry pieces and luxury items.' },
-      { title: 'Digital Craftsmanship', desc: 'Realistic leather textures and metalwork using ZBrush for photorealistic quality.' },
-      { title: 'Technical Artistry', desc: 'Shader and lighting setup to represent physical properties of gemstones.' },
+      {
+        title: 'Precision Modeling',
+        desc: 'Clean topology meshes for intricate jewelry pieces and luxury items.',
+      },
+      {
+        title: 'Digital Craftsmanship',
+        desc: 'Realistic leather textures and metalwork using ZBrush for photorealistic quality.',
+      },
+      {
+        title: 'Technical Artistry',
+        desc: 'Shader and lighting setup to represent physical properties of gemstones.',
+      },
     ],
   },
 ]
@@ -70,7 +91,9 @@ const skills = [
           <div class="modal-header">
             <div class="header-main">
               <span class="system-id">[SYS.ID: 3D_ART_099]</span>
-              <h2 class="modal-title glitch-text" data-text="3D DIGITAL ARTIST">3D DIGITAL ARTIST</h2>
+              <h2 class="modal-title glitch-text" data-text="3D DIGITAL ARTIST">
+                3D DIGITAL ARTIST
+              </h2>
             </div>
             <button class="modal-close" @click="emit('close')">
               <span class="close-label">CLOSE</span>
@@ -83,9 +106,9 @@ const skills = [
             <div class="section-container">
               <span class="section-label">// PRODUCTION LOG</span>
               <div class="timeline">
-                <div 
-                  v-for="(job, i) in experience" 
-                  :key="job.id" 
+                <div
+                  v-for="(job, i) in experience"
+                  :key="job.id"
                   class="timeline-item"
                   :style="{ animationDelay: `${0.2 + i * 0.15}s` }"
                 >
@@ -101,9 +124,9 @@ const skills = [
                     </div>
                     <p class="job-desc">{{ job.description }}</p>
                     <div class="highlights">
-                      <div 
-                        v-for="(h, hi) in job.highlights" 
-                        :key="hi" 
+                      <div
+                        v-for="(h, hi) in job.highlights"
+                        :key="hi"
                         class="highlight"
                         :style="{ animationDelay: `${0.4 + i * 0.15 + hi * 0.05}s` }"
                       >
@@ -120,17 +143,17 @@ const skills = [
             <div class="section-container skills-section">
               <span class="section-label">// TOOLKIT CONFIGURATION</span>
               <div class="skills-grid">
-                <div 
-                  v-for="(group, i) in skills" 
-                  :key="group.group" 
+                <div
+                  v-for="(group, i) in skills"
+                  :key="group.group"
                   class="skill-group"
                   :style="{ animationDelay: `${0.6 + i * 0.1}s` }"
                 >
                   <p class="skill-group-name">{{ group.group }}</p>
                   <div class="skill-tags">
-                    <span 
-                      v-for="(s, si) in group.items" 
-                      :key="s" 
+                    <span
+                      v-for="(s, si) in group.items"
+                      :key="s"
                       class="skill-tag"
                       :style="{ animationDelay: `${0.7 + i * 0.1 + si * 0.03}s` }"
                     >
@@ -141,9 +164,11 @@ const skills = [
               </div>
             </div>
           </div>
-          
+
           <div class="modal-footer">
-            <span class="footer-meta">RENDER ENGINE: PHYSICALLY_BASED / ARTISTIC_VISION: ACTIVE</span>
+            <span class="footer-meta"
+              >RENDER ENGINE: PHYSICALLY_BASED / ARTISTIC_VISION: ACTIVE</span
+            >
           </div>
         </div>
       </div>
@@ -178,7 +203,7 @@ const skills = [
   max-height: 85vh;
   display: flex;
   flex-direction: column;
-  box-shadow: 
+  box-shadow:
     0 30px 100px rgba(0, 0, 0, 0.1),
     inset 0 0 40px rgba(255, 255, 255, 0.5);
   overflow: hidden;
@@ -249,7 +274,7 @@ const skills = [
   flex-direction: column;
   gap: 3.5rem;
   scrollbar-width: thin;
-  scrollbar-color: rgba(0,0,0,0.1) transparent;
+  scrollbar-color: rgba(0, 0, 0, 0.1) transparent;
 }
 
 .section-container {
@@ -295,7 +320,9 @@ const skills = [
   height: 8px;
   background: #111827;
   border-radius: 50%;
-  box-shadow: 0 0 0 4px rgba(255, 255, 255, 1), 0 0 0 5px rgba(0, 0, 0, 0.05);
+  box-shadow:
+    0 0 0 4px rgba(255, 255, 255, 1),
+    0 0 0 5px rgba(0, 0, 0, 0.05);
 }
 
 .job-id {
@@ -310,12 +337,21 @@ const skills = [
 }
 
 /* Text Loading Effect */
-.job-role, .job-company, .job-desc, .h-title, .h-desc, .skill-group-name, .skill-tag, .modal-title {
+.job-role,
+.job-company,
+.job-desc,
+.h-title,
+.h-desc,
+.skill-group-name,
+.skill-tag,
+.modal-title {
   animation: textLoad 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes textLoad {
-  from { color: #d1d5db; }
+  from {
+    color: #d1d5db;
+  }
 }
 
 .job-role {
@@ -418,7 +454,9 @@ const skills = [
   border: 1px solid rgba(0, 0, 0, 0.08);
   color: #4b5563;
   opacity: 0;
-  animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards, textLoad 0.8s ease forwards;
+  animation:
+    slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+    textLoad 0.8s ease forwards;
   transition: all 0.3s ease;
 }
 
@@ -585,17 +623,51 @@ const skills = [
 @media (max-width: 640px) {
   .modal-backdrop {
     padding: 0;
+    align-items: flex-start;
+    padding-top: 15vh;
   }
-  
+
   .modal {
     height: 100vh;
     max-height: 100vh;
   }
-  
+
+  .modal-header {
+    padding: 1.25rem 1.5rem 1rem;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .header-left {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .header-main {
+    padding-left: 0;
+  }
+
+  .modal-title {
+    font-size: 0.9rem;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
+
+  .modal-body {
+    padding: 1.5rem;
+    gap: 2rem;
+  }
+
   .highlights {
     grid-template-columns: 1fr;
   }
-  
+
   .skills-grid {
     grid-template-columns: 1fr;
   }

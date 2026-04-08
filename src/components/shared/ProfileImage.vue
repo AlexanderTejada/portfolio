@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+
 interface Props {
   size?: number
   glitch?: boolean
@@ -12,15 +14,26 @@ withDefaults(defineProps<Props>(), {
   glitch: true,
   grayscale: true,
   variant: 'compact',
-  showStatus: true
+  showStatus: true,
 })
+
+const isGlitching = ref(false)
+
+const triggerGlitch = () => {
+  if (isGlitching.value) return
+  isGlitching.value = true
+  setTimeout(() => {
+    isGlitching.value = false
+  }, 600)
+}
 </script>
 
 <template>
-  <div 
-    class="profile-container" 
-    :class="[variant]"
+  <div
+    class="profile-container"
+    :class="[variant, { 'click-glitch': isGlitching }]"
     :style="{ '--size': size + 'px' }"
+    @click="triggerGlitch"
   >
     <!-- HUD Layer -->
     <div class="hud-frame">
@@ -32,17 +45,26 @@ withDefaults(defineProps<Props>(), {
     </div>
 
     <!-- Image Container with HUD Mask -->
-    <div class="image-mask" :class="{ 'grayscale': grayscale, 'glitch-active': glitch }">
-      <img src="/Alexander Tejada.png" alt="Alexander Tejada" class="profile-img" />
-      
+    <div
+      class="image-mask"
+      :class="{ grayscale: grayscale, 'glitch-active': glitch, glitching: isGlitching }"
+    >
+      <img src="/Alex.jpeg" alt="Alexander Tejada" class="profile-img" />
+
+      <!-- Click Glitch RGB Layers -->
+      <div v-if="isGlitching" class="rgb-split red"></div>
+      <div v-if="isGlitching" class="rgb-split green"></div>
+      <div v-if="isGlitching" class="rgb-split blue"></div>
+      <div v-if="isGlitching" class="noise-overlay"></div>
+
       <!-- Studio Showcase Gradient -->
       <div v-if="variant === 'showcase'" class="showcase-overlay"></div>
-      
+
       <!-- Glitch Layers -->
       <div v-if="glitch" class="glitch-layer"></div>
       <div v-if="glitch" class="glitch-layer shadow"></div>
     </div>
-    
+
     <!-- Biometric Label -->
     <div v-if="showStatus" class="bio-meta">
       <span class="tag">ID_026</span>
@@ -60,6 +82,7 @@ withDefaults(defineProps<Props>(), {
   width: var(--size);
   height: var(--size);
   flex-shrink: 0;
+  cursor: pointer;
 }
 
 .profile-container.showcase {
@@ -83,10 +106,26 @@ withDefaults(defineProps<Props>(), {
   border-style: solid;
 }
 
-.tl { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
-.tr { top: -1px; right: -1px; border-width: 2px 2px 0 0; }
-.bl { bottom: -1px; left: -1px; border-width: 0 0 2px 2px; }
-.br { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+.tl {
+  top: -1px;
+  left: -1px;
+  border-width: 2px 0 0 2px;
+}
+.tr {
+  top: -1px;
+  right: -1px;
+  border-width: 2px 2px 0 0;
+}
+.bl {
+  bottom: -1px;
+  left: -1px;
+  border-width: 0 0 2px 2px;
+}
+.br {
+  bottom: -1px;
+  right: -1px;
+  border-width: 0 2px 2px 0;
+}
 
 .scanline {
   position: absolute;
@@ -102,8 +141,12 @@ withDefaults(defineProps<Props>(), {
 }
 
 @keyframes scan {
-  from { transform: translateY(-100%); }
-  to { transform: translateY(100%); }
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(100%);
+  }
 }
 
 .image-mask {
@@ -215,11 +258,300 @@ withDefaults(defineProps<Props>(), {
 }
 
 @keyframes glitch-anim {
-  0% { transform: translate(0); clip-path: inset(10% 0 30% 0); }
-  20% { transform: translate(-2px, 2px); clip-path: inset(40% 0 10% 0); }
-  40% { transform: translate(2px, -2px); clip-path: inset(60% 0 20% 0); }
-  60% { transform: translate(-1px, 1px); clip-path: inset(20% 0 70% 0); }
-  80% { transform: translate(1px, -1px); clip-path: inset(80% 0 5% 0); }
-  100% { transform: translate(0); }
+  0% {
+    transform: translate(0);
+    clip-path: inset(10% 0 30% 0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+    clip-path: inset(40% 0 10% 0);
+  }
+  40% {
+    transform: translate(2px, -2px);
+    clip-path: inset(60% 0 20% 0);
+  }
+  60% {
+    transform: translate(-1px, 1px);
+    clip-path: inset(20% 0 70% 0);
+  }
+  80% {
+    transform: translate(1px, -1px);
+    clip-path: inset(80% 0 5% 0);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+
+/* Click-triggered glitch */
+.click-glitch .image-mask {
+  animation: img-glitch 0.6s steps(4, end) forwards;
+}
+
+.click-glitch .profile-img {
+  animation: img-distort 0.6s steps(4, end) forwards;
+}
+
+.rgb-split {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  background: url('/Alex.jpeg') center/cover no-repeat;
+  mix-blend-mode: screen;
+  animation: rgb-split 0.6s steps(4, end) forwards;
+}
+
+.rgb-split.red {
+  animation-name: rgb-red;
+  filter: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='r'%3E%3CfeColorMatrix type='matrix' values='1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0'/%3E%3C/filter%3E%3C/svg%3E#r");
+}
+
+.rgb-split.green {
+  animation-name: rgb-green;
+  filter: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0'/%3E%3C/filter%3E%3C/svg%3E#g");
+}
+
+.rgb-split.blue {
+  animation-name: rgb-blue;
+  filter: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='b'%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0'/%3E%3C/filter%3E%3C/svg%3E#b");
+}
+
+.noise-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 19;
+  opacity: 0.3;
+  animation: noise-flash 0.6s steps(4, end) forwards;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255, 255, 255, 0.1) 2px,
+    rgba(255, 255, 255, 0.1) 4px
+  );
+}
+
+@keyframes img-glitch {
+  0% {
+    transform: translate(0);
+    filter: none;
+  }
+  15% {
+    transform: translate(-4px, 2px) skewX(-3deg);
+    filter: hue-rotate(90deg) saturate(3);
+  }
+  30% {
+    transform: translate(4px, -2px) skewX(3deg);
+    filter: hue-rotate(-90deg) contrast(2);
+  }
+  45% {
+    transform: translate(-2px, 0) skewX(-1deg);
+    filter: none;
+  }
+  60% {
+    transform: translate(3px, 1px) skewX(2deg);
+    filter: hue-rotate(180deg);
+  }
+  75% {
+    transform: translate(-1px, -1px);
+    filter: none;
+  }
+  100% {
+    transform: translate(0);
+    filter: none;
+  }
+}
+
+@keyframes img-distort {
+  0% {
+    transform: scale(1);
+  }
+  15% {
+    transform: scale(1.05) translateX(-3px);
+  }
+  30% {
+    transform: scale(1.03) translateX(3px);
+  }
+  45% {
+    transform: scale(1.02);
+  }
+  60% {
+    transform: scale(1.04) translateX(-2px);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes rgb-red {
+  0% {
+    opacity: 0;
+    transform: translate(0);
+    clip-path: inset(0 0 0 0);
+  }
+  15% {
+    opacity: 0.7;
+    transform: translate(-6px, 0);
+    clip-path: inset(20% 0 30% 0);
+  }
+  30% {
+    opacity: 0.5;
+    transform: translate(6px, 0);
+    clip-path: inset(50% 0 10% 0);
+  }
+  45% {
+    opacity: 0.8;
+    transform: translate(-4px, 0);
+    clip-path: inset(10% 0 60% 0);
+  }
+  60% {
+    opacity: 0.6;
+    transform: translate(5px, 0);
+    clip-path: inset(40% 0 20% 0);
+  }
+  75% {
+    opacity: 0.3;
+    transform: translate(-2px, 0);
+    clip-path: inset(70% 0 5% 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(0);
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes rgb-green {
+  0% {
+    opacity: 0;
+    transform: translate(0);
+    clip-path: inset(0 0 0 0);
+  }
+  15% {
+    opacity: 0.6;
+    transform: translate(5px, 1px);
+    clip-path: inset(40% 0 20% 0);
+  }
+  30% {
+    opacity: 0.7;
+    transform: translate(-5px, -1px);
+    clip-path: inset(10% 0 50% 0);
+  }
+  45% {
+    opacity: 0.5;
+    transform: translate(3px, 0);
+    clip-path: inset(60% 0 10% 0);
+  }
+  60% {
+    opacity: 0.8;
+    transform: translate(-4px, 1px);
+    clip-path: inset(20% 0 40% 0);
+  }
+  75% {
+    opacity: 0.4;
+    transform: translate(2px, 0);
+    clip-path: inset(80% 0 5% 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(0);
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes rgb-blue {
+  0% {
+    opacity: 0;
+    transform: translate(0);
+    clip-path: inset(0 0 0 0);
+  }
+  15% {
+    opacity: 0.5;
+    transform: translate(3px, -2px);
+    clip-path: inset(60% 0 10% 0);
+  }
+  30% {
+    opacity: 0.8;
+    transform: translate(-3px, 2px);
+    clip-path: inset(20% 0 40% 0);
+  }
+  45% {
+    opacity: 0.6;
+    transform: translate(4px, -1px);
+    clip-path: inset(10% 0 50% 0);
+  }
+  60% {
+    opacity: 0.7;
+    transform: translate(-5px, 0);
+    clip-path: inset(40% 0 20% 0);
+  }
+  75% {
+    opacity: 0.3;
+    transform: translate(1px, 1px);
+    clip-path: inset(70% 0 10% 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(0);
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes noise-flash {
+  0% {
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.4;
+  }
+  30% {
+    opacity: 0.2;
+  }
+  45% {
+    opacity: 0.5;
+  }
+  60% {
+    opacity: 0.1;
+  }
+  75% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.profile-container:hover .glitch-active .glitch-layer {
+  animation: glitch-anim 0.3s steps(2, end) infinite;
+  opacity: 0.1;
+  background-image: url('/Alexander Tejada.png');
+  background-size: cover;
+  background-position: center;
+}
+
+@keyframes glitch-anim {
+  0% {
+    transform: translate(0);
+    clip-path: inset(10% 0 30% 0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+    clip-path: inset(40% 0 10% 0);
+  }
+  40% {
+    transform: translate(2px, -2px);
+    clip-path: inset(60% 0 20% 0);
+  }
+  60% {
+    transform: translate(-1px, 1px);
+    clip-path: inset(20% 0 70% 0);
+  }
+  80% {
+    transform: translate(1px, -1px);
+    clip-path: inset(80% 0 5% 0);
+  }
+  100% {
+    transform: translate(0);
+  }
 }
 </style>

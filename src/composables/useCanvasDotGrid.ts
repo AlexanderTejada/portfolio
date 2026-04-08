@@ -2,7 +2,6 @@ import { ref, onMounted, onUnmounted } from 'vue'
 
 export function useCanvasDotGrid(darkMode = false) {
   const canvasRef = ref<HTMLCanvasElement | null>(null)
-  let animationId: number
   let removeResize: (() => void) | null = null
 
   onMounted(() => {
@@ -16,6 +15,7 @@ export function useCanvasDotGrid(darkMode = false) {
     const resize = () => {
       canvas.width = window.innerWidth
       canvas.height = window.innerHeight
+      draw()
     }
 
     const draw = () => {
@@ -26,17 +26,14 @@ export function useCanvasDotGrid(darkMode = false) {
           ctx.fillRect(x - 1, y - 1, 2, 2)
         }
       }
-      animationId = requestAnimationFrame(draw)
     }
 
     resize()
-    draw()
     window.addEventListener('resize', resize)
     removeResize = () => window.removeEventListener('resize', resize)
   })
 
   onUnmounted(() => {
-    cancelAnimationFrame(animationId)
     removeResize?.()
   })
 

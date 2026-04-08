@@ -13,43 +13,55 @@ const lightboxItem = ref<MediaItem | null>(null)
 const lightboxImgRef = ref<HTMLImageElement | null>(null)
 const isMagnifying = ref(false)
 const magnifierPos = ref({ x: 0, y: 0, bgX: 0, bgY: 0 })
+const videoRefs = ref<(HTMLVideoElement | null)[]>([])
+const sectionExpanded = ref(true)
 const ZOOM = 3
+
+const handleVideoHover = (video: HTMLVideoElement | null | undefined, hover: boolean) => {
+  if (!video) return
+  if (hover) {
+    video.currentTime = 0
+    video.play().catch(() => {})
+  } else {
+    video.pause()
+  }
+}
 
 const handleMagnify = (e: MouseEvent) => {
   if (!lightboxImgRef.value || lightboxItem.value?.type !== 'image') return
-  
+
   const img = lightboxImgRef.value
   const rect = img.getBoundingClientRect()
-  
+
   // Cursor pos relative to image
   let x = e.clientX - rect.left
   let y = e.clientY - rect.top
-  
+
   // Page scroll correction
   x = x - window.scrollX
   y = y - window.scrollY
-  
+
   // Constraints
   if (x < 0 || x > rect.width || y < 0 || y > rect.height) {
     isMagnifying.value = false
     return
   }
-  
+
   isMagnifying.value = true
-  
+
   // Glass position (centered on cursor)
   magnifierPos.value.x = x
   magnifierPos.value.y = y
-  
+
   // Background position for the zoom effect
   // Glass size is 150px, border is 2px
   const glassSize = 150
   const bw = 2
   const w = glassSize / 2
   const h = glassSize / 2
-  
-  magnifierPos.value.bgX = (x * ZOOM) - w + bw
-  magnifierPos.value.bgY = (y * ZOOM) - h + bw
+
+  magnifierPos.value.bgX = x * ZOOM - w + bw
+  magnifierPos.value.bgY = y * ZOOM - h + bw
 }
 
 const categories: Record<'ART' | 'INDUSTRIAL', MediaItem[]> = {
@@ -93,7 +105,7 @@ const categories: Record<'ART' | 'INDUSTRIAL', MediaItem[]> = {
 // Categories list for template iteration
 const categoryList = [
   { id: 'ART', label: '[01. ARTISTIC CREATIONS]' },
-  { id: 'INDUSTRIAL', label: '[02. INDUSTRIAL SYSTEMS]' }
+  { id: 'INDUSTRIAL', label: '[02. INDUSTRIAL SYSTEMS]' },
 ] as const
 
 const handleMouseMove = (e: MouseEvent) => {
@@ -101,23 +113,19 @@ const handleMouseMove = (e: MouseEvent) => {
   const rect = card.getBoundingClientRect()
   const x = e.clientX - rect.left
   const y = e.clientY - rect.top
-  
+
   const centerX = rect.width / 2
   const centerY = rect.height / 2
-  
+
   const rotateX = (centerY - y) / 10
   const rotateY = (x - centerX) / 10
-  
-  card.style.setProperty('--rotateX', `${rotateX}deg`)
-  card.style.setProperty('--rotateY', `${rotateY}deg`)
-  card.style.setProperty('--mouseX', `${(x / rect.width) * 100}%`)
-  card.style.setProperty('--mouseY', `${(y / rect.height) * 100}%`)
+
+  card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`
 }
 
 const handleMouseLeave = (e: MouseEvent) => {
   const card = e.currentTarget as HTMLElement
-  card.style.setProperty('--rotateX', `0deg`)
-  card.style.setProperty('--rotateY', `0deg`)
+  card.style.transform = 'rotateX(0deg) rotateY(0deg)'
 }
 
 const openLightbox = (item: MediaItem) => {
@@ -130,61 +138,78 @@ const closeLightbox = () => {
 
 <template>
   <section class="threed-section" v-bind="$attrs" data-theme="dark">
-    <canvas ref="canvasRef" class="bg-canvas" />
+    <canvas ref="canvasRef" class="bg-canvas" :class="{ collapsed: !sectionExpanded }" />
 
     <div class="container">
       <div class="section-header">
         <span class="label">// 3D WORK</span>
         <h2>DIGITAL <span class="accent">CRAFT</span></h2>
         <p class="subtitle">Character art, organic sculpting &amp; hard surface modeling</p>
+        <button class="expand-btn" @click="sectionExpanded = !sectionExpanded">
+          {{ sectionExpanded ? 'COLLAPSE' : 'EXPAND' }}
+          <span class="arrow" :class="{ open: sectionExpanded }">▼</span>
+        </button>
       </div>
 
-      <div v-for="cat in categoryList" :key="cat.id" class="category-block">
-        <div class="category-header">
-          <span class="category-num">{{ cat.id === 'ART' ? '01' : '02' }}</span>
-          <h3 class="category-subtitle">{{ cat.label }}</h3>
-          <div class="category-line"></div>
-        </div>
+      <div class="category-block" :class="{ collapsed: !sectionExpanded }">
+        <div v-for="cat in categoryList" :key="cat.id" class="category-group">
+          <div class="category-header">
+            <span class="category-num">{{ cat.id === 'ART' ? '01' : '02' }}</span>
+            <h3 class="category-subtitle">{{ cat.label }}</h3>
+            <div class="category-line"></div>
+          </div>
 
-        <div class="grid">
-          <div
-            v-for="(item, index) in categories[cat.id]"
-            :key="item.src"
-            class="grid-item"
-            :class="{ 'is-video': item.type === 'video' }"
-            :style="{ '--index': index }"
-            @mousemove="handleMouseMove"
-            @mouseleave="handleMouseLeave"
-            @click="openLightbox(item)"
-          >
-            <!-- Holographic Overlays -->
-            <div class="card-gloss"></div>
-            <div class="card-scanline"></div>
-            <div class="card-border">
-              <span class="bracket tl"></span>
-              <span class="bracket tr"></span>
-              <span class="bracket bl"></span>
-              <span class="bracket br"></span>
-            </div>
+          <div class="grid">
+            <div
+              v-for="(item, index) in categories[cat.id]"
+              :key="item.src"
+              class="grid-item"
+              :class="{ 'is-video': item.type === 'video' }"
+              :style="{ '--index': index }"
+              @mousemove="handleMouseMove"
+              @mouseleave="handleMouseLeave"
+              @click="openLightbox(item)"
+            >
+              <!-- Holographic Overlays -->
+              <div class="card-gloss"></div>
+              <div class="card-scanline"></div>
+              <div class="card-border">
+                <span class="bracket tl"></span>
+                <span class="bracket tr"></span>
+                <span class="bracket bl"></span>
+                <span class="bracket br"></span>
+              </div>
 
-            <div class="media-container">
-              <template v-if="item.type === 'image'">
-                <img :src="item.src" :alt="item.title" loading="lazy" />
-              </template>
-              <template v-else>
-                <video :src="item.src" preload="auto" muted loop autoplay playsinline />
-                <div class="play-icon">
-                  <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
+              <div class="media-container">
+                <template v-if="item.type === 'image'">
+                  <img :src="item.src" :alt="item.title" loading="lazy" />
+                </template>
+                <template v-else>
+                  <video
+                    :src="item.src"
+                    preload="none"
+                    muted
+                    loop
+                    playsinline
+                    :ref="(el) => (videoRefs[index] = el as HTMLVideoElement)"
+                    @mouseenter="handleVideoHover(videoRefs[index], true)"
+                    @mouseleave="handleVideoHover(videoRefs[index], false)"
+                  />
+                  <div class="play-icon">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </div>
+                </template>
+              </div>
+
+              <div class="item-overlay">
+                <div class="overlay-content">
+                  <span class="item-tag"
+                    >{{ cat.id === 'ART' ? 'VIS' : 'IND' }}_{{ index + 1 }}</span
+                  >
+                  <span class="item-title">{{ item.title }}</span>
                 </div>
-              </template>
-            </div>
-
-            <div class="item-overlay">
-              <div class="overlay-content">
-                <span class="item-tag">{{ cat.id === 'ART' ? 'VIS' : 'IND' }}_{{ index + 1 }}</span>
-                <span class="item-title">{{ item.title }}</span>
               </div>
             </div>
           </div>
@@ -206,7 +231,7 @@ const closeLightbox = () => {
               @mousemove="handleMagnify"
               @mouseleave="isMagnifying = false"
             />
-            <div 
+            <div
               v-if="isMagnifying"
               class="magnifier-glass"
               :style="{
@@ -214,7 +239,7 @@ const closeLightbox = () => {
                 top: `${magnifierPos.y}px`,
                 backgroundImage: `url('${lightboxItem.src}')`,
                 backgroundPosition: `-${magnifierPos.bgX}px -${magnifierPos.bgY}px`,
-                backgroundSize: `${(lightboxImgRef?.width || 0) * ZOOM}px ${(lightboxImgRef?.height || 0) * ZOOM}px`
+                backgroundSize: `${(lightboxImgRef?.width || 0) * ZOOM}px ${(lightboxImgRef?.height || 0) * ZOOM}px`,
               }"
             >
               <div class="glass-scanline"></div>
@@ -243,6 +268,10 @@ const closeLightbox = () => {
   height: 100%;
   z-index: 0;
   pointer-events: none;
+}
+
+.bg-canvas.collapsed {
+  display: none;
 }
 
 .container {
@@ -289,9 +318,41 @@ h2 {
   padding: 0 1rem;
 }
 
+.expand-btn {
+  margin-top: 1.5rem;
+  background: transparent;
+  border: 1px solid #374151;
+  color: #9ca3af;
+  padding: 0.5rem 1.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.expand-btn:hover {
+  border-color: #6b7280;
+  color: #ffffff;
+}
+
+.expand-btn .arrow {
+  display: inline-block;
+  margin-left: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+.expand-btn .arrow.open {
+  transform: rotate(180deg);
+}
+
 /* Categories */
 .category-block {
   margin-bottom: 6rem;
+}
+
+.category-block.collapsed {
+  display: none;
 }
 
 .category-block:last-child {
@@ -359,14 +420,15 @@ h2 {
   background: #0a0a0a;
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 4px;
-  transform-style: preserve-3d;
   transition: transform 0.15s ease-out;
   transform: rotateX(var(--rotateX, 0deg)) rotateY(var(--rotateY, 0deg));
-  
+  contain: layout style paint;
+
   /* Staggered Entry */
   opacity: 0;
   animation: cardEntry 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   animation-delay: calc(var(--index) * 0.08s);
+  animation-fill-mode: both;
 }
 
 @keyframes cardEntry {
@@ -396,6 +458,7 @@ h2 {
   display: block;
   transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   filter: grayscale(0.2) contrast(1.1);
+  content-visibility: auto;
 }
 
 .grid-item:hover img,
@@ -428,7 +491,7 @@ h2 {
   inset: 0;
   z-index: 4;
   pointer-events: none;
-  background: linear-gradient(
+  background: repeating-linear-gradient(
     to bottom,
     transparent 0%,
     rgba(255, 255, 255, 0.03) 50%,
@@ -436,12 +499,6 @@ h2 {
   );
   background-size: 100% 4px;
   opacity: 0.4;
-  animation: scanline 8s linear infinite;
-}
-
-@keyframes scanline {
-  from { transform: translateY(-100%); }
-  to { transform: translateY(100%); }
 }
 
 .card-border {
@@ -467,10 +524,30 @@ h2 {
   transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.bracket.tl { top: -2px; left: -2px; border-width: 2px 0 0 2px; transform: translate(-5px, -5px); }
-.bracket.tr { top: -2px; right: -2px; border-width: 2px 2px 0 0; transform: translate(5px, -5px); }
-.bracket.bl { bottom: -2px; left: -2px; border-width: 0 0 2px 2px; transform: translate(-5px, 5px); }
-.bracket.br { bottom: -2px; right: -2px; border-width: 0 2px 2px 0; transform: translate(5px, 5px); }
+.bracket.tl {
+  top: -2px;
+  left: -2px;
+  border-width: 2px 0 0 2px;
+  transform: translate(-5px, -5px);
+}
+.bracket.tr {
+  top: -2px;
+  right: -2px;
+  border-width: 2px 2px 0 0;
+  transform: translate(5px, -5px);
+}
+.bracket.bl {
+  bottom: -2px;
+  left: -2px;
+  border-width: 0 0 2px 2px;
+  transform: translate(-5px, 5px);
+}
+.bracket.br {
+  bottom: -2px;
+  right: -2px;
+  border-width: 0 2px 2px 0;
+  transform: translate(5px, 5px);
+}
 
 .grid-item:hover .bracket {
   opacity: 1;
@@ -621,8 +698,8 @@ h2 {
   cursor: none;
   pointer-events: none;
   z-index: 100;
-  box-shadow: 
-    0 0 0 100vw rgba(0, 0, 0, 0.2), 
+  box-shadow:
+    0 0 0 100vw rgba(0, 0, 0, 0.2),
     0 0 20px rgba(255, 255, 255, 0.3);
   background-repeat: no-repeat;
   transform: translate(-50%, -50%);
@@ -675,18 +752,18 @@ h2 {
   .threed-section {
     padding: 6rem 1rem;
   }
-  
+
   .lightbox {
     padding: 1rem;
   }
-  
+
   .lightbox-close {
     top: 1rem;
     right: 1rem;
     width: 2.5rem;
     height: 2.5rem;
   }
-  
+
   .lightbox-title {
     font-size: 0.8rem;
     text-align: center;

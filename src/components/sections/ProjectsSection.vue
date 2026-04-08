@@ -12,6 +12,7 @@ const { canvasRef } = useCanvasDotGrid()
 const sectionRef = ref<HTMLElement | null>(null)
 const visible = ref(false)
 const modulesOpen = ref(false)
+const sectionExpanded = ref(false)
 
 const images = [
   { src: '/DECSA/1.png', title: 'Interface Alpha' },
@@ -24,21 +25,24 @@ const images = [
 ]
 
 const modules = [
-  { label: 'MOD_ALPHA', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.' },
-  { label: 'CORE_SYNC', desc: 'Nullam in dui mauris, vivamus hendrerit arcu sed erat.' },
-  { label: 'DATA_FLOW', desc: 'Sed auctor neque eu tellus rhoncus ut eleifend nibh.' },
-  { label: 'NODE_MGMT', desc: 'Porttitor ut eleifend nibh, vivamus hendrerit arcu sed.' },
-  { label: 'SYS_AUDIT', desc: 'Adipiscing elit, sed do eiusmod tempor incididunt ut.' },
-  { label: 'VAL_STAT', desc: 'Labore et dolore magna aliqua, ut enim ad minim veniam.' },
+  { label: 'MOD_ALPHA', desc: 'RAG pipeline with LangChain, LangGraph, and vector databases.' },
+  { label: 'CORE_SYNC', desc: 'WhatsApp-connected LLM integration for transactional systems.' },
+  { label: 'DATA_FLOW', desc: 'Real-time claim management and shift tracking operations.' },
+  { label: 'NODE_MGMT', desc: 'PostGIS geospatial data processing for utility management.' },
+  {
+    label: 'SYS_AUDIT',
+    desc: 'C# .NET backend with Entity Framework Core and Repository Pattern.',
+  },
+  { label: 'VAL_STAT', desc: 'Vue.js and Capacitor frontend serving 13,000+ users.' },
 ]
 
 const techStack = [
   { key: 'NODES', val: '~13,000' },
-  { key: 'ARCH', val: 'LOREM IPSUM' },
-  { key: 'LAYER', val: 'DOLOR SIT' },
-  { key: 'DATA', val: 'CONSECTETUR' },
-  { key: 'SYNC', val: 'ADIPISCING' },
-  { key: 'LOGIC', val: 'ELIT_SED' },
+  { key: 'ARCH', val: 'C# .NET' },
+  { key: 'LAYER', val: 'EF Core' },
+  { key: 'DATA', val: 'PostgreSQL' },
+  { key: 'SYNC', val: 'Redis' },
+  { key: 'LOGIC', val: 'RAG_PIPELINE' },
 ]
 
 let observer: IntersectionObserver | null = null
@@ -74,9 +78,13 @@ onUnmounted(() => observer?.disconnect())
           <span class="divider-dot"></span>
           <span class="divider-line"></span>
         </div>
+        <button class="expand-btn" @click="sectionExpanded = !sectionExpanded">
+          {{ sectionExpanded ? 'COLLAPSE' : 'EXPAND' }}
+          <span class="arrow" :class="{ open: sectionExpanded }">▼</span>
+        </button>
       </div>
 
-      <div class="content-grid" :class="{ visible }">
+      <div class="content-grid" :class="{ visible, collapsed: !sectionExpanded }">
         <div class="info-panel">
           <div class="panel-header">
             <span class="panel-tag">SYS.OVERVIEW</span>
@@ -84,10 +92,11 @@ onUnmounted(() => observer?.disconnect())
           </div>
 
           <p class="panel-text">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus
-            hendrerit arcu sed erat molestie vehicula. Sed auctor neque eu tellus rhoncus ut
-            eleifend nibh porttitor. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-            laboris nisi ut aliquip ex ea commodo consequat.
+            AI & Full Stack utility management system with production RAG pipelines, LLM integration
+            connected to WhatsApp for transactional operations, real-time claim and shift
+            management, and geospatial processing with PostGIS. Backend in C# .NET with Entity
+            Framework Core, frontend in Vue.js and Capacitor, data layer across PostgreSQL, SQL
+            Server, MongoDB, and Redis.
           </p>
 
           <div class="panel-specs">
@@ -253,6 +262,38 @@ h2 {
 .content-grid.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+.content-grid.collapsed {
+  display: none;
+}
+
+.expand-btn {
+  margin-top: 1.5rem;
+  background: transparent;
+  border: 1px solid #e5e7eb;
+  color: #6b7280;
+  padding: 0.5rem 1.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.expand-btn:hover {
+  border-color: #9ca3af;
+  color: #111827;
+}
+
+.expand-btn .arrow {
+  display: inline-block;
+  margin-left: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+.expand-btn .arrow.open {
+  transform: rotate(180deg);
 }
 
 .info-panel {

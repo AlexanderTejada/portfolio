@@ -19,19 +19,22 @@ let observer: IntersectionObserver | null = null
 onMounted(() => {
   // Observar todas las secciones con data-theme
   const sections = document.querySelectorAll('section[data-theme]')
-  
-  observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        const theme = entry.target.getAttribute('data-theme')
-        isDark.value = theme === 'dark'
-      }
-    })
-  }, {
-    // Detectamos la sección que ocupa la parte superior del viewport
-    threshold: 0,
-    rootMargin: '-10% 0px -90% 0px' 
-  })
+
+  observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const theme = entry.target.getAttribute('data-theme')
+          isDark.value = theme === 'dark'
+        }
+      })
+    },
+    {
+      // Detectamos la sección que ocupa la parte superior del viewport
+      threshold: 0,
+      rootMargin: '-10% 0px -90% 0px',
+    },
+  )
 
   sections.forEach((s) => observer?.observe(s))
 })
@@ -91,7 +94,7 @@ onUnmounted(() => {
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: saturate(180%) blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 
+  box-shadow:
     0 4px 6px -1px rgba(0, 0, 0, 0.05),
     0 10px 15px -3px rgba(0, 0, 0, 0.03),
     inset 0 0 20px rgba(255, 255, 255, 0.5);
@@ -103,7 +106,7 @@ onUnmounted(() => {
 .navbar.is-dark {
   background: rgba(10, 10, 10, 0.75);
   border-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 
+  box-shadow:
     0 4px 20px rgba(0, 0, 0, 0.4),
     inset 0 0 15px rgba(255, 255, 255, 0.03);
 }
@@ -148,10 +151,26 @@ onUnmounted(() => {
   transition: all 0.3s ease;
 }
 
-.tl { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
-.tr { top: -1px; right: -1px; border-width: 2px 2px 0 0; }
-.bl { bottom: -1px; left: -1px; border-width: 0 0 2px 2px; }
-.br { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+.tl {
+  top: -1px;
+  left: -1px;
+  border-width: 2px 0 0 2px;
+}
+.tr {
+  top: -1px;
+  right: -1px;
+  border-width: 2px 2px 0 0;
+}
+.bl {
+  bottom: -1px;
+  left: -1px;
+  border-width: 0 0 2px 2px;
+}
+.br {
+  bottom: -1px;
+  right: -1px;
+  border-width: 0 2px 2px 0;
+}
 
 .navbar:hover .hud-corner {
   opacity: 1;
@@ -203,7 +222,9 @@ onUnmounted(() => {
 }
 
 .nav-item .label {
-  transition: transform 0.3s ease, color 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    color 0.3s ease;
 }
 
 .nav-item .bracket {
@@ -215,8 +236,14 @@ onUnmounted(() => {
   font-weight: 400;
 }
 
-.nav-item .bracket.left { left: -5px; transform: translateX(10px); }
-.nav-item .bracket.right { right: -5px; transform: translateX(-10px); }
+.nav-item .bracket.left {
+  left: -5px;
+  transform: translateX(10px);
+}
+.nav-item .bracket.right {
+  right: -5px;
+  transform: translateX(-10px);
+}
 
 .nav-item:hover {
   color: #111827;
@@ -269,10 +296,13 @@ onUnmounted(() => {
 
 @media (max-width: 768px) {
   .navbar {
-    width: calc(100% - 2rem);
+    width: calc(100% - 1.5rem);
     min-width: unset;
-    gap: 1.5rem;
-    padding: 0.75rem 1.5rem;
+    gap: 1rem;
+    padding: 0.6rem 1rem;
+    left: 0.75rem;
+    transform: none;
+    top: 0.75rem;
   }
 
   .nav-toggle {
@@ -310,9 +340,24 @@ onUnmounted(() => {
     font-size: 1.25rem;
   }
 
+  .nav-logo {
+    z-index: 1001;
+  }
+
+  .logo-text {
+    font-size: 0.75rem;
+  }
+
   /* Toggle Animation */
-  .menu-open .nav-toggle span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
-  .menu-open .nav-toggle span:nth-child(2) { opacity: 0; transform: translateX(-10px); }
-  .menu-open .nav-toggle span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+  .menu-open .nav-toggle span:nth-child(1) {
+    transform: translateY(6.5px) rotate(45deg);
+  }
+  .menu-open .nav-toggle span:nth-child(2) {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  .menu-open .nav-toggle span:nth-child(3) {
+    transform: translateY(-6.5px) rotate(-45deg);
+  }
 }
 </style>

@@ -50,7 +50,7 @@ onMounted(() => {
   containerRef.value.appendChild(renderer.domElement)
 
   // 1. WAVE MESH GEOMETRY
-  planeGeometry = new THREE.PlaneGeometry(200, 120, 360, 180)
+  planeGeometry = new THREE.PlaneGeometry(200, 120, 120, 60)
   planeGeometry.rotateX(-Math.PI / 2)
 
   const count = planeGeometry.attributes.position!.count
@@ -110,14 +110,14 @@ onMounted(() => {
         vAlpha = alpha;
         vColorMix = colorMix;
         vGlow = glow;
-        
+
         vec3 pos = position;
-        
+
         // Multi-layered Noise for Ocean Motion
         float n = noise(vec3(pos.x * 0.05, pos.z * 0.05, uTime * 0.2)) * 4.0;
         n += noise(vec3(pos.x * 0.1, pos.z * 0.1, uTime * 0.4)) * 1.5;
         pos.y += n;
-        
+
         // Mouse Ripple Effect
         float dist = distance(pos.xz, uMouse.xz);
         if(dist < 15.0) {
@@ -147,10 +147,10 @@ onMounted(() => {
 
         vec3 baseColor = mix(uColorBack, uColorFront, vColorMix);
         vec3 finalColor = mix(baseColor, uGlowColor, vGlow);
-        
+
         float strength = 1.0 - dist * 2.0;
         strength = pow(strength, 1.5);
-        
+
         gl_FragColor = vec4(finalColor, strength * vAlpha * (1.0 + vGlow));
       }
     `,
@@ -166,10 +166,10 @@ onMounted(() => {
 
   // Sparse Line Grid connectivity
   const segments: number[] = []
-  const width = 360
-  const height = 180
+  const width = 120
+  const height = 60
   const posArr = (planeGeometry.attributes.position as THREE.BufferAttribute).array as Float32Array
-  const step = 8 // Connect every 8th vertex for a light, technical look
+  const step = 6 // Connect every 6th vertex for a light, technical look
 
   for (let y = 0; y < height; y += step) {
     for (let x = 0; x < width; x += step) {
@@ -226,111 +226,94 @@ onMounted(() => {
   dirLight.position.set(5, 10, 8)
   scene.add(dirLight)
 
-  // 2. LOAD 3D TEXT "ALEXANDER TEJADA"
+  // 2. LOAD 3D TEXT "ALEXANDER TEJADA" - only on desktop
   const winWidth = window.innerWidth
-  const winHeight = window.innerHeight
-  const minDim = Math.min(winWidth, winHeight)
-  const getAdaptiveScale = () => {
-    if (winWidth <= 375) return 7
-    if (winWidth <= 390) return 7.5
-    if (winWidth <= 414) return 8
-    if (winWidth <= 430) return 8.5
-    if (winWidth <= 480) return 9
-    if (winWidth <= 768) return 10
-    return 25
-  }
-  const targetScale = getAdaptiveScale()
-  const targetY = minDim < 700 ? 1.5 : 5
+  const isMobile = winWidth < 768
 
-  const loader = new GLTFLoader()
-  loader.load('/ALEXANDER TEJADA.glb', (gltf) => {
-    const model = gltf.scene
-    const box = new THREE.Box3().setFromObject(model)
-    const size = box.getSize(new THREE.Vector3())
-    const scale = targetScale / Math.max(size.x, size.y, size.z)
-    model.scale.setScalar(scale)
-    model.position.set(0, targetY, 0)
+  if (!isMobile) {
+    const getAdaptiveScale = () => {
+      return 25
+    }
+    const targetScale = getAdaptiveScale()
+    const targetY = 7
 
-    model.traverse((child) => {
-      if (child instanceof THREE.Mesh) {
-        child.material = new THREE.MeshStandardMaterial({
-          color: 0x111827,
-          roughness: 0.2,
-          metalness: 0.1,
-        })
-        const posAttr = child.geometry.getAttribute('position')
-        if (posAttr) {
-          solidMeshesData.push({
-            mesh: child as THREE.Mesh,
-            originalPositions: new Float32Array(posAttr.array),
+    const loader = new GLTFLoader()
+    loader.load('/ALEXANDER TEJADA.glb', (gltf) => {
+      const model = gltf.scene
+      const box = new THREE.Box3().setFromObject(model)
+      const size = box.getSize(new THREE.Vector3())
+      const scale = targetScale / Math.max(size.x, size.y, size.z)
+      model.scale.setScalar(scale)
+      model.position.set(0, targetY, 0)
+
+      model.traverse((child) => {
+        if (child instanceof THREE.Mesh) {
+          child.material = new THREE.MeshStandardMaterial({
+            color: 0x111827,
+            roughness: 0.2,
+            metalness: 0.1,
           })
+          const posAttr = child.geometry.getAttribute('position')
+          if (posAttr) {
+            solidMeshesData.push({
+              mesh: child as THREE.Mesh,
+              originalPositions: new Float32Array(posAttr.array),
+            })
+          }
         }
-      }
+      })
+      scene.add(model)
+      textModel = model
     })
-    scene.add(model)
-    textModel = model
-  })
+  }
 
   let time = 0
 
   const animate = () => {
     time += 0.02
 
-    // Auto idle animation: drives targetMouse on a circular path
+    // Auto idle animation: disabled for performance - mouse only
     // when no real mouse has moved for >1s (or never, e.g. touch devices)
-    const idleTimeout = 1000
-    const isIdle = !hasRealMouse || performance.now() - lastMouseTime > idleTimeout
-    if (isIdle) {
-      // Gentle circular sweep — same amplitude the cursor would produce
-      targetMouse.x = Math.sin(time * 0.35) * 0.55
-      targetMouse.y = Math.cos(time * 0.22) * 0.28
-    }
+    // const idleTimeout = 1000
+    // const isIdle = !hasRealMouse || performance.now() - lastMouseTime > idleTimeout
+    // if (isIdle) {
+    //   targetMouse.x = Math.sin(time * 0.35) * 0.55
+    //   targetMouse.y = Math.cos(time * 0.22) * 0.28
+    // }
 
     // Smooth mouse
     mouse.x += (targetMouse.x - mouse.x) * 0.05
     mouse.y += (targetMouse.y - mouse.y) * 0.05
 
-    // A. WAVE MESH ANIMATION
-    raycaster.setFromCamera(mouse, camera)
-    const intersects = raycaster.intersectObject(raycasterPlane)
-    if (intersects.length > 0) intersectionPoint.copy(intersects[0]!.point)
-
+    // A. WAVE MESH ANIMATION (simplified - no raycaster every frame)
     if (pointMat.uniforms.uTime) pointMat.uniforms.uTime.value = time
-    if (pointMat.uniforms.uMouse)
-      pointMat.uniforms.uMouse.value.copy(intersectionPoint).sub(new THREE.Vector3(0, -10, 0))
     if (lineMat.uniforms.uTime) lineMat.uniforms.uTime.value = time
-    if (lineMat.uniforms.uMouse)
-      lineMat.uniforms.uMouse.value.copy(intersectionPoint).sub(new THREE.Vector3(0, -10, 0))
 
-    // B. TEXT MODEL ANIMATION (ALEXANDER TEJADA)
+    // B. TEXT MODEL GLITCH - subtle digital artifact
     if (solidMeshesData.length > 0 && textModel) {
-      const mouse3D = new THREE.Vector3(mouse.x * 20, mouse.y * 10 + 7, 2)
+      const glitchChance = 0.005
+      const glitchStrength = 0.15
+      const returnSpeed = 0.15
+
       for (const data of solidMeshesData) {
         const { mesh, originalPositions } = data
         const posAttr = mesh.geometry.getAttribute('position')
         const textArr = posAttr.array as Float32Array
-
-        mesh.updateWorldMatrix(true, false)
-        const invMat = mesh.matrixWorld.clone().invert()
-        const locMouse = mouse3D.clone().applyMatrix4(invMat)
+        const origPos = originalPositions as Float32Array
 
         for (let i = 0; i < textArr.length; i += 3) {
-          const ox = originalPositions[i]!
-          const oy = originalPositions[i + 1]!
-          const oz = originalPositions[i + 2]!
-          const dx = ox - locMouse.x
-          const dy = oy - locMouse.y
-          const distSq = dx * dx + dy * dy
-          const limit = 20 / textModel.scale.x
-          if (distSq < limit) {
-            const influence = 1 - Math.sqrt(distSq) / Math.sqrt(limit)
-            const force = influence * influence * (5 / textModel.scale.x)
-            textArr[i] = ox + (dx / Math.sqrt(distSq)) * force
-            textArr[i + 1] = oy + (dy / Math.sqrt(distSq)) * force
+          const ox = origPos[i] ?? 0
+          const oy = origPos[i + 1] ?? 0
+          const oz = origPos[i + 2] ?? 0
+
+          if (Math.random() < glitchChance) {
+            textArr[i]! = ox + (Math.random() - 0.5) * glitchStrength
+            textArr[i + 1]! = oy + (Math.random() - 0.5) * glitchStrength
+            textArr[i + 2]! = oz + (Math.random() - 0.5) * glitchStrength
           } else {
-            textArr[i] = textArr[i]! + (ox - textArr[i]!) * 0.1
-            textArr[i + 1] = textArr[i + 1]! + (oy - textArr[i + 1]!) * 0.1
-            textArr[i + 2] = textArr[i + 2]! + (oz - textArr[i + 2]!) * 0.1
+            textArr[i]! = (textArr[i] ?? 0) + (ox - (textArr[i] ?? 0)) * returnSpeed
+            textArr[i + 1]! = (textArr[i + 1] ?? 0) + (oy - (textArr[i + 1] ?? 0)) * returnSpeed
+            textArr[i + 2]! = (textArr[i + 2] ?? 0) + (oz - (textArr[i + 2] ?? 0)) * returnSpeed
           }
         }
         posAttr.needsUpdate = true
@@ -348,26 +331,14 @@ onMounted(() => {
 
 const onResize = () => {
   if (!camera || !renderer) return
+  const winW = window.innerWidth
+  const isMobile = winW < 768
+
   camera.aspect = window.innerWidth / window.innerHeight
 
-  const winW = window.innerWidth
-  const winH = window.innerHeight
-  const minDim = Math.min(winW, winH)
-  const isSmall = minDim < 700
-
-  const getAdaptiveScale = () => {
-    if (winW <= 375) return 7
-    if (winW <= 390) return 7.5
-    if (winW <= 414) return 8
-    if (winW <= 430) return 8.5
-    if (winW <= 480) return 9
-    if (winW <= 768) return 10
-    return 25
-  }
-
-  if (isSmall) {
-    camera.position.set(0, 1.5, 12)
-    camera.fov = 50
+  if (isMobile) {
+    camera.position.set(0, 2, 18)
+    camera.fov = 60
   } else {
     camera.position.set(0, 5, 25)
     camera.fov = 75
@@ -375,15 +346,6 @@ const onResize = () => {
 
   camera.updateProjectionMatrix()
   renderer.setSize(window.innerWidth, window.innerHeight)
-
-  if (textModel) {
-    const box = new THREE.Box3().setFromObject(textModel)
-    const size = box.getSize(new THREE.Vector3())
-    const baseScale = 25 / Math.max(size.x, size.y, size.z)
-    const scale = isSmall ? getAdaptiveScale() / Math.max(size.x, size.y, size.z) : baseScale
-    textModel.scale.setScalar(scale)
-    textModel.position.set(0, isSmall ? 1.5 : 7, 0)
-  }
 }
 
 onUnmounted(() => {
