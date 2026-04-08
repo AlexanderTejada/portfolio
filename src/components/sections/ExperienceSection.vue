@@ -326,11 +326,22 @@ const skills = {
   ],
 }
 
+const showExperience = ref(true)
+const showSkills = ref(true)
 const expandedJob = ref<number | null>(null)
+const expandedSkills = ref<Set<string>>(new Set())
 const visibleItems = ref<Set<number>>(new Set())
 
 const toggleJob = (index: number) => {
   expandedJob.value = expandedJob.value === index ? null : index
+}
+
+const toggleSkillCategory = (category: string) => {
+  if (expandedSkills.value.has(category)) {
+    expandedSkills.value.delete(category)
+  } else {
+    expandedSkills.value.add(category)
+  }
 }
 
 let observer: IntersectionObserver | null = null
@@ -619,6 +630,25 @@ onUnmounted(() => observer?.disconnect())
   text-align: right;
   letter-spacing: 0.15em;
   transition: color 0.3s ease;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 1rem;
+  border-radius: 4px;
+}
+
+.skills-header:hover {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.skills-header.active {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.skills-header .header-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
 }
 
 .timeline-card:hover .expand-hint {

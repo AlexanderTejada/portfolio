@@ -126,13 +126,13 @@ onMounted(() =>
 .corner-content {
   position: absolute;
   bottom: 3rem;
-  left: 3rem;
+  left: 50%;
   z-index: 10;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateX(-50%) translateY(20px);
   transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(8px);
@@ -140,8 +140,7 @@ onMounted(() =>
   border: 1px solid rgba(96, 165, 250, 0.2);
   border-radius: 4px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05), inset 0 0 20px rgba(96, 165, 250, 0.1);
-  max-width: calc(100% - 4rem);
-  position: relative;
+  max-width: 420px;
   overflow: hidden;
 }
 
@@ -158,7 +157,7 @@ onMounted(() =>
 
 .corner-content.visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateX(-50%) translateY(0);
 }
 
 .role-badge {
@@ -270,10 +269,10 @@ onMounted(() =>
 /* HUD panels */
 .hud-panel {
   position: absolute;
-  top: 30%;
-  transform: translateY(calc(-50% + 20px));
+  top: 55%;
+  transform: translateY(-50%);
   z-index: 10;
-  width: 180px;
+  width: 200px;
   padding: 1.1rem 1.25rem;
   background: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(10px);
@@ -290,10 +289,10 @@ onMounted(() =>
 }
 
 .hud-left {
-  left: 5rem;
+  left: 3rem;
 }
 .hud-right {
-  right: 5rem;
+  right: 3rem;
 }
 
 .hud-panel.visible {
