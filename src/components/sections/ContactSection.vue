@@ -18,7 +18,7 @@ const handleSubmit = () => {
 </script>
 
 <template>
-  <section class="contact-section" v-bind="$attrs" data-theme="dark">
+  <section id="contact" class="contact-section" v-bind="$attrs" data-theme="dark">
     <canvas ref="canvasRef" class="bg-canvas" />
 
     <div class="container">

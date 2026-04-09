@@ -1,18 +1,9 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-import { useScrollLock } from '@/composables/useScrollLock'
+import { ref } from 'vue'
 
 const props = defineProps<{ open: boolean }>()
 const emit = defineEmits<{ close: [] }>()
-const { locked } = useScrollLock()
 const modalBodyRef = ref<HTMLElement | null>(null)
-
-watch(
-  () => props.open,
-  (val) => {
-    locked.value = val
-  },
-)
 
 const onBackdropWheel = (e: WheelEvent) => {
   if (!modalBodyRef.value) return
