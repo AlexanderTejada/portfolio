@@ -137,9 +137,9 @@ onMounted(() =>
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(8px);
   padding: clamp(1.5rem, 5vw, 2rem);
-  border: 1px solid rgba(96, 165, 250, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 4px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05), inset 0 0 20px rgba(96, 165, 250, 0.1);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
   max-width: 420px;
   overflow: hidden;
 }
@@ -151,8 +151,7 @@ onMounted(() =>
   right: 0;
   width: 1px;
   height: 100%;
-  background: linear-gradient(180deg, rgba(96, 165, 250, 0.3) 0%, transparent 50%);
-  animation: scan-line 8s linear infinite;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, transparent 50%);
 }
 
 .corner-content.visible {
@@ -213,7 +212,7 @@ onMounted(() =>
 .btn-primary {
   background: linear-gradient(135deg, #111827, #1f2937);
   color: #ffffff;
-  border: 1px solid rgba(96, 165, 250, 0.3);
+  border: 1px solid rgba(0, 0, 0, 0.2);
   padding: 0.8rem 1.5rem;
   font-family: 'Fira Code', 'JetBrains Mono', monospace;
   font-size: 0.75rem;
@@ -223,7 +222,6 @@ onMounted(() =>
   transition: all 0.3s ease;
   border-radius: 2px;
   min-height: 44px;
-  box-shadow: 0 0 20px rgba(96, 165, 250, 0.15);
   text-transform: uppercase;
 }
 
@@ -241,7 +239,7 @@ onMounted(() =>
 .btn-secondary {
   background: rgba(255, 255, 255, 0.9);
   color: #111827;
-  border: 1px solid rgba(96, 165, 250, 0.4);
+  border: 1px solid rgba(0, 0, 0, 0.15);
   padding: 0.8rem 1.5rem;
   font-family: 'Fira Code', 'JetBrains Mono', monospace;
   font-size: 0.75rem;
@@ -251,7 +249,6 @@ onMounted(() =>
   transition: all 0.3s ease;
   border-radius: 2px;
   min-height: 44px;
-  box-shadow: 0 0 15px rgba(96, 165, 250, 0.1);
   text-transform: uppercase;
 }
 
@@ -276,7 +273,7 @@ onMounted(() =>
   padding: 1.1rem 1.25rem;
   background: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(96, 165, 250, 0.3);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   cursor: pointer;
   opacity: 0;
   transition:
@@ -285,7 +282,7 @@ onMounted(() =>
     background 0.3s ease,
     border-color 0.3s ease,
     box-shadow 0.3s ease;
-  box-shadow: inset 0 0 20px rgba(96, 165, 250, 0.1), 0 0 20px rgba(96, 165, 250, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .hud-left {
@@ -303,8 +300,8 @@ onMounted(() =>
 .hud-panel.visible:hover {
   transform: translateY(calc(-50% - 4px));
   background: rgba(255, 255, 255, 0.96);
-  border-color: rgba(96, 165, 250, 0.6);
-  box-shadow: inset 0 0 20px rgba(96, 165, 250, 0.2), 0 0 30px rgba(96, 165, 250, 0.3), 0 0 50px rgba(96, 165, 250, 0.15);
+  border-color: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
 .hud-panel.visible:hover .hud-corner {
@@ -315,7 +312,7 @@ onMounted(() =>
 
 .hud-panel.visible:hover .hud-label {
   animation: cyber-flicker 0.8s steps(1) 1 forwards;
-  color: #3b82f6;
+  color: #111827;
 }
 
 .hud-panel.visible:hover .hud-bio {
@@ -360,11 +357,10 @@ onMounted(() =>
   display: block;
   font-family: 'Fira Code', 'JetBrains Mono', monospace;
   font-size: 0.6rem;
-  color: #60a5fa;
+  color: #374151;
   letter-spacing: 0.2em;
   margin-bottom: 0.6rem;
   transition: none;
-  text-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
 }
 
 /* Mobile-only short label — hidden on desktop */
@@ -376,7 +372,6 @@ onMounted(() =>
   color: #111827;
   letter-spacing: 0.25em;
   text-transform: uppercase;
-  text-shadow: 0 0 10px rgba(96, 165, 250, 0.2);
 }
 
 .hud-divider {
@@ -391,7 +386,6 @@ onMounted(() =>
   color: #4b5563;
   line-height: 1.7;
   margin: 0;
-  background: rgba(96, 165, 250, 0.02);
   padding: 0.5rem;
   border-radius: 2px;
   position: relative;
@@ -415,7 +409,6 @@ onMounted(() =>
   position: relative;
   animation: glitch-rgb 2.5s infinite steps(8);
   line-height: 1.1;
-  text-shadow: 0 0 20px rgba(96, 165, 250, 0.1), 0 0 40px rgba(59, 130, 246, 0.05);
 }
 
 .hero-title-mobile::before,
@@ -968,23 +961,30 @@ onMounted(() =>
 }
 
 @keyframes glow-pulse {
-  0%, 100% {
-    text-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
-    border-left-color: rgba(96, 165, 250, 0.4);
+  0%,
+  100% {
+    text-shadow: none;
+    border-left-color: rgba(0, 0, 0, 0.2);
   }
   50% {
-    text-shadow: 0 0 20px rgba(96, 165, 250, 0.6), 0 0 30px rgba(96, 165, 250, 0.3);
-    border-left-color: rgba(96, 165, 250, 0.8);
+    text-shadow: none;
+    border-left-color: rgba(0, 0, 0, 0.4);
   }
 }
 
 @keyframes cyber-flicker {
-  0%, 18%, 22%, 25%, 54%, 56%, 100% {
-    text-shadow: 0 0 10px rgba(96, 165, 250, 0.4);
+  0%,
+  18%,
+  22%,
+  25%,
+  54%,
+  56%,
+  100% {
     opacity: 1;
   }
-  19%, 24%, 55% {
-    text-shadow: 0 0 20px rgba(96, 165, 250, 0.8), 0 0 30px rgba(59, 130, 246, 0.6);
+  19%,
+  24%,
+  55% {
     opacity: 0.8;
   }
 }

@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, watch } from 'vue'
 import { useScrollProgress } from '@/composables/useScrollProgress'
+import { useScrollLock } from '@/composables/useScrollLock'
 
 defineProps<{
   navItems: { label: string; to: string }[]
@@ -13,6 +14,15 @@ const emit = defineEmits<{
 const isMenuOpen = ref(false)
 const isDark = ref(false)
 const { scrollProgress } = useScrollProgress()
+const { lock, unlock } = useScrollLock()
+
+watch(isMenuOpen, (open) => {
+  if (open) {
+    lock()
+  } else {
+    unlock()
+  }
+})
 
 let observer: IntersectionObserver | null = null
 

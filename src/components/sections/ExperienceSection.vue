@@ -4,9 +4,13 @@
       <div class="section-header">
         <span class="section-label">// CAREER PATH</span>
         <h2 class="section-title glitch-text" data-text="EXPERIENCE">EXPERIENCE</h2>
+        <button class="expand-btn" @click="sectionExpanded = !sectionExpanded">
+          {{ sectionExpanded ? 'COLLAPSE' : 'EXPAND' }}
+          <span class="arrow" :class="{ open: sectionExpanded }">▼</span>
+        </button>
       </div>
 
-      <div class="timeline">
+      <div class="timeline" :class="{ collapsed: !sectionExpanded }">
         <div
           v-for="(job, index) in experience"
           :key="index"
@@ -50,7 +54,7 @@
         </div>
       </div>
 
-      <div class="skills-section">
+      <div class="skills-section" :class="{ collapsed: !sectionExpanded }">
         <div class="skills-header">
           <span class="section-label">// TECH ARSENAL</span>
           <h2 class="section-title glitch-text" data-text="SKILLS">SKILLS</h2>
@@ -100,6 +104,19 @@
             <h3>ARCH_DEVOPS</h3>
             <div class="skill-tags">
               <span v-for="skill in skills.devops" :key="skill.name" class="skill-tag">
+                <span
+                  v-if="getSkillIcon(skill.icon)"
+                  v-html="getSkillIcon(skill.icon)"
+                  class="skill-icon"
+                ></span>
+                {{ skill.name }}
+              </span>
+            </div>
+          </div>
+          <div class="skill-category">
+            <h3>GAME_ENGINE</h3>
+            <div class="skill-tags">
+              <span v-for="skill in skills.gamedev" :key="skill.name" class="skill-tag">
                 <span
                   v-if="getSkillIcon(skill.icon)"
                   v-html="getSkillIcon(skill.icon)"
@@ -196,23 +213,35 @@ interface SkillItem {
 const experience: Job[] = [
   {
     company: 'Excelencia Digital Software',
-    role: 'AI & Full Stack Developer',
+    role: 'Software Engineer | AI & Full Stack Developer',
     period: 'Apr 2024 – Present',
     location: 'Hybrid — Argentina',
     description:
-      'AI & Full Stack Developer working on a utility management system. Day-to-day work spans RAG pipelines (LangChain, LangGraph, vector databases), LLM integration with WhatsApp-connected transactional systems, real-time operations, and geospatial data processing with PostGIS.',
+      'Development and optimization of a comprehensive electrical services management system, focusing on operational efficiency and advanced Artificial Intelligence integration.',
     highlights: [
       {
-        title: 'RAG Pipelines & LLM Integration',
-        desc: 'Building production RAG pipelines with LangChain, LangGraph, and vector databases. Integrating LLMs with WhatsApp for transactional systems serving 13,000+ users.',
+        title: 'Generative AI & RAG',
+        desc: 'Design and implementation of Retrieval-Augmented Generation (RAG) architectures using LangChain and LangGraph with vector databases to enhance data-driven decision making.',
+      },
+      {
+        title: 'Automation & Channels',
+        desc: 'Integration of LLM agents into transactional systems connected to WhatsApp, automating end-user interaction.',
       },
       {
         title: 'Real-time Operations',
-        desc: 'Managing mass claim operations, shift tracking, and geospatial data processing with PostGIS for utility management.',
+        desc: 'Development of critical modules for massive claim management and technical shift tracking, ensuring availability and immediate response.',
       },
       {
-        title: 'Full-stack Development',
-        desc: 'Backend in C# .NET with Entity Framework Core. Frontend and mobile with Vue.js and Capacitor. Data layer across PostgreSQL, SQL Server, MongoDB, and Redis.',
+        title: 'Geospatial Analysis',
+        desc: 'Processing and visualization of complex geographic data using PostGIS for asset and network management.',
+      },
+      {
+        title: 'Backend Architecture',
+        desc: 'Building robust services in C# .NET using Repository pattern and Entity Framework Core, ensuring scalable and maintainable code.',
+      },
+      {
+        title: 'Cross-platform Development',
+        desc: 'Creating modern web and mobile interfaces with Vue.js and Capacitor.',
       },
     ],
   },
@@ -226,7 +255,7 @@ const experience: Job[] = [
     highlights: [
       {
         title: 'High-to-Low Workflow',
-        desc: 'Executed professional sculpting of stylized and realistic creatures, translating intricate high-resolution details into optimized low-poly meshes through advanced baking techniques.',
+        desc: 'Professional sculpting of stylized and realistic creatures, translating intricate high-resolution details into optimized low-poly meshes through advanced baking techniques.',
       },
       {
         title: 'Performance-Driven Retopology',
@@ -235,24 +264,58 @@ const experience: Job[] = [
     ],
   },
   {
-    company: 'Freelance',
-    role: 'Full-stack Developer & 3D Artist',
-    period: 'Jun 2020 – Present',
-    location: 'Remote — Argentina',
+    company: 'The Madness of Billiards',
+    role: 'Software Developer | Game',
+    period: 'Mar 2020 – Sep 2024',
+    location: 'Argentina · Remote',
     description:
-      'Consultant delivering integrated .NET, Angular, and high-fidelity 3D solutions for international clients. Specialized in bridging enterprise software architecture with interactive digital assets and real-time visualization.',
+      'Collaborated on the development and multi-platform deployment of a multiplayer title, contributing to its successful launch and technical stability on Steam, Google Play, and App Store.',
     highlights: [
       {
-        title: 'Full Stack Solutions (2020–2025)',
-        desc: 'Delivered 15+ production-ready applications using .NET Core, C#, and Angular/Vue.js, focusing on scalable SaaS architectures and Clean Architecture principles.',
+        title: 'Multiplayer Engineering',
+        desc: 'Supported implementation of real-time multiplayer functionality for 100+ simultaneous users using Photon Fusion and backend services with PlayFab/Azure.',
       },
       {
-        title: 'AI & LLM Integration (2023–2025)',
-        desc: 'Architecting RAG pipelines and intelligent API orchestration to enhance functional capabilities through automated data extraction and LLM-powered features.',
+        title: 'Optimization & Stability',
+        desc: 'Participated in maintaining a crash rate below 1% through rigorous debugging and performance tuning across mobile and desktop environments.',
+      },
+      {
+        title: 'Monetization & APIs',
+        desc: 'Contributed to integrated in-app purchases (IAP), payment APIs for Google and Apple, and cross-platform cloud save systems.',
+      },
+      {
+        title: 'Feature Development',
+        desc: 'Developed and refined gameplay mechanics and UI components using C# in Unity to improve user retention.',
+      },
+      {
+        title: 'A/B Testing & Analytics',
+        desc: 'Helped implement analytics frameworks and A/B testing that contributed to significant increases in ad revenue and user engagement.',
+      },
+    ],
+  },
+  {
+    company: 'Upwork',
+    role: 'Freelance',
+    period: 'Jun 2020 – Present',
+    location: 'Argentina · Remote',
+    description:
+      'Full stack freelance and 3D artist. Development of integrated solutions for international clients.',
+    highlights: [
+      {
+        title: 'Full Stack Solutions (2020-2025)',
+        desc: 'Developed 15+ production-ready applications using .NET Core, C#, and Angular/Vue.js, focusing on scalable SaaS architectures and Clean Architecture principles.',
+      },
+      {
+        title: 'AI & LLM Integration (2023-2025)',
+        desc: 'Design of RAG pipelines and intelligent API orchestration to enhance functional capabilities through automated data extraction and LLM-powered features.',
       },
       {
         title: '3D Character Art & Engineering',
-        desc: 'Established professional pipelines for high-fidelity character/creature design. Expert in ZBrush, Blender, and Substance Painter, focusing on retopology and PBR texturing for real-time engines.',
+        desc: 'Professional workflows for high-fidelity character and creature design. Expert in ZBrush, Blender, and Substance Painter, specializing in retopology and PBR texturing for real-time engines.',
+      },
+      {
+        title: 'Performance & Infrastructure',
+        desc: 'SQL Server database optimization (achieving up to 70% latency reduction) and container deployment management via Docker in Linux and Windows environments.',
       },
     ],
   },
@@ -262,15 +325,15 @@ const experience: Job[] = [
     period: 'Dec 2021 – Jan 2023',
     location: 'Remote — Lima, Peru',
     description:
-      'Hard surface modeling for the luxury goods sector — fine jewelry and high-end fashion accessories. Delivered production-ready digital twins bridging conceptual design and commercial visualization.',
+      'Hard surface modeling of jewelry and bags. Hard surface modeling for the luxury goods sector — fine jewelry and high-end fashion accessories.',
     highlights: [
       {
         title: 'Precision Hard Surface Modeling',
-        desc: 'Engineered complex, clean topology meshes for intricate jewelry pieces, ensuring perfect light behavior and reflection continuity for high-end marketing renders.',
+        desc: 'Engineering complex, clean topology meshes for intricate jewelry pieces, ensuring perfect light behavior and reflection continuity for high-end marketing renders.',
       },
       {
         title: 'Digital Craftsmanship',
-        desc: 'Leveraged ZBrush to sculpt realistic leather textures, stitching, and intricate metalwork for luxury bags, achieving photorealistic quality.',
+        desc: 'Utilized ZBrush to sculpt realistic leather textures, stitching, and intricate metalwork for luxury bags, achieving photorealistic quality.',
       },
     ],
   },
@@ -283,8 +346,7 @@ const skills = {
     { name: 'RAG Systems', icon: null },
     { name: 'LLM Integration', icon: null },
     { name: 'Azure OpenAI', icon: 'azure' },
-    { name: 'Claude API', icon: null },
-    { name: 'GPT-4 API', icon: null },
+    { name: 'Vector DBs', icon: null },
   ],
   backend: [
     { name: '.NET', icon: 'dotnet' },
@@ -310,6 +372,14 @@ const skills = {
     { name: 'MongoDB', icon: 'mongodb' },
     { name: 'PostGIS', icon: null },
   ],
+  gamedev: [
+    { name: 'Unity', icon: null },
+    { name: 'C#', icon: 'csharp' },
+    { name: 'Photon Fusion', icon: null },
+    { name: 'PlayFab', icon: null },
+    { name: 'Azure', icon: 'azure' },
+    { name: 'Firebase', icon: null },
+  ],
   '3d': [
     { name: 'Blender', icon: 'blender' },
     { name: 'ZBrush', icon: null },
@@ -328,6 +398,7 @@ const skills = {
 
 const showExperience = ref(true)
 const showSkills = ref(true)
+const sectionExpanded = ref(false)
 const expandedJob = ref<number | null>(null)
 const expandedSkills = ref<Set<string>>(new Set())
 const visibleItems = ref<Set<number>>(new Set())
@@ -417,10 +488,42 @@ onUnmounted(() => observer?.disconnect())
   background: #111827;
 }
 
+.expand-btn {
+  margin-top: 1.5rem;
+  background: transparent;
+  border: 1px solid #e5e7eb;
+  color: #6b7280;
+  padding: 0.5rem 1.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.expand-btn:hover {
+  border-color: #9ca3af;
+  color: #111827;
+}
+
+.expand-btn .arrow {
+  display: inline-block;
+  margin-left: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+.expand-btn .arrow.open {
+  transform: rotate(180deg);
+}
+
 /* Timeline */
 .timeline {
   position: relative;
   margin-bottom: 6rem;
+}
+
+.timeline.collapsed {
+  display: none;
 }
 
 .timeline::before {
@@ -659,6 +762,10 @@ onUnmounted(() => observer?.disconnect())
 .skills-section {
   padding-top: 2rem;
   border-top: 1px solid #e5e7eb;
+}
+
+.skills-section.collapsed {
+  display: none;
 }
 
 .skills-header {
