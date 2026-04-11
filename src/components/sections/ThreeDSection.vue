@@ -187,7 +187,7 @@ const closeLightbox = () => {
                 <template v-else>
                   <video
                     :src="item.src"
-                    preload="none"
+                    preload="metadata"
                     muted
                     loop
                     playsinline
@@ -245,7 +245,7 @@ const closeLightbox = () => {
               <div class="glass-scanline"></div>
             </div>
           </div>
-          <video v-else :src="lightboxItem.src" controls autoplay />
+          <video v-else :src="lightboxItem.src" controls autoplay muted playsinline style="width: 100%; min-width: 320px;" />
           <p class="lightbox-title">{{ lightboxItem.title }}</p>
         </div>
       </div>
